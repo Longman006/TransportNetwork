@@ -5,6 +5,7 @@ public class CarParameters {
      * 
      */
     private double desiredSpeed;
+
     /**
      *
      */
@@ -52,5 +53,32 @@ public class CarParameters {
         this.deceleration = deceleration;
         this.accelerationExponent = accelerationExponent;
         this.size = size;
+    }
+    public double getDesiredSpeed() {
+        return desiredSpeed;
+    }
+
+    public double getTimeGap() {
+        return timeGap;
+    }
+
+    public double getMinimumGap() {
+        return minimumGap;
+    }
+
+    public double getAcceleration() {
+        return acceleration;
+    }
+
+    public double getDeceleration() {
+        return deceleration;
+    }
+
+    public double getAccelerationExponent() {
+        return accelerationExponent;
+    }
+
+    public double getSize() {
+        return size;
     }
 }

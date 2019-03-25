@@ -6,8 +6,10 @@ import java.util.Vector;
  * Created by longman on 04.06.17.
  */
 public class Line {
+
     /**
      * Współczynniki prostej Ax+By+C=0
+     * tego tak naprawde używam
      */
     private double AA,BB,CC;
     /**

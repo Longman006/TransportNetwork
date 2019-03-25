@@ -1,9 +1,16 @@
 package tomek.szypula.math;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 public class Vector2D {
 
     private double x = 0;
     private double y = 0;
+
+    //TODO Change doubles to propertiees
+    private DoubleProperty xProperty = new SimpleDoubleProperty(0);
+    private DoubleProperty yProperty = new SimpleDoubleProperty(0);
 
     public Vector2D(double x, double y) {
         this.setX(x);
@@ -76,5 +83,10 @@ public class Vector2D {
     public void setPosition(Vector2D vector2D) {
         setY(vector2D.getY());
         setX(vector2D.getX());
+    }
+
+    public DoubleProperty getXProperty() {
+        return xProperty;
+
     }
 }

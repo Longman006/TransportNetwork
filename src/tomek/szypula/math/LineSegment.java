@@ -10,4 +10,11 @@ public class LineSegment {
         this.endPoint = endPoint;
         this.line = new Line(beginPoint,endPoint);
     }
+
+    public Vector2D getStart() {
+        return beginPoint;
+    }
+    public Vector2D getEnd() {
+        return endPoint;
+    }
 }

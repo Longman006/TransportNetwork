@@ -1,5 +1,7 @@
 package tomek.szypula.models;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ObservableValue;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
 
@@ -39,5 +41,10 @@ public class Car {
     }
 
     public double getSize() {
+        return parameters.getSize();
+    }
+
+    public DoubleProperty getXProperty() {
+        return position.getXProperty();
     }
 }
