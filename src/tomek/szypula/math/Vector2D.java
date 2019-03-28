@@ -58,6 +58,7 @@ public class Vector2D implements Iterable<DoubleProperty>{
     public double getLengthSquare() {
         return getX()*getX() + getY()*getY();
     }
+    public double getLength(){ return Math.sqrt(getLengthSquare());}
 
     public Vector2D addVector2D(Vector2D vector2D){
         this.setX(this.getX()+vector2D.getX());
@@ -76,7 +77,7 @@ public class Vector2D implements Iterable<DoubleProperty>{
         return this;
     }
 
-    public void setPosition(Vector2D vector2D) {
+    public void setVector(Vector2D vector2D) {
         setY(vector2D.getY());
         setX(vector2D.getX());
     }

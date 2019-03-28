@@ -4,10 +4,12 @@ public class LineSegment {
     private Line line ;
     private Vector2D beginPoint;
     private Vector2D endPoint;
+    private Vector2D direction;
 
     public LineSegment(Vector2D beginPoint, Vector2D endPoint) {
         this.beginPoint = beginPoint;
         this.endPoint = endPoint;
+        this.direction = Vector2DMath.vector2DSubtract(beginPoint,endPoint);
         this.line = new Line(beginPoint,endPoint);
     }
 
@@ -23,5 +25,9 @@ public class LineSegment {
     public double getShortestDistanceToPointSquared(Vector2D point){
         Vector2D pointOnLine = getClosestPointOnLine(point);
         return Vector2DMath.distanceSquared(point,pointOnLine);
+    }
+
+    public Vector2D getDirection() {
+        return direction;
     }
 }

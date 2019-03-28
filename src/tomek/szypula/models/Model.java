@@ -10,62 +10,68 @@ import java.util.List;
 public class Model {
     private List<Road> roadList = new ArrayList<>();
 
-
-    private void model() {
-        double Vn, VnNext;
-        double VnNew;
-        double distance, x1, x2, desiredDistance;
-        Car car, carNext;
-        for (int i = 0; i < carsList.size(); i++) {
-            car = carsList.get(i);
-            carNext = carsList.get((i + 1) % carsList.size());
-            VnNext = carNext.getSpeed();
-            Vn = car.getSpeed();
-            x2 = carNext.getCircle().getCenterX()-carNext.getCircle().getRadius();
-            x1 = car.getCircle().getCenterX()+car.getCircle().getRadius();
-            if (x2 > x1)
-                distance = x2 - x1;
-            else
-                distance = screenWidth - x1 + x2 ;
-            desiredDistance = minimumGap + Math.max(0, Vn * timeGap + Vn * (Math.abs(VnNext - Vn)) / 2 / Math.sqrt(acceleration * comfortableDecceleration));
-            VnNew = Math.abs(car.getSpeed()+acceleration * (1 - Math.pow(Vn / desiredSpeed, accelerationExponent) - Math.pow(desiredDistance / distance, 2)));
-            car.setSpeed(VnNew);
-            car.translateCar();
-        }
-        for (Car carcar : carsList) {
-            carcar.play();
-        }
-
+    public Model(List<Road> roadList) {
+        this.roadList = roadList;
     }
-    public Car getNextCar(Car car,Road road){
+
+    public Car getNextCar(Car car, Road road){
         if (road.hasNextCar(car))
             return road.getNextCar(car);
         else
             return getNextCar(car,car.getDriver().nextRoad(road));
     }
+    private double calculateNewSpeed(Car car, Road road){
+        CarParameters carParameters = car.getParameters();
+        Car carNext = getNextCar(car,road);
 
-    public void UpdateSpeed(){
+
+        Vector2D carNextSpeed = carNext.getSpeed();
+        Vector2D carSpeed = car.getSpeed();
+        double carSpeedValue = carSpeed.getLength();
+        double carSpeedNextValue = carNextSpeed.getLength();
+
+        /**
+         * Temporary solution for calculating distance
+         * for now it will be just the distance in a straight line
+         * later i hope on using Route class
+         */
+
+        double distance = Math.sqrt(Vector2DMath.distanceSquared(carNext.getPosition(),car.getPosition()));
+        double desiredDistance = carParameters.getMinimumGap() + Math.max(0, carSpeedValue * carParameters.getTimeGap() + carSpeedValue * (Math.abs(carSpeedNextValue - carSpeedValue)) / 2 / Math.sqrt(carParameters.getAcceleration() * carParameters.getDeceleration()));
+        double carSpeedNewValue = Math.abs(carSpeedValue+carParameters.getAcceleration() * (1 - Math.pow(carSpeedValue / carParameters.getDesiredSpeed(), carParameters.getAccelerationExponent()) - Math.pow(desiredDistance / distance, 2)));
+        return carSpeedNewValue;
+
+
+    }
+
+    public void updateSpeed(){
         for (Road road : roadList){
             for (Car car : road.getCarList()){
-                CarParameters carParameters = car.getParameters();
-                Car carNext = getNextCar(car,road);
-
-                Vector2D carNextSpeed = carNext.getSpeed();
-                Vector2D carSpeed = car.getSpeed();
-
-                /**
-                 * Temporary solution for calculating distance
-                 * for now it will be just the distance in a straight line
-                 * later i hope on using Route class
-                 */
-
-                double distance = Math.sqrt(Vector2DMath.distanceSquared(carNext.getPosition(),car.getPosition()));
-
-
-
-
+                double carSpeedNew = calculateNewSpeed(car,road);
+                car.setSpeed(car.getSpeed().normalize().multiply(carSpeedNew));
+                updatePosition(car,road);
 
             }
         }
+    }
+    private void updatePosition(Car car, Road road){
+        Vector2D carSpeed = car.getSpeed();
+        double carSpeedValue = carSpeed.getLength();
+        double distanceToEnd = road.getDistanceToEnd(car);
+        double distanceOnNewRoad = carSpeedValue - distanceToEnd;
+
+        if ( distanceOnNewRoad <= 0 ){
+            car.setPosition(car.getPosition().addVector2D(carSpeed));
+        }
+        else {
+            Road nextRoad = car.getDriver().nextRoad(road);
+            Vector2D direction = new Vector2D(nextRoad.getLineSegment().getDirection()).normalize().multiply(distanceOnNewRoad);
+            car.setPosition(Vector2DMath.vector2DSum(direction,road.getStart()));
+        }
+
+
+
+
+
     }
 }

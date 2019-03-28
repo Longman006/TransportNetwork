@@ -6,6 +6,7 @@ import tomek.szypula.math.LineSegment;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.models.Car;
 import tomek.szypula.models.Driver;
+import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 import tomek.szypula.view.CreateUI;
 import tomek.szypula.view.RoadUI;
@@ -19,6 +20,7 @@ public class Controller {
     List<CreateUI> UIelements = new ArrayList<>();
     List<Driver> drivers = new ArrayList<>();
     List<Car> carsList = new ArrayList<>();
+    Model model;
 
 
     public Controller(Group parent) {
@@ -31,6 +33,7 @@ public class Controller {
         roads.add(new Road(new LineSegment(new Vector2D(300,0), new Vector2D(1000,0))));
         roads.add(new Road(new LineSegment(new Vector2D(300,700), new Vector2D(1000,700))));
         roads.add(new Road(new LineSegment(new Vector2D(1000,700), new Vector2D(1000,0))));
+        model = new Model(roads);
 
         for(Road road : roads){
             UIelements.add(new RoadUI(road));
@@ -39,6 +42,9 @@ public class Controller {
         for (CreateUI createUI : UIelements){
             createUI.createUI(parent);
         }
+    }
+    public void step(){
+        model.updateSpeed();
     }
 
 

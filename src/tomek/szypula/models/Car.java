@@ -1,9 +1,7 @@
 package tomek.szypula.models;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ObservableValue;
 import tomek.szypula.math.Vector2D;
-import tomek.szypula.math.Vector2DMath;
 
 public class Car {
     Vector2D position;
@@ -30,17 +28,13 @@ public class Car {
         return position;
     }
 
-    public void setPosition(Vector2D position) {
-        this.position = position;
-    }
+    public void setPosition(Vector2D vector2D) { this.position.setVector(vector2D); }
 
     public Vector2D getSpeed() {
         return speed;
     }
 
-    public void setSpeed(Vector2D speed) {
-        this.speed = speed;
-    }
+    public void setSpeed(Vector2D speed) {  this.speed.setVector(speed); }
 
     public double getSize() {
         return parameters.getSize();
