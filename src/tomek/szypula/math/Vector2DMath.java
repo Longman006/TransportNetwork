@@ -22,4 +22,5 @@ public final class Vector2DMath {
         return (vector2D2.getY()-vector2D1.getY())*(vector2D2.getY()-vector2D1.getY())+(vector2D2.getX()-vector2D1.getX())*(vector2D2.getX()-vector2D1.getX());
     }
 
+
 }

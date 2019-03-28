@@ -4,6 +4,8 @@ import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import tomek.szypula.math.LineSegment;
 import tomek.szypula.math.Vector2D;
+import tomek.szypula.models.Car;
+import tomek.szypula.models.Driver;
 import tomek.szypula.models.Road;
 import tomek.szypula.view.CreateUI;
 import tomek.szypula.view.RoadUI;
@@ -15,6 +17,9 @@ import java.util.List;
 public class Controller {
     List<Road> roads = new ArrayList<>();
     List<CreateUI> UIelements = new ArrayList<>();
+    List<Driver> drivers = new ArrayList<>();
+    List<Car> carsList = new ArrayList<>();
+
 
     public Controller(Group parent) {
         roads.add(new Road(new LineSegment(new Vector2D(), new Vector2D(0,350))));
@@ -35,4 +40,6 @@ public class Controller {
             createUI.createUI(parent);
         }
     }
+
+
 }

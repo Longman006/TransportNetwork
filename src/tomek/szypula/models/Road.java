@@ -37,16 +37,16 @@ public class Road {
         this.carList = carList;
         this.roadList = roadList;
     }
-
+    public List<Road> getRoadList(){ return roadList; }
     public Car getCar(int i){
         return carList.get(i);
     }
-    public boolean isEmpty(){
-        return carList.isEmpty();
-    }
-    public int numberOfCars(){
-        return carList.size();
-    }
+    public List<Car> getCarList(){return carList;}
+    public boolean hasNextCar(Car car){ return (carList.size()-1>carList.indexOf(car));}
+    public Car getNextCar(Car car){return carList.get(carList.indexOf(car)+1);}
+    public boolean isEmpty(){ return carList.isEmpty(); }
+    public int numberOfCars(){ return carList.size(); }
+
     public double getDistanceToStart(int indexOfCar){
         //TODO test
         double distanceX = Math.pow(carList.get(indexOfCar).getX()-lineSegment.getStart().getX(),2);
@@ -56,10 +56,7 @@ public class Road {
         return distance;
     }
 
-    public double getDistanceToStart(Car car){
-        int index = carList.indexOf(car);
-        return getDistanceToStart(index);
-    }
+    public double getDistanceToStart(Car car){ return getDistanceToStart(carList.indexOf(car));}
     public double getDistanceToEnd(int indexOfCar){
         double distanceX = Math.pow(carList.get(indexOfCar).getX()-lineSegment.getEnd().getX(),2);
         double distanceY = Math.pow(carList.get(indexOfCar).getY()-lineSegment.getEnd().getY(),2);
@@ -67,14 +64,15 @@ public class Road {
 
         return distance;
     }
-    public double getDistanceToEnd(Car car){
-        int index = carList.indexOf(car);
-        return getDistanceToEnd(index);
-    }
+    public double getDistanceToEnd(Car car){ return getDistanceToEnd(carList.indexOf(car)); }
     public Vector2D getStart() {
         return lineSegment.getStart();
     }
     public Vector2D getEnd(){
         return lineSegment.getEnd();
+    }
+
+    public LineSegment getLineSegment() {
+        return lineSegment;
     }
 }

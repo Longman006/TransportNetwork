@@ -73,8 +73,6 @@ public class Line {
         double yy = (getCC()*AA-CC*BB)/norm;
         return new Vector2D(xx,yy);
 
-
-
     }
 
     public String toString(){

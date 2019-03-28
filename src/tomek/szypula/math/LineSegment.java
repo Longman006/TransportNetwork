@@ -17,4 +17,11 @@ public class LineSegment {
     public Vector2D getEnd() {
         return endPoint;
     }
+    public Vector2D getClosestPointOnLine(Vector2D vector2D){
+        return line.getClosestPointOnLine(vector2D);
+    }
+    public double getShortestDistanceToPointSquared(Vector2D point){
+        Vector2D pointOnLine = getClosestPointOnLine(point);
+        return Vector2DMath.distanceSquared(point,pointOnLine);
+    }
 }

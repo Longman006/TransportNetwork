@@ -9,11 +9,13 @@ public class Car {
     Vector2D position;
     Vector2D speed;
     CarParameters parameters;
+    Driver driver;
 
-    public Car(Vector2D position, CarParameters parameters) {
+    public Car(Vector2D position, CarParameters parameters, Driver driver) {
         this.position = position;
         this.parameters = parameters;
         this.speed = new Vector2D();
+        this.driver = driver;
     }
 
     public double getX() {
@@ -44,7 +46,9 @@ public class Car {
         return parameters.getSize();
     }
 
-    public DoubleProperty getXProperty() {
-        return position.getXProperty();
-    }
+    public DoubleProperty getXProperty() {return position.getXProperty(); }
+
+    public CarParameters getParameters() {  return parameters; }
+
+    public Driver getDriver() {return driver; }
 }
