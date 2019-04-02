@@ -19,7 +19,7 @@ public class RoadUI implements CreateUI{
         this.road = road;
         lineShape = new Line(road.getStart().getX(),road.getStart().getY(),road.getEnd().getX(),road.getEnd().getY());
         lineShape.setSmooth(true);
-        lineShape.setStrokeWidth(40.0);
+        lineShape.setStrokeWidth(8.0);
         lineShape.setStrokeLineJoin(StrokeLineJoin.MITER);
     }
 

@@ -38,6 +38,7 @@ public class Road {
         this.roadList = roadList;
     }
     public List<Road> getRoadList(){ return roadList; }
+    public void addRoad(Road road){ roadList.add(road);}
     public Car getCar(int i){
         return carList.get(i);
     }
@@ -74,5 +75,43 @@ public class Road {
 
     public LineSegment getLineSegment() {
         return lineSegment;
+    }
+
+    @Override
+    public String toString() {
+        return "Road{" +
+                "\n"+
+                getStart() + "\n"+
+                getEnd() + "\n" ;
+    }
+    public String toStringNeighbours(){
+        String string ="";
+        for (Road road : roadList){
+            string+="Next Road : " + road.toString()+"\n";
+        }
+        return string;
+    }
+
+    private void setupInsertCarAtStart(Car car){
+        car.setPosition(getStart());
+        //car.setSpeed(new Vector2D());
+        carList.add(0, car);
+    }
+    public boolean insertCar(Car car){
+        if (carList.size()>0){
+            Car carOnRoad = carList.get(0);
+            if (getDistanceToStart(carOnRoad) > car.getSize()) {
+                setupInsertCarAtStart(car);
+                return true;
+            }
+        }
+        else{
+            setupInsertCarAtStart(car);
+            return true;
+        }
+        return false;
+    }
+    public void removeCar(Car car){
+        carList.remove(car);
     }
 }

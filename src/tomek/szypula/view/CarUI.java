@@ -11,19 +11,20 @@ public class CarUI implements CreateUI{
     Car car;
     Circle carShape;
 
-    public CarUI(Car car) {
+    public CarUI(Car car,Color color) {
         this.car = car;
-
+        carShape  = new Circle();
         carShape.setCenterX(car.getX());
         carShape.setCenterY(car.getY());
         carShape.setRadius(car.getSize());
         carShape.centerXProperty().bind(car.getXProperty());
+        carShape.centerYProperty().bind(car.getYProperty());
         DropShadow dropShadow = new DropShadow();
         dropShadow.setOffsetX(3);
         dropShadow.setOffsetY(3);
         carShape.setStroke(Color.BLACK);
         carShape.setEffect(dropShadow);
-        carShape.setFill(Color.RED);
+        carShape.setFill(color);
     }
 
     @Override

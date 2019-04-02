@@ -46,9 +46,10 @@ public class Model {
 
     public void updateSpeed(){
         for (Road road : roadList){
-            for (Car car : road.getCarList()){
+            for (int i = 0 ; i< road.getCarList().size(); i++){
+                Car car = road.getCarList().get(i);
                 double carSpeedNew = calculateNewSpeed(car,road);
-                car.setSpeed(car.getSpeed().normalize().multiply(carSpeedNew));
+                car.setSpeed(new Vector2D(road.getLineSegment().getDirection()).normalize().multiply(Math.sqrt(carSpeedNew)));
                 updatePosition(car,road);
 
             }
@@ -65,8 +66,14 @@ public class Model {
         }
         else {
             Road nextRoad = car.getDriver().nextRoad(road);
-            Vector2D direction = new Vector2D(nextRoad.getLineSegment().getDirection()).normalize().multiply(distanceOnNewRoad);
-            car.setPosition(Vector2DMath.vector2DSum(direction,road.getStart()));
+            Vector2D direction = new Vector2D(nextRoad.getLineSegment().getDirection()).normalize();
+            car.setSpeed(new Vector2D(direction).multiply(Math.sqrt(carSpeedValue)));
+
+            //direction.multiply(Math.sqrt(distanceOnNewRoad));
+           // car.setPosition(Vector2DMath.vector2DSum(direction,road.getStart()));
+
+            road.removeCar(car);
+            nextRoad.insertCar(car);
         }
 
 

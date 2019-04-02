@@ -1,6 +1,7 @@
 package tomek.szypula.models;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ObservableValue;
 import tomek.szypula.math.Vector2D;
 
 public class Car {
@@ -14,6 +15,9 @@ public class Car {
         this.parameters = parameters;
         this.speed = new Vector2D();
         this.driver = driver;
+    }
+    public Car(CarParameters carParameters,Driver driver){
+        this(new Vector2D(),carParameters,driver);
     }
 
     public double getX() {
@@ -45,4 +49,13 @@ public class Car {
     public CarParameters getParameters() {  return parameters; }
 
     public Driver getDriver() {return driver; }
+
+    public DoubleProperty getYProperty() { return position.getYProperty();   }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "position=" + position +
+                '}';
+    }
 }
