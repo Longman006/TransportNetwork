@@ -1,12 +1,16 @@
 package sample;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import tomek.szypula.controller.Controller;
 
 import java.util.ArrayList;
@@ -19,9 +23,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
         Controller controller = new Controller(root);
-        Scene theScene = new Scene( root );
+        Scene theScene = new Scene( root,1100, 800 );
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 1100, 800));
+        primaryStage.setScene(theScene);
 
         ArrayList<String> input = new ArrayList<String>();
 
@@ -31,6 +35,7 @@ public class Main extends Application {
                     public void handle(KeyEvent e)
                     {
                         String code = e.getCode().toString();
+                        System.out.println("input key code : "+code);
 
                         // only add once... prevent duplicates
                         if ( !input.contains(code) )
@@ -48,15 +53,16 @@ public class Main extends Application {
                     }
                 });
 
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                // Here comes your void to refresh the whole application.
-                controller.step();
-                if (input.contains("LEFT"))
-                    controller.addCars(3);
 
-            }
-        }, 200, 200);
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(100),
+                ae -> {
+                    controller.step();
+                    if (input.contains("LEFT")) {
+                        controller.addCars();
+                    }}));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
         primaryStage.show();
     }
 

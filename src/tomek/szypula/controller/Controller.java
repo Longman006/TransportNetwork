@@ -25,12 +25,19 @@ public class Controller {
      */
     List<Road> roads = new ArrayList<>();
     List<CreateUI> UIelements = new ArrayList<>();
+    List<CreateUI> carUIs = new ArrayList<>();
+    List<CreateUI> roadUIs = new ArrayList<>();
+    List<Road> startingRoads = new ArrayList<>();
     List<Driver> drivers = new ArrayList<>();
     List<Car> carsList = new ArrayList<>();
     Model model;
 
+    Group parent;
+    Group carParent = new Group();
+    Group roadParent = new Group();
 
     public Controller(Group parent) {
+        this.parent = parent;
         createRoads();
         createRoadNetwork();
         createCars();
@@ -47,19 +54,20 @@ public class Controller {
     private void createRoads(){
         Vector2D a,b,c,d,e,f,g,h,i;
         a = new Vector2D(10,10);
-        b = new Vector2D(10,350);
-        c = new Vector2D(10,700);
-        d = new Vector2D(300,10);
-        e = new Vector2D(300,350);
-        f = new Vector2D(300,700);
-        g = new Vector2D(1000,700);
-        h = new Vector2D(1000,350);
-        i = new Vector2D(1000,10);
+        b = new Vector2D(10,70);
+        c = new Vector2D(10,140);
+        d = new Vector2D(60,10);
+        e = new Vector2D(60,70);
+        f = new Vector2D(60,140);
+        g = new Vector2D(200,140);
+        h = new Vector2D(200,70);
+        i = new Vector2D(200,10);
 
-        roads.add(new Road(new LineSegment(b,a)));
-        roads.add(new Road(new LineSegment(b,c)));
+        startingRoads.add(new Road(new LineSegment(b,a)));
+        startingRoads.add(new Road(new LineSegment(b,c)));
+        startingRoads.add( new Road(new LineSegment(b,e)));
+        roads.addAll(startingRoads);
         roads.add(new Road(new LineSegment(a,d)));
-        roads.add(new Road(new LineSegment(b,e)));
         roads.add(new Road(new LineSegment(c,f)));
         roads.add(new Road(new LineSegment(f,e)));
         roads.add(new Road(new LineSegment(d,e)));
@@ -70,8 +78,9 @@ public class Controller {
         roads.add(new Road(new LineSegment(i,d)));
 
         for(Road road : roads){
-            UIelements.add(new RoadUI(road));
+            roadUIs.add(new RoadUI(road));
         }
+        UIelements.addAll(roadUIs);
 
     }
     private void printRoads(){
@@ -95,15 +104,16 @@ public class Controller {
     private void createCars(){
         for(int i = 0 ; i<roads.size();i++){
             Car car = new Car(new CarParameters(),new RandomDriver(new Vector2D()));
-            CarUI carUI = new CarUI(car,Color.hsb(360* (double) i/roads.size(),0.65,0.65));
+            CarUI carUI = new CarUI(car);
+            carUI.setColor(Color.hsb(360* (double) i/roads.size(),0.65,0.65));
             carsList.add(car);
-            UIelements.add(carUI);
+            carUIs.add(carUI);
         }
+        UIelements.addAll(carUIs);
     }
     private void initializeCars(){
         for(int i = 0 ; i<roads.size(); i++){
             roads.get(i).insertCar(carsList.get(i));
-
         }
     }
     public void step(){
@@ -112,11 +122,14 @@ public class Controller {
     }
 
 
-    public void addCars(int n) {
-        for (int i =0 ; i<n ; i++) {
-            int index = (int) (Math.random() * roads.size());
-            Road road = roads.get(index);
-
+    public void addCars() {
+        for (Road road : startingRoads){
+            Car car = new Car(new CarParameters(),new RandomDriver(new Vector2D()));
+            CarUI carUI = new CarUI(car);
+            carsList.add(car);
+            carUIs.add(carUI);
+            road.insertCar(car);
+            carUI.createUI(parent);
         }
     }
 }

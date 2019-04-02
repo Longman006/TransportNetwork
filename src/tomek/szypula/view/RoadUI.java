@@ -2,11 +2,17 @@ package tomek.szypula.view;
 
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineJoin;
 import tomek.szypula.models.Road;
 
 public class RoadUI implements CreateUI{
+    @Override
+    public void setColor(Color color) {
+        lineShape.setFill(color);
+    }
+
     private Road road;
     private Line lineShape;
 

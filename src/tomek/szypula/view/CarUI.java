@@ -11,7 +11,7 @@ public class CarUI implements CreateUI{
     Car car;
     Circle carShape;
 
-    public CarUI(Car car,Color color) {
+    public CarUI(Car car) {
         this.car = car;
         carShape  = new Circle();
         carShape.setCenterX(car.getX());
@@ -24,6 +24,11 @@ public class CarUI implements CreateUI{
         dropShadow.setOffsetY(3);
         carShape.setStroke(Color.BLACK);
         carShape.setEffect(dropShadow);
+        carShape.setFill(Color.RED);
+    }
+
+    @Override
+    public void setColor(Color color) {
         carShape.setFill(color);
     }
 
