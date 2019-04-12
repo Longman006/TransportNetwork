@@ -44,6 +44,14 @@ public class Model {
                 new Vector2D(carSpeed).normalize().multiply(1.0*Math.sqrt(carNext.getSize()))
         )));
  */
+        Vector2D carPositionTmp = new Vector2D(car.getPosition());
+        Vector2D carNextPositionTmp = new Vector2D(carNext.getPosition());
+
+        carPositionTmp.addVector2D(new Vector2D(carSpeed).normalize().multiply(car.getSize()));
+        carNextPositionTmp.addVector2D(new Vector2D(carNextSpeed).normalize().multiply(carNext.getSize()));
+        //
+       // double distance = Math.sqrt(Vector2DMath.distanceSquared(carNextPositionTmp,carPositionTmp));
+        //System.out.println("Distance "+distance);
         double distance = Math.sqrt(Vector2DMath.distanceSquared(carNext.getPosition(),car.getPosition()));
         double desiredDistance = carParameters.getMinimumGap() + Math.max(0, carSpeedValue * carParameters.getTimeGap() + carSpeedValue * (Math.abs(carSpeedNextValue - carSpeedValue)) / 2 / Math.sqrt(carParameters.getAcceleration() * carParameters.getDeceleration()));
         double carSpeedNewValue = Math.abs(carSpeedValue+carParameters.getAcceleration() * (1 - Math.pow(carSpeedValue / carParameters.getDesiredSpeed(), carParameters.getAccelerationExponent()) - Math.pow(desiredDistance / distance, 2)));
@@ -57,7 +65,7 @@ public class Model {
             for (int i = 0 ; i< road.getCarList().size(); i++){
                 Car car = road.getCarList().get(i);
                 double carSpeedNew = calculateNewSpeed(car,road);
-                car.setSpeed(new Vector2D(road.getLineSegment().getDirection()).normalize().multiply(Math.sqrt(carSpeedNew)));
+                car.setSpeed(new Vector2D(road.getLineSegment().getDirection()).normalize().multiply(carSpeedNew));
                 updatePosition(car,road);
 
             }
@@ -83,11 +91,13 @@ public class Model {
             if (nextRoad.insertCar(car)){
                 road.removeCar(car);
                 Vector2D direction = new Vector2D(nextRoad.getLineSegment().getDirection()).normalize();
-                car.setSpeed(new Vector2D(direction).multiply(Math.sqrt(carSpeedValue)));
+                car.setPosition(car.getPosition().addVector2D(new Vector2D(direction).multiply(distanceOnNewRoad)));
+                car.setSpeed(new Vector2D(direction).multiply(carSpeedValue));
             }
-            else
+            else {
                 car.setPosition(road.getEnd());
                 car.setSpeed(new Vector2D());
+            }
         }
 
 

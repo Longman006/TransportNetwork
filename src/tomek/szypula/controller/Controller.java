@@ -41,8 +41,6 @@ public class Controller {
         createRoads();
         createRoadNetwork();
         createCars();
-        initializeCars();
-        //printRoads();
 
 
         model = new Model(roads);
@@ -103,7 +101,8 @@ public class Controller {
     }
     private void createCars(){
         for(int i = 0 ; i<roads.size();i++){
-            Car car = new Car(new CarParameters(),new RandomDriver(new Vector2D()));
+            Car car = new Car(roads.get(i).getStart(),roads.get(i).getLineSegment().getDirection(),new CarParameters(),new RandomDriver(new Vector2D()));
+            roads.get(i).insertCar(car);
             CarUI carUI = new CarUI(car);
             carUI.setColor(Color.hsb(360* (double) i/roads.size(),0.65,0.65));
             carsList.add(car);
@@ -111,20 +110,17 @@ public class Controller {
         }
         UIelements.addAll(carUIs);
     }
-    private void initializeCars(){
-        for(int i = 0 ; i<roads.size(); i++){
-            roads.get(i).insertCar(carsList.get(i));
-        }
-    }
+
     public void step(){
         model.updateSpeed();
+        System.out.println("Speed : "+carsList.get(0).getSpeed());
 
     }
 
 
     public void addCars() {
         for (Road road : startingRoads){
-            Car car = new Car(new CarParameters(),new RandomDriver(new Vector2D()));
+            Car car = new Car(road.getStart(),road.getLineSegment().getDirection(),new CarParameters(),new RandomDriver(new Vector2D()));
             CarUI carUI = new CarUI(car);
             carsList.add(car);
             carUIs.add(carUI);

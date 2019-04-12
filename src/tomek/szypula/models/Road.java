@@ -94,7 +94,7 @@ public class Road {
 
     private void setupInsertCarAtStart(Car car){
         car.setPosition(getStart());
-        //car.setSpeed(new Vector2D());
+        car.setDirection(lineSegment.getDirection());
         carList.add(0, car);
     }
     public boolean insertCar(Car car){

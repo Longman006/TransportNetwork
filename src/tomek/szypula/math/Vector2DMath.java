@@ -21,6 +21,9 @@ public final class Vector2DMath {
     public static double distanceSquared(Vector2D vector2D1, Vector2D vector2D2){
         return (vector2D2.getY()-vector2D1.getY())*(vector2D2.getY()-vector2D1.getY())+(vector2D2.getX()-vector2D1.getX())*(vector2D2.getX()-vector2D1.getX());
     }
+    public static Vector2D getNormalVector2D(Vector2D vector2D){
+        return new Vector2D(vector2D.getY(),-1*vector2D.getX());
+    }
 
 
 }

@@ -28,6 +28,6 @@ public class LineSegment {
     }
 
     public Vector2D getDirection() {
-        return direction;
+        return new Vector2D(direction);
     }
 }

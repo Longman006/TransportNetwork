@@ -9,15 +9,14 @@ public class Car {
     Vector2D speed;
     CarParameters parameters;
     Driver driver;
+    Vector2D direction;
 
-    public Car(Vector2D position, CarParameters parameters, Driver driver) {
+    public Car(Vector2D position,Vector2D direction, CarParameters parameters, Driver driver) {
         this.position = position;
         this.parameters = parameters;
-        this.speed = new Vector2D();
+        this.direction = direction;
+        this.speed = new Vector2D(0,0);
         this.driver = driver;
-    }
-    public Car(CarParameters carParameters,Driver driver){
-        this(new Vector2D(),carParameters,driver);
     }
 
     public double getX() {
@@ -38,7 +37,19 @@ public class Car {
         return speed;
     }
 
-    public void setSpeed(Vector2D speed) {  this.speed.setVector(speed); }
+    public Vector2D getDirection() {
+        return new Vector2D(direction);
+    }
+
+    public void setSpeed(Vector2D speed) {
+        this.speed.setVector(speed);
+        if (!speed.isZero())
+            direction.setVector(new Vector2D(speed).normalize());
+    }
+    public void setDirection(Vector2D direction){
+        this.direction.setVector(new Vector2D(direction).normalize());
+        this.speed.setVector(new Vector2D(this.direction).multiply(this.speed.getLength()));
+    }
 
     public double getSize() {
         return parameters.getSize();

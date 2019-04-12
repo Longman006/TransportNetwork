@@ -33,9 +33,11 @@ public class Vector2D implements Iterable<DoubleProperty>{
         this(v2.getX() - v1.getX(), v2.getY() - v1.getY());
     }
     public Vector2D normalize(){
-        double normFactor = getNormFactor();
-        setX(getX()/normFactor);
-        setY(getY()/normFactor);
+        if(!isZero()) {
+            double normFactor = getNormFactor();
+            setX(getX() / normFactor);
+            setY(getY() / normFactor);
+        }
         return this;
     }
     private double getNormFactor(){ return Math.sqrt(getLengthSquare());
@@ -87,6 +89,9 @@ public class Vector2D implements Iterable<DoubleProperty>{
     }
     public DoubleProperty getYProperty() {
         return yProperty;
+    }
+    public boolean isZero(){
+        return (getX() == 0 && getY() == 0);
     }
 
     @Override
