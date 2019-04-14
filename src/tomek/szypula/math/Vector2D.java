@@ -115,4 +115,10 @@ public class Vector2D implements Iterable<DoubleProperty>{
         };
     }
 
+    public boolean equalValue(Vector2D isEqual) {
+        double epsilon = Double.MIN_NORMAL;
+        if (Math.abs(this.getY() - isEqual.getY()) < epsilon && Math.abs(this.getX() - isEqual.getX()) < epsilon)
+            return true;
+        return false;
+    }
 }

@@ -2,22 +2,22 @@ package tomek.szypula.math;
 
 public class LineSegment {
     private Line line ;
-    private Vector2D beginPoint;
-    private Vector2D endPoint;
-    private Vector2D direction;
+    private final Vector2D beginPoint;
+    private final Vector2D endPoint;
+    private final Vector2D direction;
 
     public LineSegment(Vector2D beginPoint, Vector2D endPoint) {
         this.beginPoint = beginPoint;
         this.endPoint = endPoint;
-        this.direction = Vector2DMath.vector2DSubtract(beginPoint,endPoint);
+        this.direction = Vector2DMath.vector2DSubtract(beginPoint,endPoint).normalize();
         this.line = new Line(beginPoint,endPoint);
     }
 
     public Vector2D getStart() {
-        return beginPoint;
+        return new Vector2D(beginPoint);
     }
     public Vector2D getEnd() {
-        return endPoint;
+        return new Vector2D(endPoint);
     }
     public Vector2D getClosestPointOnLine(Vector2D vector2D){
         return line.getClosestPointOnLine(vector2D);

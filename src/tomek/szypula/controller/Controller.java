@@ -14,6 +14,7 @@ import java.awt.image.RasterOp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 public class Controller {
     /**
@@ -61,20 +62,20 @@ public class Controller {
         h = new Vector2D(200,70);
         i = new Vector2D(200,10);
 
-        startingRoads.add(new Road(new LineSegment(b,a)));
-        startingRoads.add(new Road(new LineSegment(b,c)));
-        startingRoads.add( new Road(new LineSegment(b,e)));
-        roads.addAll(startingRoads);
-        roads.add(new Road(new LineSegment(a,d)));
-        roads.add(new Road(new LineSegment(c,f)));
+       // startingRoads.add(new Road(new LineSegment(b,a)));
+        //startingRoads.add(new Road(new LineSegment(b,c)));
+        //startingRoads.add( new Road(new LineSegment(b,e)));
+        //roads.addAll(startingRoads);
+        //roads.add(new Road(new LineSegment(a,d)));
+        //roads.add(new Road(new LineSegment(c,f)));
         roads.add(new Road(new LineSegment(f,e)));
-        roads.add(new Road(new LineSegment(d,e)));
+        //roads.add(new Road(new LineSegment(d,e)));
         roads.add(new Road(new LineSegment(g,f)));
         roads.add(new Road(new LineSegment(h,g)));
-        roads.add(new Road(new LineSegment(h,i)));
+        //roads.add(new Road(new LineSegment(h,i)));
         roads.add(new Road(new LineSegment(e,h)));
-        roads.add(new Road(new LineSegment(i,d)));
-
+        //roads.add(new Road(new LineSegment(i,d)));
+        startingRoads.add(roads.get(0));
         for(Road road : roads){
             roadUIs.add(new RoadUI(road));
         }
@@ -88,13 +89,9 @@ public class Controller {
         }
     }
     private void createRoadNetwork(){
-        /**
-         * Try and rebuild this using iterators later
-         * make sure this works
-         */
         for (Road road : roads ) {
             for (Road roadNext : roads){
-                if (road.getEnd().equals(roadNext.getStart()))
+                if (road.getEnd().equalValue(roadNext.getStart()))
                     road.addRoad(roadNext);
             }
         }
@@ -113,8 +110,6 @@ public class Controller {
 
     public void step(){
         model.updateSpeed();
-        System.out.println("Speed : "+carsList.get(0).getSpeed());
-
     }
 
 
@@ -127,5 +122,9 @@ public class Controller {
             road.insertCar(car);
             carUI.createUI(parent);
         }
+    }
+
+    public void stopCar() {
+        carsList.get(0).setSpeed(new Vector2D());
     }
 }

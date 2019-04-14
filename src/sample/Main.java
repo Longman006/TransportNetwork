@@ -60,6 +60,9 @@ public class Main extends Application {
                     controller.step();
                     if (input.contains("LEFT")) {
                         controller.addCars();
+                    }
+                    else if (input.contains("RIGHT")) {
+                        controller.stopCar();
                     }}));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();

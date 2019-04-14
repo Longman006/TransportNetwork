@@ -28,13 +28,13 @@ public class Car {
     }
 
     public Vector2D getPosition() {
-        return position;
+        return new Vector2D(position);
     }
 
     public void setPosition(Vector2D vector2D) { this.position.setVector(vector2D); }
 
     public Vector2D getSpeed() {
-        return speed;
+        return new Vector2D(speed);
     }
 
     public Vector2D getDirection() {
