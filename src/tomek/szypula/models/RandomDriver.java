@@ -11,8 +11,9 @@ public class RandomDriver extends Driver{
 
     @Override
     public Road nextRoad(Road currentRoad) {
-
         List<Road> roads = currentRoad.getRoadList();
+        if (roads.size() == 1)
+            return roads.get(0);
         int index = (int) (Math.random()*roads.size());
         Road nextRoad = roads.get(index);
         return nextRoad;

@@ -3,6 +3,7 @@ package tomek.szypula.models;
 import tomek.szypula.math.Line;
 import tomek.szypula.math.LineSegment;
 import tomek.szypula.math.Vector2D;
+import tomek.szypula.math.Vector2DMath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,20 @@ public class Road {
         return carList.get(i);
     }
     public List<Car> getCarList(){return carList;}
+
+    /**
+     *
+     * @param car the car searching for the next car along a given route
+     * @return if the road has
+     *
+     */
     public boolean hasNextCar(Car car){ return (carList.size()-1>carList.indexOf(car));}
+
+    /**
+     *
+     * @param car
+     * @return the next car on road. Unless the input car is already the last car on road, then we return the first car on road
+     */
     public Car getNextCar(Car car){return carList.get(carList.indexOf(car)+1);}
     public boolean isEmpty(){ return carList.isEmpty(); }
     public int numberOfCars(){ return carList.size(); }
@@ -52,7 +66,7 @@ public class Road {
         //TODO test
         double distanceX = Math.pow(carList.get(indexOfCar).getX()-lineSegment.getStart().getX(),2);
         double distanceY = Math.pow(carList.get(indexOfCar).getY()-lineSegment.getStart().getY(),2);
-        double distance = Math.sqrt(distanceX+distanceY);
+        double distance = Math.sqrt(distanceX+distanceY)-carList.get(indexOfCar).getSize();
 
         return distance;
     }
@@ -61,7 +75,7 @@ public class Road {
     public double getDistanceToEnd(int indexOfCar){
         double distanceX = Math.pow(carList.get(indexOfCar).getX()-lineSegment.getEnd().getX(),2);
         double distanceY = Math.pow(carList.get(indexOfCar).getY()-lineSegment.getEnd().getY(),2);
-        double distance = Math.sqrt(distanceX+distanceY);
+        double distance = Math.sqrt(distanceX+distanceY)-carList.get(indexOfCar).getSize();
 
         return distance;
     }
@@ -84,23 +98,20 @@ public class Road {
                 getStart() + "\n"+
                 getEnd() + "\n" ;
     }
-    public String toStringNeighbours(){
-        String string ="";
-        for (Road road : roadList){
-            string+="Next Road : " + road.toString()+"\n";
-        }
-        return string;
+    public int indexOf(Car car){
+        return carList.indexOf(car);
     }
+    
 
     private void setupInsertCarAtStart(Car car){
-        car.setPosition(getStart());
         car.setDirection(lineSegment.getDirection());
+        car.setPosition(getStart().addVector2D(car.getDirection().multiply(car.getSize())));
         carList.add(0, car);
     }
     public boolean insertCar(Car car){
         if (carList.size()>0){
             Car carOnRoad = carList.get(0);
-            if (getDistanceToStart(carOnRoad) > car.getSize()) {
+            if (getDistanceToStart(carOnRoad) > 2*car.getSize()) {
                 setupInsertCarAtStart(car);
                 return true;
             }
@@ -113,5 +124,9 @@ public class Road {
     }
     public void removeCar(Car car){
         carList.remove(car);
+    }
+
+    public double getLength() {
+        return Vector2DMath.distance(lineSegment.getStart(), lineSegment.getEnd());
     }
 }

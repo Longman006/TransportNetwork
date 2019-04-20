@@ -85,7 +85,6 @@ public class Controller {
     private void printRoads(){
         for (Road road : roads  ) {
             System.out.println(road.toString());
-            System.out.println(road.toStringNeighbours());
         }
     }
     private void createRoadNetwork(){
@@ -117,10 +116,12 @@ public class Controller {
         for (Road road : startingRoads){
             Car car = new Car(road.getStart(),road.getLineSegment().getDirection(),new CarParameters(),new RandomDriver(new Vector2D()));
             CarUI carUI = new CarUI(car);
-            carsList.add(car);
-            carUIs.add(carUI);
-            road.insertCar(car);
-            carUI.createUI(parent);
+
+            if(road.insertCar(car)) {
+                carsList.add(car);
+                carUIs.add(carUI);
+                carUI.createUI(parent);
+            }
         }
     }
 

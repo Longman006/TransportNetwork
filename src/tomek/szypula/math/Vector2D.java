@@ -121,4 +121,8 @@ public class Vector2D implements Iterable<DoubleProperty>{
             return true;
         return false;
     }
+
+    public Vector2D subtractVector2D(Vector2D vector2D) {
+        return this.addVector2D(new Vector2D(vector2D).multiply(-1));
+    }
 }

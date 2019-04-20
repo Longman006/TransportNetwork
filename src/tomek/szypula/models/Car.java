@@ -1,8 +1,14 @@
 package tomek.szypula.models;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import tomek.szypula.math.Vector2D;
+import tomek.szypula.view.ColorValues;
 
 public class Car {
     Vector2D position;
@@ -10,8 +16,18 @@ public class Car {
     CarParameters parameters;
     Driver driver;
     Vector2D direction;
+    ColorValues colorValues = new ColorValues();
 
-    public Car(Vector2D position,Vector2D direction, CarParameters parameters, Driver driver) {
+    public ColorValues getColorValues() {
+        return colorValues;
+    }
+    public void setColorValues(int r,int g, int b){
+        colorValues.setR(r);
+        colorValues.setG(g);
+        colorValues.setB(b);
+    }
+
+    public Car(Vector2D position, Vector2D direction, CarParameters parameters, Driver driver) {
         this.position = position;
         this.parameters = parameters;
         this.direction = direction;
@@ -69,4 +85,6 @@ public class Car {
                 "position=" + position +
                 '}';
     }
+
+
 }

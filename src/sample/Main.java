@@ -55,7 +55,7 @@ public class Main extends Application {
 
 
         Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(400),
+                Duration.millis(200),
                 ae -> {
                     controller.step();
                     if (input.contains("LEFT")) {

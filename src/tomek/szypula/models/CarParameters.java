@@ -32,7 +32,7 @@ public class CarParameters {
     private double size;
 
     public CarParameters() {
-        this(54.0, 1.0, 2.0, 1.0,1.5 ,4.0, 7.5);
+        this(15.0, 1.0, 2.0, 1.0,1.5 ,4.0, 7.5);
     }
 
     /**
