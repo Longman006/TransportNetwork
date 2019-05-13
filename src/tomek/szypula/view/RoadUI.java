@@ -1,8 +1,9 @@
 package tomek.szypula.view;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.Group;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineJoin;
@@ -11,15 +12,21 @@ import tomek.szypula.math.Vector2DMath;
 import tomek.szypula.models.Road;
 
 public class RoadUI implements CreateUI{
+
     @Override
-    public void setColor(Color color) {
-        lineShape.setFill(color);
+    public Paint getfill() {
+        return lineShape.getFill();
+    }
+
+    @Override
+    public ObjectProperty<Paint> getfillProperty() {
+        return null;
     }
 
     private Road road;
     private Line lineShape;
     private Polygon triangle;
-    private double triangleSize = 8;
+    private double width = 14;
 
     @Override
     public void createUI(Group parent) {
@@ -31,13 +38,15 @@ public class RoadUI implements CreateUI{
         this.road = road;
         lineShape = new Line(road.getStart().getX(),road.getStart().getY(),road.getEnd().getX(),road.getEnd().getY());
         lineShape.setSmooth(true);
-        lineShape.setStrokeWidth(4.0);
+        lineShape.setStrokeWidth( width);
         lineShape.setStrokeLineJoin(StrokeLineJoin.MITER);
+        lineShape.setStroke(Color.LIGHTGRAY);
 
         Vector2D direction = road.getLineSegment().getDirection();
-        Vector2D startPoint = Vector2DMath.vector2DSum(road.getStart(),direction.normalize().multiply(triangleSize));
-        Vector2D leftPoint = Vector2DMath.vector2DSum(Vector2DMath.getNormalVector2D(direction).normalize().multiply(triangleSize),road.getStart());
-        Vector2D rightPoint = Vector2DMath.vector2DSum(Vector2DMath.getNormalVector2D(direction).normalize().multiply(-triangleSize),road.getStart());
+        Vector2D start = road.getStart().addVector2D(direction.multiply(road.getLength()/2));
+        Vector2D startPoint = Vector2DMath.vector2DSum(start,direction.normalize().multiply(width/2));
+        Vector2D leftPoint = Vector2DMath.vector2DSum(Vector2DMath.getNormalVector2D(direction).normalize().multiply(width/2),start);
+        Vector2D rightPoint = Vector2DMath.vector2DSum(Vector2DMath.getNormalVector2D(direction).normalize().multiply(-width/2),start);
 
         triangle = new Polygon();
         triangle.getPoints().addAll(
@@ -47,7 +56,7 @@ public class RoadUI implements CreateUI{
                         rightPoint.getX(),rightPoint.getY()
                 });
         System.out.println(triangle);
-        triangle.setStrokeWidth(8.0);
+        triangle.setStrokeWidth(width);
         triangle.setSmooth(true);
         triangle.setFill(Color.RED);
     }

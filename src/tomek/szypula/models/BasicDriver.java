@@ -8,8 +8,8 @@ import java.util.List;
 
 public class BasicDriver extends Driver {
 
-    public BasicDriver(Vector2D destination) {
-        super(destination);
+    public BasicDriver(Vector2D destination, Road startingRoad, Car car) {
+        super(destination,startingRoad,car);
     }
 
     @Override

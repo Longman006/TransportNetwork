@@ -1,4 +1,4 @@
-package tomek.szypula.view;
+package tomek.szypula.depricated;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

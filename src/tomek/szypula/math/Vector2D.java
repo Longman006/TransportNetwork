@@ -7,8 +7,8 @@ import java.util.Iterator;
 
 public class Vector2D implements Iterable<DoubleProperty>{
 
-    private DoubleProperty xProperty = new SimpleDoubleProperty(0);
-    private DoubleProperty yProperty = new SimpleDoubleProperty(0);
+    private DoubleProperty x = new SimpleDoubleProperty(0);
+    private DoubleProperty y = new SimpleDoubleProperty(0);
 
     public Vector2D(double x, double y) {
         this.setX(x);
@@ -43,17 +43,17 @@ public class Vector2D implements Iterable<DoubleProperty>{
     private double getNormFactor(){ return Math.sqrt(getLengthSquare());
     }
     public double getX() {
-        return xProperty.getValue();
+        return x.getValue();
     }
 
-    public void setX(double x) {  this.xProperty.setValue(x);   }
+    public void setX(double x) {  this.x.setValue(x);   }
 
     public double getY() {
-        return yProperty.getValue();
+        return y.getValue();
     }
 
     public void setY(double y) {
-        this.yProperty.setValue(y);
+        this.y.setValue(y);
     }
 
 
@@ -84,11 +84,11 @@ public class Vector2D implements Iterable<DoubleProperty>{
         setX(vector2D.getX());
     }
 
-    public DoubleProperty getXProperty() {
-        return xProperty;
+    public DoubleProperty xProperty() {
+        return x;
     }
-    public DoubleProperty getYProperty() {
-        return yProperty;
+    public DoubleProperty yProperty() {
+        return y;
     }
     public boolean isZero(){
         return (getX() == 0 && getY() == 0);
@@ -108,9 +108,9 @@ public class Vector2D implements Iterable<DoubleProperty>{
             public DoubleProperty next() {
                 current++;
                 if(current == 1)
-                    return getXProperty();
+                    return xProperty();
                 else
-                    return getYProperty();
+                    return yProperty();
             }
         };
     }

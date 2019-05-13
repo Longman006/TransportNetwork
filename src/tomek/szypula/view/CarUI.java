@@ -1,22 +1,24 @@
 package tomek.szypula.view;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import tomek.szypula.math.Vector2D;
 import tomek.szypula.models.Car;
 
+import java.util.concurrent.Callable;
+
 public class CarUI implements CreateUI{
-    Car car;
-    Circle carShape;
+    private Car car;
+    private Circle carShape;
 
     public CarUI(Car car) {
         this.car = car;
-        ColorValues colorValues = car.getColorValues();
         carShape  = new Circle();
         carShape.setCenterX(car.getX());
         carShape.setCenterY(car.getY());
@@ -29,12 +31,20 @@ public class CarUI implements CreateUI{
         carShape.setStroke(Color.BLACK);
         carShape.setEffect(dropShadow);
         carShape.setFill(Color.GREEN);
-        carShape.fillProperty().bind(Bindings.createObjectBinding(() -> Color.rgb(colorValues.getR(),colorValues.getG(),colorValues.getB()),colorValues.rProperty(),colorValues.gProperty(),colorValues.bProperty() ));
+    }
+
+    public Car getCar(){return car;}
+
+    public Circle getCarShape(){return carShape;}
+
+    @Override
+    public Paint getfill() {
+        return carShape.getFill();
     }
 
     @Override
-    public void setColor(Color color) {
-        //carShape.setFill(color);
+    public ObjectProperty<Paint> getfillProperty() {
+        return carShape.fillProperty();
     }
 
     @Override
