@@ -63,7 +63,7 @@ public class Model {
         }
         else {
             Road nextRoad = car.getDriver().getRoute().getNextRoad();
-            if (nextRoad.insertCar(car)){
+            if (!road.getTrafficLightsEnd().isStop() && nextRoad.insertCar(car)){
                 road.removeCar(car);
                 car.setPosition(car.getPosition().addVector2D(car.getDirection().multiply(distanceOnNewRoad)));
             }

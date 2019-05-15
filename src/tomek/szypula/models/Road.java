@@ -21,7 +21,7 @@ public class Road {
      * List of possible roads at junction
      */
     List<Road> roadList = new ArrayList<>();;
-    TrafficLights trafficLightsBeginning = new TrafficLights();
+
     TrafficLights trafficLightsEnd = new TrafficLights();
 
     public Road(LineSegment lineSegment) {
@@ -136,5 +136,7 @@ public class Road {
         return Vector2DMath.distance(lineSegment.getStart(), lineSegment.getEnd());
     }
 
-
+    public TrafficLights getTrafficLightsEnd() {
+        return trafficLightsEnd;
+    }
 }

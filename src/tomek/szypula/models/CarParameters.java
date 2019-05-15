@@ -34,7 +34,7 @@ public class CarParameters {
     private DoubleProperty size = new SimpleDoubleProperty(0);
 
     public CarParameters() {
-        this(13.0, 2.0, 4.0, 1.0,1.5 ,4.0, 7.5);
+        this(8.0, 2.0, 4.0, 1.0,1.5 ,4.0, 3);
     }
 
     /**

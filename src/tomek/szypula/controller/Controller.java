@@ -24,6 +24,7 @@ public class Controller {
      * and create a method to insert n new cars
      *
      */
+    Road stopRoad;
     List<Road> roads = new ArrayList<>();
     List<CreateUI> UIelements = new ArrayList<>();
     List<CreateUI> carUIs = new ArrayList<>();
@@ -63,7 +64,7 @@ public class Controller {
         h = new Vector2D(400,140);
         i = new Vector2D(500,20);
 
-       startingRoads.add(new Road(new LineSegment(b,a)));
+        startingRoads.add(new Road(new LineSegment(b,a)));
         startingRoads.add(new Road(new LineSegment(b,c)));
         startingRoads.add( new Road(new LineSegment(b,e)));
         roads.addAll(startingRoads);
@@ -74,7 +75,8 @@ public class Controller {
         roads.add(new Road(new LineSegment(g,f)));
         roads.add(new Road(new LineSegment(h,g)));
         roads.add(new Road(new LineSegment(h,i)));
-        roads.add(new Road(new LineSegment(e,h)));
+        stopRoad = new Road(new LineSegment(e,h));
+        roads.add(stopRoad);
         roads.add(new Road(new LineSegment(i,d)));
 
         for(Road road : roads){
@@ -151,6 +153,6 @@ public class Controller {
         carShape.fillProperty().bind(colorObjectBinding1);
     }
     public void stopCar() {
-        carsList.get(0).setSpeed(new Vector2D());
+        stopRoad.getTrafficLightsEnd().switchLights();
     }
 }
