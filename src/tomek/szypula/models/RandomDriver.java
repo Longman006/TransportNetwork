@@ -16,6 +16,11 @@ public class RandomDriver extends Driver{
             return roads.get(0);
         int index = (int) (Math.random()*roads.size());
         Road nextRoad = roads.get(index);
+        //TODO Solve case where all roads blocked
+        while(nextRoad.getOutOfService().isOutOfService()){
+            index = (int) (Math.random()*roads.size());
+            nextRoad = roads.get(index);
+        }
         return nextRoad;
 
     }

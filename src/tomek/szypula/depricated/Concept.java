@@ -1,4 +1,4 @@
-package pl.edu.pw.tomasz.szypula;/**
+package tomek.szypula.depricated;/**
  * Created by longman on 03.11.18.
  */
 

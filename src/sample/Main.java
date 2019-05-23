@@ -8,7 +8,10 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import tomek.szypula.controller.Controller;
@@ -21,11 +24,26 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Group root = new Group();
-        Controller controller = new Controller(root);
+
+        MenuBar menuBar = new MenuBar();
+        Menu helpMenu = new Menu("Help");
+        helpMenu.getItems().add(new MenuItem("Model description"));
+        menuBar.getMenus().add(helpMenu);
+
+        BorderPane root = new BorderPane();
+        root.setTop(menuBar);
+
+        SplitPane splitPane = new SplitPane();
+        root.setCenter(splitPane);
         Scene theScene = new Scene( root,1100, 800 );
-        primaryStage.setTitle("Hello World");
+
+        Controller controller = new Controller(splitPane);
+        splitPane.prefWidthProperty().bind(theScene.widthProperty());
+        splitPane.prefHeightProperty().bind(theScene.heightProperty());
+
+        primaryStage.setTitle("Transport Network");
         primaryStage.setScene(theScene);
+
 
         ArrayList<String> input = new ArrayList<String>();
 
@@ -59,10 +77,10 @@ public class Main extends Application {
                 ae -> {
                     controller.step();
                     if (input.contains("LEFT")) {
-                        controller.addCars();
+                        //controller.addCars();
                     }
                     else if (input.contains("RIGHT")) {
-                        controller.stopCar();
+                        System.out.println("Right");
                     }}));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();

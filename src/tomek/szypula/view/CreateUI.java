@@ -9,7 +9,4 @@ import javafx.scene.paint.Paint;
 
 public interface CreateUI {
     public void createUI(Group parent);
-
-    public Paint getfill();
-    public ObjectProperty<Paint> getfillProperty();
 }

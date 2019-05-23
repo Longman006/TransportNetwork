@@ -16,6 +16,7 @@ import java.util.concurrent.Callable;
 public class CarUI implements CreateUI{
     private Car car;
     private Circle carShape;
+    private double maxColor = 140 ;///LightGreen
 
     public CarUI(Car car) {
         this.car = car;
@@ -23,6 +24,7 @@ public class CarUI implements CreateUI{
         carShape.setCenterX(car.getX());
         carShape.setCenterY(car.getY());
         carShape.setRadius(car.getSize());
+        carShape.radiusProperty().bind(car.getParameters().sizeProperty());
         carShape.centerXProperty().bind(car.getXProperty());
         carShape.centerYProperty().bind(car.getYProperty());
         DropShadow dropShadow = new DropShadow();
@@ -31,21 +33,23 @@ public class CarUI implements CreateUI{
         carShape.setStroke(Color.BLACK);
         carShape.setEffect(dropShadow);
         carShape.setFill(Color.GREEN);
+        ObjectBinding<Color> colorObjectBinding1 = Bindings.createObjectBinding(
+                new Callable<Color>() {
+                    @Override
+                    public Color call() throws Exception {
+                        double speedX = car.getSpeed().getX();
+                        double speedY = car.getSpeed().getY();
+                        Color color = Color.hsb(Math.sqrt(speedX*speedX+speedY*speedY)*maxColor/car.getParameters().getDesiredSpeed(),0.94,0.94,0.94);
+                        return color;
+                    }
+                },car.getSpeed().xProperty(),car.getSpeed().yProperty(),car.getParameters().desiredSpeedProperty()
+        );
+        carShape.fillProperty().bind(colorObjectBinding1);
     }
 
     public Car getCar(){return car;}
 
     public Circle getCarShape(){return carShape;}
-
-    @Override
-    public Paint getfill() {
-        return carShape.getFill();
-    }
-
-    @Override
-    public ObjectProperty<Paint> getfillProperty() {
-        return carShape.fillProperty();
-    }
 
     @Override
     public void createUI(Group parent) {

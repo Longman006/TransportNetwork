@@ -2,6 +2,7 @@ package tomek.szypula.view;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -11,31 +12,25 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineJoin;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
+import tomek.szypula.models.OutOfService;
 import tomek.szypula.models.Road;
 
 public class RoadUI implements CreateUI{
 
-    @Override
-    public Paint getfill() {
-        return lineShape.getFill();
-    }
-
-    @Override
-    public ObjectProperty<Paint> getfillProperty() {
-        return null;
-    }
 
     private Road road;
     private Line lineShape;
     private Polygon triangle;
     private double width = 14;
     private TrafficLightsUI trafficLightsUI;
+    private OutOfServiceUI outOfServiceUI;
 
     @Override
     public void createUI(Group parent) {
         trafficLightsUI.createUI(parent);
         parent.getChildren().add(lineShape);
         parent.getChildren().add(triangle);
+        outOfServiceUI.createUI(parent);
 
     }
 
@@ -66,10 +61,13 @@ public class RoadUI implements CreateUI{
         triangle.setSmooth(true);
         triangle.setFill(Color.RED);
 
+        outOfServiceUI = new OutOfServiceUI(road,width,this);
 
 
+    }
 
-
+    public Line getShape() {
+        return lineShape;
     }
 
 }

@@ -3,14 +3,14 @@ package tomek.szypula.controller;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.scene.Group;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import tomek.szypula.math.LineSegment;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.models.*;
-import tomek.szypula.view.CarUI;
-import tomek.szypula.view.CreateUI;
-import tomek.szypula.view.RoadUI;
+import tomek.szypula.view.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,43 +26,52 @@ public class Controller {
      */
     Road stopRoad;
     List<Road> roads = new ArrayList<>();
-    List<CreateUI> UIelements = new ArrayList<>();
-    List<CreateUI> carUIs = new ArrayList<>();
-    List<CreateUI> roadUIs = new ArrayList<>();
     List<Road> startingRoads = new ArrayList<>();
-    List<Driver> drivers = new ArrayList<>();
     List<Car> carsList = new ArrayList<>();
     Model model;
 
     Group parent;
-    Group carParent = new Group();
-    Group roadParent = new Group();
 
-    public Controller(Group parent) {
-        this.parent = parent;
+
+    public Controller(SplitPane splitPane) {
         createRoads();
         createRoadNetwork();
         createCars();
-
-
         model = new Model(roads);
+        View view = new View(model,splitPane);
 
-        for (CreateUI createUI : UIelements){
-            createUI.createUI(parent);
-        }
-        bindCarFillToSpeed();
+
+//        parent.setTranslateX(modelPane.getPrefWidth() / 2);
+//        parent.setTranslateY(modelPane.getPrefHeight() / 2);
     }
+
+
     private void createRoads(){
         Vector2D a,b,c,d,e,f,g,h,i;
         a = new Vector2D(20,20);
         b = new Vector2D(20,140);
         c = new Vector2D(20,280);
-        d = new Vector2D(60,20);
+        d = new Vector2D(120,20);
         e = new Vector2D(120,140);
         f = new Vector2D(120,280);
-        g = new Vector2D(400,280);
-        h = new Vector2D(400,140);
+        g = new Vector2D(500,280);
+        h = new Vector2D(500,140);
         i = new Vector2D(500,20);
+
+        List<Vector2D> points = new ArrayList<>();
+        points.add(a);
+        points.add(b);
+        points.add(c);
+        points.add(d);
+        points.add(e);
+        points.add(f);
+        points.add(g);
+        points.add(h);
+        points.add(i);
+        for (Vector2D vector2D: points)
+            vector2D.multiply(3);
+
+
 
         startingRoads.add(new Road(new LineSegment(b,a)));
         startingRoads.add(new Road(new LineSegment(b,c)));
@@ -79,10 +88,6 @@ public class Controller {
         roads.add(stopRoad);
         roads.add(new Road(new LineSegment(i,d)));
 
-        for(Road road : roads){
-            roadUIs.add(new RoadUI(road));
-        }
-        UIelements.addAll(roadUIs);
 
     }
     private void printRoads(){
@@ -100,21 +105,19 @@ public class Controller {
     }
     private void createCars(){
         for(int i = 0 ; i<roads.size()-8;i++){
-            Car car = new Car(roads.get(i).getStart(),roads.get(i).getLineSegment().getDirection(),new CarParameters());
+            Car car = new Car(roads.get(i).getStart(),roads.get(i).getLineSegment().getDirection(),TrafficManagementSystem.getCarParameters());
             car.setDriver(new RandomDriver(new Vector2D(),roads.get(i),car));
             roads.get(i).insertCar(car);
-            CarUI carUI = new CarUI(car);
             carsList.add(car);
-            carUIs.add(carUI);
         }
-        UIelements.addAll(carUIs);
     }
 
     public void step(){
+
         model.updateSpeed();
     }
 
-
+/**
     public void addCars() {
         for (Road road : startingRoads){
             Car car = new Car(road.getStart(),road.getLineSegment().getDirection(),new CarParameters());
@@ -152,7 +155,5 @@ public class Controller {
         );
         carShape.fillProperty().bind(colorObjectBinding1);
     }
-    public void stopCar() {
-        stopRoad.getTrafficLightsEnd().switchLights();
-    }
+ */
 }

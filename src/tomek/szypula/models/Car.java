@@ -58,11 +58,11 @@ public class Car {
     }
 
     public void setSpeed(Vector2D speed) {
-        if (speed.getLength() > 30){
-            System.out.println("speed to big :  "+speed+"\n"+this + "direction : "+direction);
+        if (speed.getLength() > getParameters().getDesiredSpeed()*2){
+            //System.out.println("speed to big :  "+speed+"\n"+this + "direction : "+direction);
             this.speed.setVector(speed);
             this.speed.normalize();
-            System.out.println("new speed : "+this.speed);
+            //System.out.println("new speed : "+this.speed);
         }
         else
             this.speed.setVector(speed);

@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-    private List<Road> roadList = new ArrayList<>();
+    private List<Road> roadList ;
+    private TrafficManagementSystem tms;
+
     public Model(List<Road> roadList) {
         this.roadList = roadList;
+        tms = new TrafficManagementSystem(roadList);
     }
 
 
@@ -16,8 +19,6 @@ public class Model {
         CarParameters carParameters = car.getParameters();
         Route route = car.getDriver().getRoute();
         Car carNext = route.getNextCarOnRoute();
-        car.setColorValues(0,255,0);
-        carNext.setColorValues(0,255,0);
         Vector2D carNextSpeed = carNext.getSpeedCopy();
 
         Vector2D carSpeed = car.getSpeedCopy();
@@ -29,14 +30,7 @@ public class Model {
         double desiredDistance = carParameters.getMinimumGap() + Math.max(0, carSpeedValue * carParameters.getTimeGap() + carSpeedValue * (( carSpeedValue-carSpeedNextValue)) / 2 / Math.sqrt(carParameters.getAcceleration() * carParameters.getDeceleration()));
         double carSpeedNewValue = (carSpeedValue+carParameters.getAcceleration() * (1 - Math.pow(carSpeedValue / carParameters.getDesiredSpeed(), carParameters.getAcceleration()) - Math.pow(desiredDistance / distance, 2)));
         if(carSpeedNewValue<0){
-            System.out.println("speed : "+carSpeedValue);
-            System.out.println("distance : "+distance);
-            System.out.println("desiredDistance : "+ desiredDistance);
-            System.out.println("carSpeedNewValue : "+carSpeedNewValue);
-                        carSpeedNewValue=0;
-
-
-
+            carSpeedNewValue=0;
         }
         return carSpeedNewValue;
 
@@ -51,7 +45,9 @@ public class Model {
                 updatePosition(car, road);
             }
         }
+        tms.update();
     }
+
     private void updatePosition(Car car, Road road){
         Vector2D carSpeed = car.getSpeedCopy();
         double carSpeedValue = carSpeed.getLength();
@@ -71,10 +67,9 @@ public class Model {
                 car.setSpeed(new Vector2D());
             }
         }
+    }
 
-
-
-
-
+    public TrafficManagementSystem getTrafficManagementSystem() {
+        return tms;
     }
 }

@@ -23,6 +23,11 @@ public class Road {
     List<Road> roadList = new ArrayList<>();;
 
     TrafficLights trafficLightsEnd = new TrafficLights();
+    OutOfService outOfService = new OutOfService();
+
+    public OutOfService getOutOfService() {
+        return outOfService;
+    }
 
     public Road(LineSegment lineSegment) {
         this.lineSegment = lineSegment;

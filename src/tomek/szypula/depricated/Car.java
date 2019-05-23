@@ -1,4 +1,4 @@
-package pl.edu.pw.tomasz.szypula;
+package tomek.szypula.depricated;
 
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
