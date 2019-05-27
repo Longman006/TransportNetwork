@@ -130,6 +130,9 @@ public class Road {
         }
         return false;
     }
+    public void addCar(Car car){
+        carList.add(car);
+    }
     public void removeCar(Car car){
         carList.remove(car);
     }

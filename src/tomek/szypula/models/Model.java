@@ -8,7 +8,6 @@ import java.util.List;
 public class Model {
     private List<Road> roadList ;
     private TrafficManagementSystem tms;
-
     public Model(List<Road> roadList) {
         this.roadList = roadList;
         tms = new TrafficManagementSystem(roadList);
@@ -59,7 +58,7 @@ public class Model {
         }
         else {
             Road nextRoad = car.getDriver().getRoute().getNextRoad();
-            if (!road.getTrafficLightsEnd().isStop() && nextRoad.insertCar(car)){
+            if (!road.getTrafficLightsEnd().isStop() && nextRoad!=null && nextRoad.insertCar(car)){
                 road.removeCar(car);
                 car.setPosition(car.getPosition().addVector2D(car.getDirection().multiply(distanceOnNewRoad)));
             }

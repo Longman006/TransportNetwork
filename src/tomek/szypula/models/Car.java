@@ -1,6 +1,8 @@
 package tomek.szypula.models;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
 import tomek.szypula.depricated.ColorValues;
@@ -11,22 +13,25 @@ public class Car {
     CarParameters parameters;
     Driver driver;
     Vector2D direction;
-    ColorValues colorValues = new ColorValues();
-
-    public ColorValues getColorValues() {
-        return colorValues;
-    }
-    public void setColorValues(int r,int g, int b){
-        colorValues.setR(r);
-        colorValues.setG(g);
-        colorValues.setB(b);
-    }
+    BooleanProperty highlighted = new SimpleBooleanProperty(false);
 
     public Car(Vector2D position, Vector2D direction, CarParameters parameters) {
         this.position = position;
         this.parameters = parameters;
         this.direction = direction;
         this.speed = new Vector2D(0,0);
+    }
+
+    public boolean isHighlighted() {
+        return highlighted.get();
+    }
+
+    public BooleanProperty highlightedProperty() {
+        return highlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted.set(highlighted);
     }
 
     public void setDriver(Driver driver) {
@@ -58,11 +63,10 @@ public class Car {
     }
 
     public void setSpeed(Vector2D speed) {
-        if (speed.getLength() > getParameters().getDesiredSpeed()*2){
-            //System.out.println("speed to big :  "+speed+"\n"+this + "direction : "+direction);
+        if (speed.getLength() > getParameters().getDesiredSpeed()*3){
+            System.out.println("here");
             this.speed.setVector(speed);
             this.speed.normalize();
-            //System.out.println("new speed : "+this.speed);
         }
         else
             this.speed.setVector(speed);
@@ -101,4 +105,7 @@ public class Car {
     }
 
 
+    public void switchHighlighted() {
+        setHighlighted(!isHighlighted());
+    }
 }

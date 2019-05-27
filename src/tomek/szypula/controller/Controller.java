@@ -40,9 +40,6 @@ public class Controller {
         model = new Model(roads);
         View view = new View(model,splitPane);
 
-
-//        parent.setTranslateX(modelPane.getPrefWidth() / 2);
-//        parent.setTranslateY(modelPane.getPrefHeight() / 2);
     }
 
 
@@ -70,8 +67,6 @@ public class Controller {
         points.add(i);
         for (Vector2D vector2D: points)
             vector2D.multiply(3);
-
-
 
         startingRoads.add(new Road(new LineSegment(b,a)));
         startingRoads.add(new Road(new LineSegment(b,c)));
@@ -113,7 +108,6 @@ public class Controller {
     }
 
     public void step(){
-
         model.updateSpeed();
     }
 

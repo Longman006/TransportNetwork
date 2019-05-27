@@ -86,4 +86,8 @@ public class TrafficLightsUI implements CreateUI {
         parent.getChildren().add(trafficLightsShape);
     }
 
+    @Override
+    public void remove(Group parent) {
+        parent.getChildren().remove(trafficLightsShape);
+    }
 }

@@ -2,6 +2,7 @@ package tomek.szypula.models;
 
 import tomek.szypula.math.Vector2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RandomDriver extends Driver{
@@ -11,15 +12,17 @@ public class RandomDriver extends Driver{
 
     @Override
     protected Road nextRoad(Road currentRoad) {
-        List<Road> roads = currentRoad.getRoadList();
-        if (roads.size() == 1)
-            return roads.get(0);
+        if (currentRoad == null){
+            return null;
+        }
+        List<Road> roads =  new ArrayList<>(currentRoad.getRoadList());
         int index = (int) (Math.random()*roads.size());
-        Road nextRoad = roads.get(index);
-        //TODO Solve case where all roads blocked
+        Road nextRoad = roads.remove(index);
         while(nextRoad.getOutOfService().isOutOfService()){
+            if (roads.size()==0)
+                return null;
             index = (int) (Math.random()*roads.size());
-            nextRoad = roads.get(index);
+            nextRoad = roads.remove(index);
         }
         return nextRoad;
 

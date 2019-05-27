@@ -20,11 +20,23 @@ public abstract class Driver {
         while(!route.getFirstRoad().containsCar(car)){
             route.removeRoad();
         }
-        while(route.size() < Route.MAX_SIZE){
+        while(route.size() < Route.MAX_SIZE ){
             if (route.isLoop()){
                 break;
             }
-            route.addRoad(nextRoad(route.getLastRoad()));
+            if(route.getLastRoad() == null) {
+                Road nextRoad = nextRoad(route.getBeforeLastRoad());
+                if (nextRoad == null)
+                    break;
+                else {
+                    route.removeRoad(route.size() - 1);
+                    route.addRoad(nextRoad);
+                }
+            }
+            else {
+                route.addRoad(nextRoad(route.getLastRoad()));
+            }
+
         }
     }
     public Route getRoute() {

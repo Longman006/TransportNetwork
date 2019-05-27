@@ -62,7 +62,6 @@ public class OutOfServiceUI implements CreateUI{
 //                    roadUI.getShape().setStroke(Color.LIGHTGRAY);
                 for (Line line : lines){
                     double opacity = outOfService ? 1.0 : 0.0;
-                    System.out.println("here : "+opacity);
                     line.setOpacity(opacity);
                 }
             }
@@ -79,5 +78,10 @@ public class OutOfServiceUI implements CreateUI{
     @Override
     public void createUI(Group parent) {
         parent.getChildren().addAll(lines);
+    }
+
+    @Override
+    public void remove(Group parent) {
+        parent.getChildren().remove(lines);
     }
 }

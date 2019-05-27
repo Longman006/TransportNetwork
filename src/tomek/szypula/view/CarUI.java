@@ -3,20 +3,24 @@ package tomek.szypula.view;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ObjectProperty;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.effect.Bloom;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import tomek.szypula.controller.Highlighted;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.models.Car;
-
 import java.util.concurrent.Callable;
 
 public class CarUI implements CreateUI{
     private Car car;
     private Circle carShape;
-    private double maxColor = 140 ;///LightGreen
+    private double maxColor = 240 ;///LightGreen
+    DropShadow dropShadow = new DropShadow();
 
     public CarUI(Car car) {
         this.car = car;
@@ -27,7 +31,7 @@ public class CarUI implements CreateUI{
         carShape.radiusProperty().bind(car.getParameters().sizeProperty());
         carShape.centerXProperty().bind(car.getXProperty());
         carShape.centerYProperty().bind(car.getYProperty());
-        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5);
         dropShadow.setOffsetX(3);
         dropShadow.setOffsetY(3);
         carShape.setStroke(Color.BLACK);
@@ -37,14 +41,29 @@ public class CarUI implements CreateUI{
                 new Callable<Color>() {
                     @Override
                     public Color call() throws Exception {
-                        double speedX = car.getSpeed().getX();
-                        double speedY = car.getSpeed().getY();
-                        Color color = Color.hsb(Math.sqrt(speedX*speedX+speedY*speedY)*maxColor/car.getParameters().getDesiredSpeed(),0.94,0.94,0.94);
+                        Color color;
+                        if (car.isHighlighted()) {
+                            color = Color.hsb(Math.min((maxColor+40 -360 ) *car.getSpeed().getLength()  / car.getParameters().getDesiredSpeed()+360, 360), 0.94, 0.94, 0.94);
+                            dropShadow.setColor(Color.ROYALBLUE);
+                        }
+                        else
+                            color = Color.hsb(Math.min(-maxColor *car.getSpeed().getLength()  / car.getParameters().getDesiredSpeed()+maxColor, 360),0.94,0.94,0.94);
+                        dropShadow.setColor(Color.BLACK);
                         return color;
                     }
-                },car.getSpeed().xProperty(),car.getSpeed().yProperty(),car.getParameters().desiredSpeedProperty()
+                },car.getSpeed().xProperty(),car.getSpeed().yProperty(),car.getParameters().desiredSpeedProperty(),car.highlightedProperty()
         );
         carShape.fillProperty().bind(colorObjectBinding1);
+
+        EventHandler<MouseEvent> mouseEventEventHandler = new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Highlighted.switchHighlightCar(car);
+            }
+        };
+
+        carShape.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
     }
 
     public Car getCar(){return car;}
@@ -54,5 +73,10 @@ public class CarUI implements CreateUI{
     @Override
     public void createUI(Group parent) {
         parent.getChildren().add(carShape);
+    }
+
+    @Override
+    public void remove(Group parent) {
+        parent.getChildren().remove(carShape);
     }
 }

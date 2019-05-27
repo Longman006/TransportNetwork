@@ -8,5 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 public interface CreateUI {
-    public void createUI(Group parent);
+    void createUI(Group parent);
+
+    void remove(Group parent);
 }

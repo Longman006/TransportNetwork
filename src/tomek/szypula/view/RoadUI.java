@@ -34,6 +34,14 @@ public class RoadUI implements CreateUI{
 
     }
 
+    @Override
+    public void remove(Group parent) {
+        trafficLightsUI.remove(parent);
+        parent.getChildren().remove(lineShape);
+        parent.getChildren().remove(triangle);
+        outOfServiceUI.remove(parent);
+    }
+
     public RoadUI(Road road) {
         this.road = road;
         trafficLightsUI = new TrafficLightsUI(road);
@@ -56,7 +64,6 @@ public class RoadUI implements CreateUI{
                         leftPoint.getX(),leftPoint.getY(),
                         rightPoint.getX(),rightPoint.getY()
                 });
-        System.out.println(triangle);
         triangle.setStrokeWidth(width);
         triangle.setSmooth(true);
         triangle.setFill(Color.RED);

@@ -77,4 +77,9 @@ public class JamUI implements CreateUI {
         parent.getChildren().add(text);
 
     }
+
+    @Override
+    public void remove(Group parent) {
+        parent.getChildren().remove(text);
+    }
 }

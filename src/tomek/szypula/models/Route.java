@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Route {
 
-    public static final int MAX_SIZE = 10 ;
+    public static final int MAX_SIZE = 5 ;
     private final Car car;
     private List<Road> roadList = new ArrayList<>();
 
@@ -25,11 +25,22 @@ public class Route {
         }
         return false;
     }
+    public boolean removeRoad(int index){
+        if (roadList.size()>index){
+            roadList.remove(index);
+            return true;
+        }
+        else
+            return false;
+    }
     public Road getNextRoad(){
         return roadList.get(1);
     }
     public Road getLastRoad(){
         return roadList.get(roadList.size()-1);
+    }
+    public Road getBeforeLastRoad(){
+        return roadList.get(roadList.size()-2);
     }
     public Road getFirstRoad(){
         return roadList.get(0);
@@ -58,6 +69,11 @@ public class Route {
         for (int i = 0 ; i < roadList.size() ; i++){
             Road road = roadList.get(i);
             /**
+             * If the next road is blocked then it is null
+             */
+            if (road == null)
+                break;
+            /**
              * Start, in case carNext is also car
              */
             if(i==0){
@@ -74,6 +90,8 @@ public class Route {
                 distance+=road.getDistanceToStart(carNext);
                 break;
             }
+            if(road.getTrafficLightsEnd().isStop())
+                break;
 
         }
         return distance;
@@ -81,6 +99,8 @@ public class Route {
     public Car getNextCarOnRoute() {
         for (int i = 0; i < roadList.size(); i++) {
             Road road = roadList.get(i);
+            if (road==null)
+                break;
             if (road.hasNextCar(car)) {
                 return road.getNextCar(car);
             } else if (i == roadList.size() - 1 && isLoop() && road.hasPreviousCar(car)) {
