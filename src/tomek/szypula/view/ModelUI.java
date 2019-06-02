@@ -30,8 +30,6 @@ public class ModelUI implements CreateUI {
         root.getChildren().addAll(roadParent,jamParent,carParent);
         model.getTrafficManagementSystem().numberOfCarsProperty().addListener((observableValue, oldNumber, newNumber) -> {
             int difference = newNumber.intValue() - oldNumber.intValue();
-            System.out.println("new : "+newNumber.intValue());
-            System.out.println("old : "+oldNumber.intValue());
             if (difference > 0 ){
                 List<Car> carList = model.getTrafficManagementSystem().addNewCars(difference);
                 createCarUIs(carList);
@@ -39,6 +37,11 @@ public class ModelUI implements CreateUI {
             else if(difference < 0 ){
                 List<Car> carList = model.getTrafficManagementSystem().removeCars(-difference);
                 removeCarUIs(carList);
+            }
+            if (newNumber.intValue() != model.getTrafficManagementSystem().getNumberOfCars()){
+                System.out.println("Not up to date");
+                System.out.println("new : "+newNumber.intValue());
+                System.out.println("Real : "+model.getTrafficManagementSystem().getNumberOfCars());
             }
         });
 

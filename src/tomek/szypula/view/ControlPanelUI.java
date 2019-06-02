@@ -47,7 +47,7 @@ public class ControlPanelUI implements CreateUI{
 
         slider.valueProperty().addListener((observableValue, number, t1) -> text.setText(name+" : "+String.format("%.2f",slider.getValue())));
         slider.setMaxWidth(Double.MAX_VALUE);
-        bindProperty.bind(slider.valueProperty());
+        bindProperty.bindBidirectional(slider.valueProperty());
         sliderText.getChildren().addAll(text,slider);
 
         return sliderText;

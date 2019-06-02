@@ -61,6 +61,9 @@ public class TrafficManagementSystem {
             carList.addAll(road.getCarList());
         return carList;
     }
+    private int checkNumberOfCars(){
+        return getCarList().size();
+    }
 
     public List<Jam> getJamList() {
         return jamList;
@@ -74,7 +77,7 @@ public class TrafficManagementSystem {
         return numberOfCars;
     }
 
-    public void setNumberOfCars(int numberOfCars) {
+    private void setNumberOfCars(int numberOfCars) {
         this.numberOfCars.set(numberOfCars);
     }
 
@@ -93,14 +96,12 @@ public class TrafficManagementSystem {
         return carList;
     }
     public List<Car> removeCars(int n){
-        int i =0;
         List<Car> cars = getCarList();
         int size = cars.size();
         List<Car> carListRemoved = new ArrayList<>(n);
-        while(i<n){
-            int index = (int) Math.random()*size;
-            carListRemoved.add(cars.get(index));
-            i++;
+
+        for(int i = 0 ; i<n ; i++){
+            carListRemoved.add(cars.get(i));
         }
         for (Road road: roadList){
             road.getCarList().removeAll(carListRemoved);

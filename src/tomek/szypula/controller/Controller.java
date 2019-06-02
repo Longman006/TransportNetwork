@@ -29,6 +29,7 @@ public class Controller {
     List<Road> startingRoads = new ArrayList<>();
     List<Car> carsList = new ArrayList<>();
     Model model;
+    private int x = 10;
 
     Group parent;
 
@@ -54,6 +55,16 @@ public class Controller {
         g = new Vector2D(500,280);
         h = new Vector2D(500,140);
         i = new Vector2D(500,20);
+
+        a = new Vector2D(x,x);
+        b = new Vector2D(x,7*x);
+        c = new Vector2D(x,14*x);
+        d = new Vector2D(6*x,x);
+        e = new Vector2D(6*x,7*x);
+        f = new Vector2D(6*x,14*x);
+        g = new Vector2D(25*x,14*x);
+        h = new Vector2D(25*x,7*x);
+        i = new Vector2D(25*x,x);
 
         List<Vector2D> points = new ArrayList<>();
         points.add(a);

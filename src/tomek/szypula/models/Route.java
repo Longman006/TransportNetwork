@@ -90,8 +90,9 @@ public class Route {
                 distance+=road.getDistanceToStart(carNext);
                 break;
             }
-            if(road.getTrafficLightsEnd().isStop())
+            if(road.getTrafficLightsEnd().isStop()) {
                 break;
+            }
 
         }
         return distance;
@@ -99,12 +100,14 @@ public class Route {
     public Car getNextCarOnRoute() {
         for (int i = 0; i < roadList.size(); i++) {
             Road road = roadList.get(i);
-            if (road==null)
-                break;
+            if (road == null)
+                return new Car(new Vector2D(), new Vector2D(), TrafficManagementSystem.getCarParameters());
             if (road.hasNextCar(car)) {
                 return road.getNextCar(car);
             } else if (i == roadList.size() - 1 && isLoop() && road.hasPreviousCar(car)) {
                 return road.getPreviousCar(car);
+            } else if (road.getTrafficLightsEnd().isStop()) {
+                return new Car(new Vector2D(), new Vector2D(), TrafficManagementSystem.getCarParameters());
             }
         }
         return car;
@@ -118,7 +121,6 @@ public class Route {
         Vector2D carSpeed = car.getSpeedCopy();
         double carSpeedValue = carSpeed.getLength();
         for (int i =0 ; i< roadList.size(); i++){
-            System.out.println("Moving along Route i : "+i);
             Road road = roadList.get(i);
             if(road.getDistanceToEnd(car) > carSpeedValue){
                 car.setPosition(car.getPosition().addVector2D(road.getLineSegment().getDirection().multiply(carSpeedValue)));
