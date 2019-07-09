@@ -1,34 +1,26 @@
 package tomek.szypula.controller;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ObjectBinding;
 import javafx.scene.Group;
 import javafx.scene.control.SplitPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+
 import tomek.szypula.math.LineSegment;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.models.*;
 import tomek.szypula.view.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
+
 
 public class Controller {
-    /**
-     * TODO
-     * Create seperate nodes for roads and cars
-     * and maybe traffic lights in the future
-     * and create a method to insert n new cars
-     *
-     */
+
     Road stopRoad;
     List<Road> roads = new ArrayList<>();
     List<Road> startingRoads = new ArrayList<>();
     List<Car> carsList = new ArrayList<>();
     Model model;
+    DataManagementSystem dataManagementSystem;
     private int x = 10;
 
     Group parent;
@@ -40,6 +32,7 @@ public class Controller {
         createCars();
         model = new Model(roads);
         View view = new View(model,splitPane);
+        dataManagementSystem = new DataManagementSystem(model);
 
     }
 
@@ -58,11 +51,11 @@ public class Controller {
 
         a = new Vector2D(x,x);
         b = new Vector2D(x,7*x);
-        c = new Vector2D(x,14*x);
+        c = new Vector2D(x,13*x);
         d = new Vector2D(6*x,x);
         e = new Vector2D(6*x,7*x);
-        f = new Vector2D(6*x,14*x);
-        g = new Vector2D(25*x,14*x);
+        f = new Vector2D(6*x,13*x);
+        g = new Vector2D(25*x,13*x);
         h = new Vector2D(25*x,7*x);
         i = new Vector2D(25*x,x);
 
@@ -119,46 +112,13 @@ public class Controller {
     }
 
     public void step(){
+
         model.updateSpeed();
+//        try {
+//            dataManagementSystem.updateFile("TestFile.txt");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
-/**
-    public void addCars() {
-        for (Road road : startingRoads){
-            Car car = new Car(road.getStart(),road.getLineSegment().getDirection(),new CarParameters());
-            car.setDriver(new RandomDriver(new Vector2D(),road,car));
-            CarUI carUI = new CarUI(car);
-            bindCarFillToSpeed(carUI);
-            if(road.insertCar(car)) {
-                carsList.add(car);
-                carUIs.add(carUI);
-                carUI.createUI(parent);
-            }
-        }
-    }
-
-    public void bindCarFillToSpeed(){
-        for (CreateUI createUI : carUIs){
-            CarUI carUI = (CarUI) createUI;
-            bindCarFillToSpeed(carUI);
-
-        }
-    }
-    public void bindCarFillToSpeed(CarUI carUI){
-        Car car = carUI.getCar();
-        Circle carShape = carUI.getCarShape();
-        ObjectBinding<Color> colorObjectBinding1 = Bindings.createObjectBinding(
-                new Callable<Color>() {
-                    @Override
-                    public Color call() throws Exception {
-                        double speedX = car.getSpeed().getX();
-                        double speedY = car.getSpeed().getY();
-                        Color color = Color.hsb(Math.sqrt(speedX*speedX+speedY*speedY)*110/car.getParameters().getDesiredSpeed(),0.94,0.94,0.94);
-                        return color;
-                    }
-                },car.getSpeed().xProperty(),car.getSpeed().yProperty(),car.getParameters().desiredSpeedProperty()
-        );
-        carShape.fillProperty().bind(colorObjectBinding1);
-    }
- */
 }

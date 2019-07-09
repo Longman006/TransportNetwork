@@ -3,16 +3,26 @@ package tomek.szypula.models;
 import tomek.szypula.math.Vector2D;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Model {
     private List<Road> roadList ;
     private TrafficManagementSystem tms;
+    private int time = 0;
+
     public Model(List<Road> roadList) {
         this.roadList = roadList;
         tms = new TrafficManagementSystem(roadList);
     }
 
+    public List<Road> getRoadList() {
+        return roadList;
+    }
+
+    public int getTime() {
+        return time;
+    }
 
     private double calculateNewSpeed(Car car){
         CarParameters carParameters = car.getParameters();
@@ -36,22 +46,26 @@ public class Model {
     }
 
     public void updateSpeed(){
+        Collections.shuffle(roadList);
         for (Road road : roadList) {
+            List<Car> cars = new ArrayList<>(road.getCarList());
+            //Collections.shuffle(cars);
             for (int i = 0; i < road.getCarList().size(); i++) {
-                Car car = road.getCarList().get(i);
+                Car car = cars.get(i);
                 double carSpeedNew = calculateNewSpeed(car);
                 car.setSpeed(road.getLineSegment().getDirection().multiply(carSpeedNew));
                 updatePosition(car, road);
             }
         }
         tms.update();
+        time++;
     }
 
     private void updatePosition(Car car, Road road){
         Vector2D carSpeed = car.getSpeedCopy();
         double carSpeedValue = carSpeed.getLength();
         double distanceToEnd = road.getDistanceToEnd(car);
-        double distanceOnNewRoad = carSpeedValue - distanceToEnd ;
+        double distanceOnNewRoad = carSpeedValue - distanceToEnd;
 
         if ( distanceOnNewRoad <= 0 ){
             car.setPosition(car.getPosition().addVector2D(carSpeed));
