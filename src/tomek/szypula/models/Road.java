@@ -22,6 +22,11 @@ public class Road {
      */
     List<Road> roadList = new ArrayList<>();;
 
+    /**
+     * List of previous roads
+     */
+    List<Road> previousRoadList = new ArrayList<>();
+
     TrafficLights trafficLightsEnd = new TrafficLights();
     OutOfService outOfService = new OutOfService();
 
@@ -45,6 +50,9 @@ public class Road {
     }
     public List<Road> getRoadList(){ return roadList; }
     public void addRoad(Road road){ roadList.add(road);}
+    public void addPreviousRoad(Road road){ previousRoadList.add(road);}
+    public List<Road> getPreviousRoadList(){return previousRoadList;}
+
     public List<Car> getCarList(){return carList;}
 
     /**
