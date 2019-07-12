@@ -23,7 +23,7 @@ public class TrafficManagementSystem {
         this.roadList = roadList;
         numberOfCars.set(getCarList().size());
         createJams();
-        findStartingRoads();
+
 
     }
 
@@ -82,6 +82,7 @@ public class TrafficManagementSystem {
     }
 
     public List<Car> addNewCars(int n){
+        findStartingRoads();
         int i =0;
         int size = startingRoads.size();
         List<Car> carList = new ArrayList<>(n);

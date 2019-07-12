@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Route {
 
-    public static final int MAX_SIZE = 5 ;
+    public static final int MAX_SIZE = 2 ;
     private final Car car;
     private List<Road> roadList = new ArrayList<>();
 

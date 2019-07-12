@@ -27,6 +27,12 @@ public final class Vector2DMath {
     public static Vector2D getNormalVector2D(Vector2D vector2D){
         return new Vector2D(vector2D.getY(),-1*vector2D.getX());
     }
+    public static boolean equalValue(double value1,double value2) {
+        double epsilon = Double.MIN_NORMAL;
+        if (Math.abs(value1 - value2) < epsilon )
+            return true;
+        return false;
+    }
 
 
 }
