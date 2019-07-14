@@ -30,7 +30,7 @@ public class ControlPanelUI implements CreateUI{
         VBox deceleration = getSliderText("Deceleration",1,20,1.3,carParameters.decelerationProperty());
         VBox accelerationExponent = getSliderText("Acceleration Exponent",1,10,4.0,carParameters.accelerationExponentProperty());
         VBox size = getSliderText("Size",1,10,3,carParameters.sizeProperty());
-        VBox numberOfCars = getSliderText("Number Of Cars",0,300,model.getTrafficManagementSystem().getNumberOfCars(),model.getTrafficManagementSystem().numberOfCarsProperty());
+        VBox numberOfCars = getSliderText("Number Of Cars",0,600,model.getTrafficManagementSystem().getNumberOfCars(),model.getTrafficManagementSystem().numberOfCarsProperty());
         Text text = new Text("Speed of Car : 0.0");
 
         vBox.getChildren().addAll(desiredSpeed,acceleration,timegap,minimumGap,deceleration,accelerationExponent,size,numberOfCars,text);

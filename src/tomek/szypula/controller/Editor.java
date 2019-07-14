@@ -174,7 +174,7 @@ public class Editor {
         if (circles.getChildren().size() > 1){
             if (circles.getChildren().size()>roads.size())
                 circles.getChildren().remove(circles.getChildren().size()-1);
-            
+
             roads.remove(roads.size()-1);
             roadUIS.get(roadUIS.size()-1).remove(lines);
             roadUIS.remove(roadUIS.size()-1);
