@@ -21,4 +21,8 @@ public class View {
         splitPane.getItems().add(modelUI.getModelPane());
         splitPane.getItems().add(controlPanelUI.getControlPane());
     }
+
+    public void clear() {
+        splitPane.getItems().remove(modelUI);
+    }
 }

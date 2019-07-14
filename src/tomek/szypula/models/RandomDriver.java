@@ -16,6 +16,8 @@ public class RandomDriver extends Driver{
             return null;
         }
         List<Road> roads =  new ArrayList<>(currentRoad.getRoadList());
+        if (roads.size() == 0 )
+            return null;
         int index = (int) (Math.random()*roads.size());
         Road nextRoad = roads.remove(index);
         while(nextRoad.getOutOfService().isOutOfService()){

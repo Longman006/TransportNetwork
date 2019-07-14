@@ -35,9 +35,6 @@ import java.util.List;
 
 
 public class Controller {
-    //Model properties
-    List<Road> roads = new ArrayList<>();
-    Model model = new Model(roads);
 
     //Windows
     Stage window;
@@ -46,7 +43,7 @@ public class Controller {
     public Controller(Stage primaryStage){
 
         window = primaryStage;
-        stageManager = new StageManager(window,model);
+        stageManager = new StageManager(window);
         stageManager.loadMainMenu();
         window.show();
     }

@@ -9,6 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -20,6 +23,7 @@ import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 import tomek.szypula.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StageManager {
@@ -27,6 +31,9 @@ public class StageManager {
     Stage window;
     Model model;
     View view;
+
+    //Model properties
+    List<Road> roads = new ArrayList<>();
 
     //Main Menu Scene
     Label mainMenuLabel = new Label("Transport Network Simulation");
@@ -53,11 +60,8 @@ public class StageManager {
     //Animation
     Timeline timeline = null;
 
-    public StageManager(Stage window,Model model) {
+    public StageManager(Stage window) {
         this.window=window;
-        this.model = model;
-        editor = new Editor(model.getRoadList(),editorPane);
-
         setupEditor();
         setupModelScene();
         setupMainMenu();
@@ -65,13 +69,36 @@ public class StageManager {
 
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
+
         Menu helpMenu = new Menu("Help");
         helpMenu.getItems().add(new MenuItem("Model description"));
+
         Menu openMenu = new Menu("Open");
         MenuItem editorItem = new MenuItem("Editor");
         MenuItem menuItem = new MenuItem("Main Menu");
         MenuItem simulationItem = new MenuItem("Simulation");
         openMenu.getItems().addAll(menuItem,editorItem,simulationItem);
+
+
+        Menu editorMenu = new Menu("Editor");
+        MenuItem undoItem = new MenuItem("Undo");
+        undoItem.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
+        undoItem.setOnAction(actionEvent -> {
+            if(editor != null && window.getScene().equals(editorScene))
+                editor.undo();
+                });
+        MenuItem clearItem = new MenuItem("Clear");
+        clearItem.setOnAction(actionEvent -> {
+            if(editor != null && window.getScene().equals(editorScene)) {
+                roads.removeAll(roads);
+                if (editor != null)
+                    editor.clear();
+                if (view != null)
+                    view.clear();
+            }
+        });
+        editorMenu.getItems().add(clearItem);
+        editorMenu.getItems().add(undoItem);
 
         simulationItem.setOnAction(actionEvent -> loadSimulation());
         editorItem.setOnAction(actionEvent -> loadEditor());
@@ -79,6 +106,7 @@ public class StageManager {
 
         menuBar.getMenus().add(helpMenu);
         menuBar.getMenus().add(openMenu);
+        menuBar.getMenus().add(editorMenu);
 
         return menuBar;
     }
@@ -110,25 +138,24 @@ public class StageManager {
     }
 
     private void loadDefaultNetwork() {
-        new DefaultNetworks().loadDefaultNetwork(model.getRoadList());
-        for (Road road : model.getRoadList()) {
-            System.out.println(road);
-        }
+        new DefaultNetworks().loadDefaultNetwork(roads);
     }
 
     private void setupModelScene() {
         //Main Model Scene setup
+        modelControlsSplitPane = new SplitPane();
         mainSceneLayout.setCenter(modelControlsSplitPane);
         mainSceneLayout.setTop(createMenuBar());
-        modelControlsSplitPane.prefWidthProperty().bind(mainSceneLayout.widthProperty());
-        modelControlsSplitPane.prefHeightProperty().bind(mainSceneLayout.heightProperty());
+        //modelControlsSplitPane.prefWidthProperty().bind(mainSceneLayout.widthProperty());
+        //modelControlsSplitPane.prefHeightProperty().bind(mainSceneLayout.heightProperty());
     }
 
 
     public void loadSimulation() {
-        if (view == null){
-            view = new View(model,modelControlsSplitPane);
-        }
+            setupModelScene();
+        model = new Model(roads);
+        view = new View(model,modelControlsSplitPane);
+
         window.setScene(mainScene);
         if(timeline==null) {
             timeline = new Timeline(new KeyFrame(
@@ -139,13 +166,18 @@ public class StageManager {
             timeline.setCycleCount(Animation.INDEFINITE);
             timeline.play();
         }
+        else
+            timeline.play();
     }
 
     public void loadMainMenu(){
         window.setScene(mainMenuScene);
     }
     public void loadEditor(){
+        editor = new Editor(roads,editorPane);
         window.setScene(editorScene);
+        if (timeline!=null)
+            timeline.pause();
     }
     public void step(){
 
