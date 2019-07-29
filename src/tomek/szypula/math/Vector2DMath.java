@@ -33,6 +33,9 @@ public final class Vector2DMath {
             return true;
         return false;
     }
+    public static double valueDifference(Vector2D v1, Vector2D v2){
+        return v2.getLength()-v1.getLength();
+    }
 
 
 }

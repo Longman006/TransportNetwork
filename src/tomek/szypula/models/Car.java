@@ -108,4 +108,10 @@ public class Car {
     public void switchHighlighted() {
         setHighlighted(!isHighlighted());
     }
+
+    public boolean hasSmallSpeed() {
+        if (speed.getLength() < parameters.getDesiredSpeed()/4)
+            return true;
+        return false;
+    }
 }

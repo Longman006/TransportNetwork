@@ -1,5 +1,6 @@
 package tomek.szypula.view;
 
+import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import tomek.szypula.models.*;
@@ -13,10 +14,12 @@ public class ModelUI implements CreateUI {
     List<CarUI> carUIs = new ArrayList<>();
     List<CreateUI> roadUIs = new ArrayList<>();
     List<CreateUI> jamUIs = new ArrayList<>();
+    List<WaveFrontUI> waveFrontUIs = new ArrayList<>();
     Group root =  new Group();
     Group carParent = new Group();
     Group roadParent = new Group();
     Group jamParent = new Group();
+    Group waveParent = new Group();
 
     Model model;
 
@@ -24,10 +27,10 @@ public class ModelUI implements CreateUI {
     public ModelUI(Model model) {
         this.model = model;
         createCarUIs(model.getTrafficManagementSystem().getCarList());
-        createJamUIs();
+        //createJamUIs();
         createRoadUIs();
         modelPane.getChildren().add(root);
-        root.getChildren().addAll(roadParent,jamParent,carParent);
+        root.getChildren().addAll(roadParent,jamParent,carParent,waveParent);
         model.getTrafficManagementSystem().numberOfCarsProperty().addListener((observableValue, oldNumber, newNumber) -> {
             int difference = newNumber.intValue() - oldNumber.intValue();
             if (difference > 0 ){
@@ -42,6 +45,20 @@ public class ModelUI implements CreateUI {
                 System.out.println("Not up to date");
                 System.out.println("new : "+newNumber.intValue());
                 System.out.println("Real : "+model.getTrafficManagementSystem().getNumberOfCars());
+            }
+        });
+        model.getTrafficManagementSystem().getWaveFronts().addListener(new ListChangeListener<Wavefront>() {
+            @Override
+            public void onChanged(Change<? extends Wavefront> change) {
+                //System.out.println("Detected a change in WaveFronts! ");
+                while(change.next()){
+                    if (change.wasAdded()){
+                        createWaveFrontUIs((List<Wavefront>) change.getAddedSubList());
+                    }
+                    else if(change.wasRemoved()){
+                        removeWaveUIs((List<Wavefront>) change.getRemoved());
+                    }
+                }
             }
         });
 
@@ -86,6 +103,27 @@ public class ModelUI implements CreateUI {
             roadUI.createUI(roadParent);
         }
         UIelements.addAll(roadUIs);
+    }
+    private void createWaveFrontUIs(List<Wavefront> wavefronts){
+        for (Wavefront wavefront :
+                wavefronts) {
+            WaveFrontUI waveFrontUI = new WaveFrontUI(wavefront);
+            waveFrontUIs.add(waveFrontUI);
+            waveFrontUI.createUI(waveParent);
+        }
+        UIelements.addAll(waveFrontUIs);
+    }
+    private void removeWaveUIs(List<Wavefront> wavefronts) {
+        List<WaveFrontUI> waveUIsRemove = new ArrayList<>();
+        for (WaveFrontUI waveFrontUI: waveFrontUIs){
+            if (wavefronts.contains(waveFrontUI.getWavefront())){
+                waveUIsRemove.add(waveFrontUI);
+            }
+        }
+        for (WaveFrontUI waveFrontUI: waveUIsRemove){
+            waveFrontUI.remove(waveParent);
+            waveFrontUIs.remove(waveFrontUI);
+        }
     }
 
 

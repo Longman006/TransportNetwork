@@ -24,7 +24,7 @@ public class ControlPanelUI implements CreateUI{
         this.model = model;
         CarParameters carParameters = TrafficManagementSystem.getCarParameters();
         VBox desiredSpeed = getSliderText("Desired Speed",1,30,11.5,carParameters.desiredSpeedProperty());
-        VBox acceleration = getSliderText("Acceleration",1,20,1.5,carParameters.accelerationProperty());
+        VBox acceleration = getSliderText("Acceleration",0,20,1.5,carParameters.accelerationProperty());
         VBox timegap = getSliderText("Time Gap", 0,10,1,carParameters.timeGapProperty());
         VBox minimumGap = getSliderText("Minimum Gap",0,10,2,carParameters.minimumGapProperty());
         VBox deceleration = getSliderText("Deceleration",1,20,1.3,carParameters.decelerationProperty());
