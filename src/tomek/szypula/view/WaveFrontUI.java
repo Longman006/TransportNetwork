@@ -13,7 +13,7 @@ import java.util.concurrent.Callable;
 
 public class WaveFrontUI implements CreateUI{
     Wavefront wavefront;
-    private final double height = 6;
+    private final double height = 8;
     private Line lineShape = new Line();
     private Text text = new Text();
 
@@ -22,7 +22,7 @@ public class WaveFrontUI implements CreateUI{
         ObjectBinding<Double> startxBinding = Bindings.createObjectBinding(new Callable<Double>() {
             @Override
             public Double call() throws Exception {
-                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed());
+                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed()).normalize();
                 double x = wavefront.getPosition().getX() + normal.getX()*-height;
                 return x;
             }
@@ -30,7 +30,7 @@ public class WaveFrontUI implements CreateUI{
         ObjectBinding<Double> startyBinding = Bindings.createObjectBinding(new Callable<Double>() {
             @Override
             public Double call() throws Exception {
-                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed());
+                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed()).normalize();
                 double y = wavefront.getPosition().getY() + normal.getY()*-height;
                 return y;
             }
@@ -38,7 +38,7 @@ public class WaveFrontUI implements CreateUI{
         ObjectBinding<Double> endyBinding = Bindings.createObjectBinding(new Callable<Double>() {
             @Override
             public Double call() throws Exception {
-                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed());
+                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed()).normalize();
                 double y = wavefront.getPosition().getY() + normal.getY()*height;
                 return y;
             }
@@ -46,7 +46,7 @@ public class WaveFrontUI implements CreateUI{
         ObjectBinding<Double> endxBinding = Bindings.createObjectBinding(new Callable<Double>() {
             @Override
             public Double call() throws Exception {
-                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed());
+                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed()).normalize();
                 double x = wavefront.getPosition().getX() + normal.getX()*height;
                 return x;
             }
@@ -58,14 +58,14 @@ public class WaveFrontUI implements CreateUI{
         lineShape.endYProperty().bind(endyBinding);
         lineShape.setStrokeWidth(3);
 
-        ObjectBinding<Double> speedValueBinding = Bindings.createObjectBinding(new Callable<Double>() {
+        ObjectBinding<String> speedValueBinding = Bindings.createObjectBinding(new Callable<String>() {
             @Override
-            public Double call() throws Exception {
-                return wavefront.getSpeed().getLength();
+            public String call() throws Exception {
+                return String.format("%.2f",wavefront.getSpeed().getLength());
             }
         },wavefront.getSpeed().xProperty(),wavefront.getSpeed().yProperty());
 
-        text.textProperty().bind(speedValueBinding.asString());
+        text.textProperty().bind(speedValueBinding);
         text.xProperty().bind(startxBinding);
         text.yProperty().bind(startyBinding);
     }

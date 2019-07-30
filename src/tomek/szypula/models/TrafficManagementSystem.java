@@ -71,8 +71,6 @@ public class TrafficManagementSystem {
                 roadList) {
             cars.addAll(findWaveFronts(road));
         }
-        System.out.println("\nExisting WaveFronts : "+waveFronts.size());
-        System.out.println("WaveFronts found : "+cars.size());
 
         //Find coresponding existing wavefronts and update
         for (Wavefront wavefront :
@@ -89,7 +87,6 @@ public class TrafficManagementSystem {
 
 
         }
-        System.out.println("WaveFronts to Remove : "+waveFrontsToRemove.size());
         //delete old wavefronts
         waveFronts.removeAll(waveFrontsToRemove);
         //Add new wavefronts
