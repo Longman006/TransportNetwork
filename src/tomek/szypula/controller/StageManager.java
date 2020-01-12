@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import tomek.szypula.models.Model;
@@ -53,9 +54,9 @@ public class StageManager {
     Editor editor ;
 
     //Scenes
-    Scene mainScene = new Scene(mainSceneLayout,800,600);
+    Scene mainScene = new Scene(mainSceneLayout, Screen.getPrimary().getVisualBounds().getWidth(),Screen.getPrimary().getVisualBounds().getHeight());
     Scene mainMenuScene  = new Scene(mainMenuLayout,400,300);
-    Scene editorScene = new Scene(editorLayout,800,600);
+    Scene editorScene = new Scene(editorLayout,Screen.getPrimary().getVisualBounds().getWidth(),Screen.getPrimary().getVisualBounds().getHeight());
 
     //Animation
     Timeline timeline = null;

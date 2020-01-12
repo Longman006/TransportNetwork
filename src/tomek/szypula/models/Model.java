@@ -9,11 +9,13 @@ import java.util.List;
 public class Model {
     private List<Road> roadList ;
     private TrafficManagementSystem tms;
+    private WaveFrontManager wfm;
     private int time = 0;
 
     public Model(List<Road> roadList) {
         this.roadList = roadList;
         tms = new TrafficManagementSystem(roadList);
+        wfm = new WaveFrontManager(roadList);
     }
 
     public List<Road> getRoadList() {
@@ -58,6 +60,7 @@ public class Model {
             }
         }
         tms.update();
+        wfm.updateWaveFronts();
         time++;
     }
 
@@ -85,4 +88,6 @@ public class Model {
     public TrafficManagementSystem getTrafficManagementSystem() {
         return tms;
     }
+
+    public WaveFrontManager getWaveFrontManager() {  return wfm;   }
 }

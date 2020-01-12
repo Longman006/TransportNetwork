@@ -1,4 +1,8 @@
-package tomek.szypula.models;
+package tomek.szypula.controller;
+
+import tomek.szypula.models.Car;
+import tomek.szypula.models.Model;
+import tomek.szypula.models.Road;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,7 +16,7 @@ public class DataManagementSystem {
         this.model = model;
     }
 
-    public void updateFile(String filename) throws IOException {
+    public void updateFilePositionSpeed(String filename) throws IOException {
         FileWriter fileWriter = new FileWriter(filename,true);
         PrintWriter printWriter = new PrintWriter(fileWriter);
         int time = model.getTime();
@@ -27,5 +31,9 @@ public class DataManagementSystem {
         printWriter.close();
         
     }
+    public void updateFileWaveFronts(String filename) throws IOException {
+
+    }
+    //private void updateFile(String filename, int... integers, double... doubles)
 
 }

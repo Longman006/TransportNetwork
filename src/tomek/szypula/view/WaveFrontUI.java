@@ -7,17 +7,17 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
-import tomek.szypula.models.Wavefront;
+import tomek.szypula.models.WaveFront;
 
 import java.util.concurrent.Callable;
 
 public class WaveFrontUI implements CreateUI{
-    Wavefront wavefront;
+    WaveFront wavefront;
     private final double height = 8;
     private Line lineShape = new Line();
     private Text text = new Text();
 
-    public WaveFrontUI(Wavefront wavefront){
+    public WaveFrontUI(WaveFront wavefront){
         this.wavefront = wavefront;
         ObjectBinding<Double> startxBinding = Bindings.createObjectBinding(new Callable<Double>() {
             @Override
@@ -81,7 +81,7 @@ public class WaveFrontUI implements CreateUI{
         parent.getChildren().remove(lineShape);
     }
 
-    public Wavefront getWavefront() {
+    public WaveFront getWavefront() {
         return wavefront;
     }
 }

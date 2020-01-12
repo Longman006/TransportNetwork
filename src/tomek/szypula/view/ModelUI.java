@@ -47,16 +47,16 @@ public class ModelUI implements CreateUI {
                 System.out.println("Real : "+model.getTrafficManagementSystem().getNumberOfCars());
             }
         });
-        model.getTrafficManagementSystem().getWaveFronts().addListener(new ListChangeListener<Wavefront>() {
+        model.getWaveFrontManager().getWaveFronts().addListener(new ListChangeListener<WaveFront>() {
             @Override
-            public void onChanged(Change<? extends Wavefront> change) {
+            public void onChanged(Change<? extends WaveFront> change) {
                 //System.out.println("Detected a change in WaveFronts! ");
                 while(change.next()){
                     if (change.wasAdded()){
-                        createWaveFrontUIs((List<Wavefront>) change.getAddedSubList());
+                        createWaveFrontUIs((List<WaveFront>) change.getAddedSubList());
                     }
                     else if(change.wasRemoved()){
-                        removeWaveUIs((List<Wavefront>) change.getRemoved());
+                        removeWaveUIs((List<WaveFront>) change.getRemoved());
                     }
                 }
             }
@@ -104,19 +104,19 @@ public class ModelUI implements CreateUI {
         }
         UIelements.addAll(roadUIs);
     }
-    private void createWaveFrontUIs(List<Wavefront> wavefronts){
-        for (Wavefront wavefront :
-                wavefronts) {
+    private void createWaveFrontUIs(List<WaveFront> waveFronts){
+        for (WaveFront wavefront :
+                waveFronts) {
             WaveFrontUI waveFrontUI = new WaveFrontUI(wavefront);
             waveFrontUIs.add(waveFrontUI);
             waveFrontUI.createUI(waveParent);
         }
         UIelements.addAll(waveFrontUIs);
     }
-    private void removeWaveUIs(List<Wavefront> wavefronts) {
+    private void removeWaveUIs(List<WaveFront> waveFronts) {
         List<WaveFrontUI> waveUIsRemove = new ArrayList<>();
         for (WaveFrontUI waveFrontUI: waveFrontUIs){
-            if (wavefronts.contains(waveFrontUI.getWavefront())){
+            if (waveFronts.contains(waveFrontUI.getWavefront())){
                 waveUIsRemove.add(waveFrontUI);
             }
         }
