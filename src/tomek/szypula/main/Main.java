@@ -1,4 +1,4 @@
-package sample;
+package tomek.szypula.main;
 
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
