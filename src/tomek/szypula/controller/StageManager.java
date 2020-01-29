@@ -24,6 +24,7 @@ import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 import tomek.szypula.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class StageManager {
     Stage window;
     Model model;
     View view;
+    DataManagementSystem dataManagementSystem;
 
     //Model properties
     List<Road> roads = new ArrayList<>();
@@ -66,6 +68,7 @@ public class StageManager {
         setupEditor();
         setupModelScene();
         setupMainMenu();
+        dataManagementSystem = new DataManagementSystem(model);
     }
 
     private MenuBar createMenuBar() {
@@ -156,6 +159,7 @@ public class StageManager {
             setupModelScene();
         model = new Model(roads);
         view = new View(model,modelControlsSplitPane);
+        dataManagementSystem.setModel(model);
 
         window.setScene(mainScene);
         if(timeline==null) {
@@ -183,10 +187,10 @@ public class StageManager {
     public void step(){
 
         model.updateSpeed();
-//        try {
-//            dataManagementSystem.updateFile("TestFile.txt");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            dataManagementSystem.updateFilePositionSpeed();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
