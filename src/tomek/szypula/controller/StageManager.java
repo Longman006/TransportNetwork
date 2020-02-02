@@ -72,18 +72,29 @@ public class StageManager {
     }
 
     private MenuBar createMenuBar() {
+
+        //Ribbon Commands
         MenuBar menuBar = new MenuBar();
 
+        //Help
         Menu helpMenu = new Menu("Help");
         helpMenu.getItems().add(new MenuItem("Model description"));
 
+        //File
+        Menu fileMenu = new Menu("File");
+        CheckMenuItem xyvItem = new CheckMenuItem("t x y v");
+        //TODO Create general method for CheckMenuItems to save to file ( use the BoolProperty in DMS to trigger save)
+        xyvItem.selectedProperty();
+        fileMenu.getItems().addAll(xyvItem);
+
+        //Open
         Menu openMenu = new Menu("Open");
         MenuItem editorItem = new MenuItem("Editor");
         MenuItem menuItem = new MenuItem("Main Menu");
         MenuItem simulationItem = new MenuItem("Simulation");
         openMenu.getItems().addAll(menuItem,editorItem,simulationItem);
 
-
+        //Editor
         Menu editorMenu = new Menu("Editor");
         MenuItem undoItem = new MenuItem("Undo");
         undoItem.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
@@ -104,13 +115,12 @@ public class StageManager {
         editorMenu.getItems().add(clearItem);
         editorMenu.getItems().add(undoItem);
 
+        //MenuItems actionEvents
         simulationItem.setOnAction(actionEvent -> loadSimulation());
         editorItem.setOnAction(actionEvent -> loadEditor());
         menuItem.setOnAction(actionEvent -> loadMainMenu());
 
-        menuBar.getMenus().add(helpMenu);
-        menuBar.getMenus().add(openMenu);
-        menuBar.getMenus().add(editorMenu);
+        menuBar.getMenus().addAll(helpMenu,fileMenu,openMenu,editorMenu);
 
         return menuBar;
     }

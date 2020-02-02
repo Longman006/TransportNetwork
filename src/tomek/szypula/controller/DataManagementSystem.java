@@ -1,32 +1,53 @@
 package tomek.szypula.controller;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import tomek.szypula.models.Car;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DataManagementSystem {
     Model model;
+    //Properties
+    BooleanProperty positionSpeedFile = new SimpleBooleanProperty(false);
+
+    public boolean isPositionSpeedFile() {
+        return positionSpeedFile.get();
+    }
+
+    public BooleanProperty positionSpeedFileProperty() {
+        return positionSpeedFile;
+    }
+
+    public void setPositionSpeedFile(boolean positionSpeedFile) {
+        this.positionSpeedFile.set(positionSpeedFile);
+    }
+
+    //Printwriters
     PrintWriter printWriterPositionSpeed;
 
-    public DataManagementSystem(Model model) {
-        //The date and time format for file naming
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
-        //filenames
-        String filenamePositionSpeed = dateFormatter.format(new Date()).concat("xyv.txt");
+    //filenames, formatters
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+    String positionSpeedHeader = "t\tx\ty\tv\n";
 
+    //
+
+    public DataManagementSystem(Model model) {
         this.model = model;
+        setupPositionSpeedFile();
+    }
+    private void setupPositionSpeedFile(){
+        String filenamePositionSpeed = dateFormatter.format(new Date()).concat("xyv.txt");
         try {
-            printWriterPositionSpeed = new PrintWriter(new FileWriter("TestFile.txt",false),true);
+            printWriterPositionSpeed = new PrintWriter(new FileWriter(filenamePositionSpeed,false),true);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        printWriterPositionSpeed.printf(positionSpeedHeader);
 
     }
 
@@ -48,17 +69,17 @@ public class DataManagementSystem {
 
     //The actual implementation of every updatefile type method
     private void updateFile(PrintWriter printWriter,int time, double... doubles) throws IOException {
-    //TODO Use Stringbuilder to concat doubles directly! No need for extra formatting. This is way over the top
-        // StringBuilder creating the format string for printf to file
+        // StringBuilder creating the string for printf
         StringBuilder builder = new StringBuilder();
+        builder.append(time);
+        builder.append("\t");
         for(double item : doubles) {
-            builder.append("%f\t");
+            builder.append(item);
+            builder.append("\t");
         }
-        builder.append("%d\n");
-        String stringFormat = builder.toString();
-        printWriter.printf(stringFormat, doubles,time);
+        builder.append("\n");
+        printWriter.printf(builder.toString());
     }
-
     public void setModel(Model model) {
         this.model = model;
     }

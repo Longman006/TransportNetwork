@@ -4,6 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -39,6 +40,13 @@ public class ControlPanelUI implements CreateUI{
     public VBox getControlPane() {
         return vBox;
     }
+
+//    private VBox getFileCheckBoxes(){
+//        CheckBox cbPositionSpeed = new CheckBox("x y v");
+//        cbPositionSpeed.selectedProperty().addListener((observableValue, oldVal, newVal) -> {
+//
+//        });
+//    }
 
     private VBox getSliderText(String name, double minValue, double maxValue, double defValue, DoubleProperty bindProperty){
         VBox sliderText = new VBox(10);
