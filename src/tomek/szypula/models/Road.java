@@ -29,6 +29,9 @@ public class Road {
 
     TrafficLights trafficLightsEnd = new TrafficLights();
     OutOfService outOfService = new OutOfService();
+    OnRamp onRamp = new OnRamp();
+
+    public OnRamp getOnRamp() { return onRamp; }
 
     public OutOfService getOutOfService() {
         return outOfService;

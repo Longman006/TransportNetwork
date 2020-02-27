@@ -115,6 +115,14 @@ public class StageManager {
         editorMenu.getItems().add(clearItem);
         editorMenu.getItems().add(undoItem);
 
+        //Simulation
+        Menu SimulationMenu = new Menu("Simulation");
+        MenuItem setOnRamp = new MenuItem("Select On Ramp Road");
+        setOnRamp.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
+        setOnRamp.setOnAction(actionEvent -> {
+
+        });
+
         //MenuItems actionEvents
         simulationItem.setOnAction(actionEvent -> loadSimulation());
         editorItem.setOnAction(actionEvent -> loadEditor());

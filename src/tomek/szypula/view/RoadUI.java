@@ -24,13 +24,22 @@ public class RoadUI implements CreateUI{
     private double width = 14;
     private TrafficLightsUI trafficLightsUI;
     private OutOfServiceUI outOfServiceUI;
+    private OnRampUI onRampUI;
+
+    public double getWidth() {
+        return width;
+    }
 
     @Override
     public void createUI(Group parent) {
+
         trafficLightsUI.createUI(parent);
         parent.getChildren().add(lineShape);
         parent.getChildren().add(triangle);
         outOfServiceUI.createUI(parent);
+        onRampUI.createUI(parent);
+
+
 
     }
 
@@ -40,6 +49,7 @@ public class RoadUI implements CreateUI{
         parent.getChildren().remove(lineShape);
         parent.getChildren().remove(triangle);
         outOfServiceUI.remove(parent);
+        onRampUI.remove(parent);
     }
 
     public RoadUI(Road road) {
@@ -68,7 +78,8 @@ public class RoadUI implements CreateUI{
         triangle.setSmooth(true);
         triangle.setFill(Color.RED);
 
-        outOfServiceUI = new OutOfServiceUI(road,width,this);
+        onRampUI = new OnRampUI(road,this);
+        outOfServiceUI = new OutOfServiceUI(road,this);
 
 
     }

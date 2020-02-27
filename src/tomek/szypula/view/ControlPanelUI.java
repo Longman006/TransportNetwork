@@ -41,13 +41,6 @@ public class ControlPanelUI implements CreateUI{
         return vBox;
     }
 
-//    private VBox getFileCheckBoxes(){
-//        CheckBox cbPositionSpeed = new CheckBox("x y v");
-//        cbPositionSpeed.selectedProperty().addListener((observableValue, oldVal, newVal) -> {
-//
-//        });
-//    }
-
     private VBox getSliderText(String name, double minValue, double maxValue, double defValue, DoubleProperty bindProperty){
         VBox sliderText = new VBox(10);
         Slider slider = new Slider(minValue,maxValue,defValue);
