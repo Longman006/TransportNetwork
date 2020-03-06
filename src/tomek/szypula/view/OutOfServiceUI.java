@@ -1,5 +1,7 @@
 package tomek.szypula.view;
 
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
@@ -52,24 +54,21 @@ public class OutOfServiceUI implements CreateUI{
                 lines.add(lineShape);
             }
         }
-        //Creating the mouse event handler
-        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+
+        DoubleBinding opacityDoubleBinding = new DoubleBinding() {
+            {
+                super.bind(road.getOutOfService().outOfServiceProperty());
+            }
             @Override
-            public void handle(MouseEvent e) {
-                road.getOutOfService().switchOutOfService();
-                boolean outOfService = road.getOutOfService().isOutOfService();
-                for (Line line : lines){
-                    double opacity = outOfService ? 1.0 : 0.0;
-                    line.setOpacity(opacity);
-                }
+            protected double computeValue() {
+                return road.getOutOfService().isOutOfService() ? 0.8 : 0.0;
             }
         };
-        //Registering the event filter
-        for (Line line: lines) {
-            line.addEventFilter(MouseEvent.MOUSE_CLICKED,eventHandler);
-
+        for (Line line : lines){
+            DoubleProperty opacity = line.opacityProperty();
+            opacity.bind(opacityDoubleBinding);
         }
-        //roadUI.getShape().addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
+
     }
 
 

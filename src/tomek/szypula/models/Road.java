@@ -116,6 +116,11 @@ public class Road {
                 getStart() + "\n"+
                 getEnd() + "\n" ;
     }
+
+    //Identifier for filenaming
+    public int identifier(){
+        return (int)(getEnd().getX() + getStart().getX() + getEnd().getY() + getStart().getY());
+    }
     public int indexOf(Car car){
         return carList.indexOf(car);
     }

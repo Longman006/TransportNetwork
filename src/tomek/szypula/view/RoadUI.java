@@ -1,18 +1,14 @@
 package tomek.szypula.view;
 
-import javafx.beans.property.ObjectProperty;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineJoin;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
-import tomek.szypula.models.OutOfService;
 import tomek.szypula.models.Road;
 
 public class RoadUI implements CreateUI{
@@ -32,15 +28,11 @@ public class RoadUI implements CreateUI{
 
     @Override
     public void createUI(Group parent) {
-
         trafficLightsUI.createUI(parent);
         parent.getChildren().add(lineShape);
         parent.getChildren().add(triangle);
         outOfServiceUI.createUI(parent);
         onRampUI.createUI(parent);
-
-
-
     }
 
     @Override
@@ -80,6 +72,18 @@ public class RoadUI implements CreateUI{
 
         onRampUI = new OnRampUI(road,this);
         outOfServiceUI = new OutOfServiceUI(road,this);
+
+        EventHandler<MouseEvent> eventHandler = e -> {
+            if (e.isControlDown()) {
+                road.getOnRamp().switchValue();
+            }
+            else if (e.isAltDown()) {
+                road.getOutOfService().switchValue();
+            }
+            e.consume();
+        };
+        //Registering the event filter
+        lineShape.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
 
 
     }

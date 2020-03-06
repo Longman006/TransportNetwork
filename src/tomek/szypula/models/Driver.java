@@ -17,7 +17,7 @@ public abstract class Driver {
         route = new Route(startingRoad,car);
     }
     protected void updateRoute(Car car){
-        while(!route.getFirstRoad().containsCar(car)){
+        while(!route.getCurrentRoad().containsCar(car)){
             route.removeRoad();
         }
         while(route.size() < Route.MAX_SIZE ){

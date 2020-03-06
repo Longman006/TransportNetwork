@@ -9,7 +9,7 @@ public class OutOfService {
     public OutOfService() {
         setOutOfService(false);
     }
-    public void switchOutOfService(){
+    public void switchValue(){
         setOutOfService(!isOutOfService());
     }
 

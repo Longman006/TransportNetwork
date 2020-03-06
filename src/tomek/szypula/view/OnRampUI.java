@@ -61,7 +61,7 @@ public class OnRampUI implements CreateUI {
             }
         }
 
-        Vector2D endLine = Vector2DMath.vector2DSum(start,Vector2DMath.multiplyVector2D(direction,road.getLength()/4));
+        Vector2D endLine = Vector2DMath.vector2DSum(start,Vector2DMath.multiplyVector2D(direction,width));
         Vector2D startLine = start;
         lineShape = new Line(startLine.getX(),startLine.getY(),endLine.getX(),endLine.getY());
         lineShape.setSmooth(true);
@@ -70,38 +70,19 @@ public class OnRampUI implements CreateUI {
         lineShape.setStroke(Color.YELLOWGREEN);
         //lineShape.setOpacity(0.0);
 
+        //Converting the BooleanProperty to Double to use as a binding with the opacity
         DoubleProperty opacityProperty = lineShape.opacityProperty();
-
         DoubleBinding opacityDoubleBinding = new DoubleBinding() {
             {
                 super.bind(road.getOnRamp().onRampProperty());
             }
             @Override
             protected double computeValue() {
-                System.out.println("Computing Value");
-                return road.getOnRamp().isOnRamp() ? 1.0 : 0.0;
+                return road.getOnRamp().isOnRamp() ? 0.8 : 0.0;
             }
         };
         opacityProperty.bind(opacityDoubleBinding);
 
-
-        //TODO Use addlistener on boolean property to change the opacity and move eventhandler to RoadUI class.
-
-        //Creating the mouse event handler
-        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                if (e.isControlDown()) {
-                    road.getOnRamp().switchValue();
-                    boolean isOnRamp = road.getOnRamp().isOnRamp();
-                    e.consume();
-                }
-
-
-            }
-        };
-        //Registering the event filter
-        lineShape.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
     @Override
     public void createUI(Group parent) {
