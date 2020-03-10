@@ -84,7 +84,6 @@ public class StageManager {
         Menu fileMenu = new Menu("File");
         CheckMenuItem xyvItem = new CheckMenuItem("t x y v");
         CheckMenuItem dvItem = new CheckMenuItem("t d v");
-        //TODO Create general method for CheckMenuItems to save to file ( use the BoolProperty in DMS to trigger save)
         dataManagementSystem.positionSpeedFileProperty().bind(xyvItem.selectedProperty());
         dataManagementSystem.distanceSpeedFileProperty().bind(dvItem.selectedProperty());
 
@@ -206,12 +205,7 @@ public class StageManager {
             timeline.pause();
     }
     public void step(){
-
         model.updateSpeed();
-        try {
-            dataManagementSystem.updateFilePositionSpeed();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        dataManagementSystem.update();
     }
 }

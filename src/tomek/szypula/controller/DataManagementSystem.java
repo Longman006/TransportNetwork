@@ -15,23 +15,31 @@ import java.util.List;
 
 public class DataManagementSystem {
     Model model;
+    List<Road> onRamps = new ArrayList<>();
 
     //Properties
     BooleanProperty positionSpeedFile = new SimpleBooleanProperty(false);
     BooleanProperty distanceSpeedFile = new SimpleBooleanProperty(false);
 
-    public BooleanProperty distanceSpeedFileProperty() { return distanceSpeedFile; }
+    public BooleanProperty distanceSpeedFileProperty() {
+        return distanceSpeedFile;
+    }
+
     public BooleanProperty positionSpeedFileProperty() {
         return positionSpeedFile;
     }
 
-    public boolean isPositionSpeedFile() { return positionSpeedFile.get(); }
-    public boolean isDistanceSpeedFile() { return distanceSpeedFile.get(); }
+    public boolean isPositionSpeedFile() {
+        return positionSpeedFile.get();
+    }
+
+    public boolean isDistanceSpeedFile() {
+        return distanceSpeedFile.get();
+    }
 
     //DataWriters
     List<DataWriter> datawritersOnRamp = new ArrayList<>();
     DataWriter writerPositionSpeed;
-
 
     //headers
     String positionSpeedHeader = "t\tx\ty\tv\n";
@@ -43,7 +51,11 @@ public class DataManagementSystem {
 
     public DataManagementSystem(Model model) {
         this.model = model;
-        writerPositionSpeed = new DataWriter(positionSpeedHeader,filenamePositionSpeed);
+        writerPositionSpeed = new DataWriter(positionSpeedHeader, filenamePositionSpeed);
+        distanceSpeedFileProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue)
+                setupDistanceSpeedOnRampFiles();
+        });
 
     }
 
@@ -54,48 +66,59 @@ public class DataManagementSystem {
                 model.getRoadList()) {
             for (Car car :
                     road.getCarList()) {
-                try {
-                    writerPositionSpeed.updateFile(time, car.getPosition().getX(), car.getPosition().getY(), car.getSpeed().getLength());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                writerPositionSpeed.updateFile(time, car.getPosition().getX(), car.getPosition().getY(), car.getSpeed().getLength());
             }
         }
     }
-    //End User methods
-    public void update(){
-        if (isPositionSpeedFile()) 
-            updateFilePositionSpeed();
-        if (isDistanceSpeedFile())
-            updateFileOnRampDistanceSpeed();
-    }
-    public void setModel(Model model) {
-        this.model = model;
-    }
 
-    
     //This will be called only whenever the user decides to save to file through the UI. After that no changes to the OnRamps will take place.
-    //Maybe I could try and freeze the UI onRamp sign during save. TOTHINK
-    private void setupDistanceSpeedOnRampFiles(){
-        List<Road> onRamps = new ArrayList<>();
+    private void setupDistanceSpeedOnRampFiles() {
+        onRamps = new ArrayList<>();
+        datawritersOnRamp = new ArrayList<>();
         for (Road road : model.getRoadList()) {
-            if (road.getOnRamp().isOnRamp())
+            if (road.getOnRamp().isOnRamp()) {
+                StringBuilder filename = new StringBuilder();
+                filename.append(road.identifier());
+                filename.append(filenameDistanceSpeed);
                 onRamps.add(road);
-                datawritersOnRamp.add(new DataWriter(distanceToOnRampSpeedHeader,filenameDistanceSpeed));
+                datawritersOnRamp.add(new DataWriter(distanceToOnRampSpeedHeader, filename.toString()));
+            }
         }
     }
 
     //t d v
-    public void updateFileOnRampDistanceSpeed(){
-        //TODO Need to think about implementation. How to best do this in order to avoid duplicate code. Also the problem of multiple OnRamps.
+    private void updateFileOnRampDistanceSpeed() {
         //Multiple OnRamps solved. Just run calculateDistanceToOnRamp on each on Ramp for each car. Create a seperate file for each onRamp
         //In terms of duplicate code. I think I can go ahead and just implement a method from scratch for this specific scenario.
         //Probably could have created a more generic method to save. Maybe think later. TOTHINK
-        for (:
-             ) {
-            
+        List<Car> cars = model.getTrafficManagementSystem().getCarList();
+        int time = model.getTime();
+        Road currentOnRamp;
+        DataWriter currentDataWriter;
+        double distance = 0;
+        for (int i = 0; i < onRamps.size(); i++) {
+            currentDataWriter = datawritersOnRamp.get(i);
+            currentOnRamp = onRamps.get(i);
+            for (Car car :
+                    cars) {
+                if (car.getDriver().getRoute().isOnRampOnRoute(currentOnRamp)) {
+                    distance = car.getDriver().getRoute().calculateDistanceToOnRamp(currentOnRamp);
+                    currentDataWriter.updateFile(time, distance, car.getSpeed().getLength());
+                }
+            }
         }
+    }
 
+    //End User methods
+    public void update() {
+        if (isPositionSpeedFile())
+            updateFilePositionSpeed();
+        if (isDistanceSpeedFile())
+            updateFileOnRampDistanceSpeed();
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 
 }

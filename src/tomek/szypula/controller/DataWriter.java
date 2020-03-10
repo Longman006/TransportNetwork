@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class DataWriter {
     PrintWriter printWriter;
-    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss");
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HH.mm.ss.");
     String fileHeader;
     String filenameSuffix;
 
@@ -30,7 +30,7 @@ public class DataWriter {
     }
 
     //The actual implementation of every updatefile type method
-    public void updateFile(int time, double... doubles) throws IOException {
+    public void updateFile(int time, double... doubles) {
         // StringBuilder creating the string for printf
         StringBuilder builder = new StringBuilder();
         builder.append(time);
@@ -40,6 +40,11 @@ public class DataWriter {
             builder.append("\t");
         }
         builder.append("\n");
-        printWriter.printf(builder.toString());
+        try {
+            printWriter.printf(builder.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
