@@ -65,10 +65,10 @@ public class StageManager {
 
     public StageManager(Stage window) {
         this.window=window;
+        dataManagementSystem = new DataManagementSystem(model);
         setupEditor();
         setupModelScene();
         setupMainMenu();
-        dataManagementSystem = new DataManagementSystem(model);
     }
 
     private MenuBar createMenuBar() {
@@ -83,9 +83,12 @@ public class StageManager {
         //File
         Menu fileMenu = new Menu("File");
         CheckMenuItem xyvItem = new CheckMenuItem("t x y v");
+        CheckMenuItem dvItem = new CheckMenuItem("t d v");
         //TODO Create general method for CheckMenuItems to save to file ( use the BoolProperty in DMS to trigger save)
-        xyvItem.selectedProperty();
-        fileMenu.getItems().addAll(xyvItem);
+        dataManagementSystem.positionSpeedFileProperty().bind(xyvItem.selectedProperty());
+        dataManagementSystem.distanceSpeedFileProperty().bind(dvItem.selectedProperty());
+
+        fileMenu.getItems().addAll(xyvItem,dvItem);
 
         //Open
         Menu openMenu = new Menu("Open");
