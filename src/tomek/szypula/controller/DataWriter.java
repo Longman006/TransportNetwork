@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class DataWriter {
     PrintWriter printWriter;
@@ -30,14 +31,31 @@ public class DataWriter {
     }
 
     //The actual implementation of every updatefile type method
-    public void updateFile(int time, double... doubles) {
+//    public void updateFile(int time, double... doubles) {
+//        // StringBuilder creating the string for printf
+//        StringBuilder builder = new StringBuilder();
+//        builder.append(time);
+//        for(double item : doubles) {
+//            builder.append("\t");
+//            builder.append(item);
+//
+//        }
+//        builder.append("\n");
+//        try {
+//            printWriter.printf(builder.toString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+    public void updateFile(int time, String... values) {
         // StringBuilder creating the string for printf
         StringBuilder builder = new StringBuilder();
         builder.append(time);
-        builder.append("\t");
-        for(double item : doubles) {
-            builder.append(item);
+        for(String item : values) {
             builder.append("\t");
+            builder.append(item);
+
         }
         builder.append("\n");
         try {

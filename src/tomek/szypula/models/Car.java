@@ -7,6 +7,8 @@ import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
 import tomek.szypula.depricated.ColorValues;
 
+import java.util.UUID;
+
 public class Car {
     Vector2D position;
     Vector2D speed;
@@ -14,14 +16,19 @@ public class Car {
     Driver driver;
     Vector2D direction;
     BooleanProperty highlighted = new SimpleBooleanProperty(false);
+    UUID uuid;
+
 
     public Car(Vector2D position, Vector2D direction, CarParameters parameters) {
         this.position = position;
         this.parameters = parameters;
         this.direction = direction;
         this.speed = new Vector2D(0,0);
+        this.uuid = UUID.randomUUID();
     }
 
+
+    public UUID getUuid() {  return uuid;  }
     public boolean isHighlighted() {
         return highlighted.get();
     }
@@ -113,5 +120,9 @@ public class Car {
         if (speed.getLength() < parameters.getDesiredSpeed()/4)
             return true;
         return false;
+    }
+
+    public String getID() {
+        return uuid.toString();
     }
 }

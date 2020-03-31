@@ -133,7 +133,7 @@ public class Route {
         double result = 0;
         result += getCurrentRoad().getDistanceToStart(car);
         for (Road road :
-                roadList) {
+                pastRoadList) {
             if (road.equals(onRampRoad))
                 break;
             result += road.getLength();
@@ -154,7 +154,7 @@ public class Route {
             if (road.equals(onRampRoad))
                 break;
         }
-        return result;
+        return -result;
     }
     // No comments
     public Car getNextCarOnRoute() {

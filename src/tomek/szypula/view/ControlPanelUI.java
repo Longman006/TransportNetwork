@@ -5,7 +5,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import tomek.szypula.controller.Highlighted;
@@ -13,6 +16,7 @@ import tomek.szypula.models.CarParameters;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.TrafficManagementSystem;
 
+import java.util.UUID;
 import java.util.zip.GZIPOutputStream;
 
 public class ControlPanelUI implements CreateUI{
@@ -32,9 +36,23 @@ public class ControlPanelUI implements CreateUI{
         VBox accelerationExponent = getSliderText("Acceleration Exponent",1,10,4.0,carParameters.accelerationExponentProperty());
         VBox size = getSliderText("Size",1,10,3,carParameters.sizeProperty());
         VBox numberOfCars = getSliderText("Number Of Cars",0,600,model.getTrafficManagementSystem().getNumberOfCars(),model.getTrafficManagementSystem().numberOfCarsProperty());
-        Text text = new Text("Speed of Car : 0.0");
 
-        vBox.getChildren().addAll(desiredSpeed,acceleration,timegap,minimumGap,deceleration,accelerationExponent,size,numberOfCars,text);
+        Label labelId = new Label("Car ID : ");
+        TextField textFieldId = new TextField();
+        textFieldId.setPrefWidth(250);
+        HBox idBox = new HBox();
+        idBox.getChildren().addAll(labelId, textFieldId);
+        idBox.setSpacing(10);
+
+        Highlighted.isChangeProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue){
+                String id = Highlighted.getHighlightedCar().getID();
+                textFieldId.setText(id);
+            }
+            Highlighted.setIsChange(false);
+        });
+
+        vBox.getChildren().addAll(desiredSpeed,acceleration,timegap,minimumGap,deceleration,accelerationExponent,size,numberOfCars,idBox);
     }
 
     public VBox getControlPane() {

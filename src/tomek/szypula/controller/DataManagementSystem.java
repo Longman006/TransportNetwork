@@ -42,8 +42,8 @@ public class DataManagementSystem {
     DataWriter writerPositionSpeed;
 
     //headers
-    String positionSpeedHeader = "t\tx\ty\tv\n";
-    String distanceToOnRampSpeedHeader = "t\td\tv\t\n";
+    String positionSpeedHeader = "t\tid\tx\ty\tv\n";
+    String distanceToOnRampSpeedHeader = "t\tid\td\tv\t\n";
 
     //filenames
     String filenamePositionSpeed = "xyv.txt";
@@ -66,7 +66,7 @@ public class DataManagementSystem {
                 model.getRoadList()) {
             for (Car car :
                     road.getCarList()) {
-                writerPositionSpeed.updateFile(time, car.getPosition().getX(), car.getPosition().getY(), car.getSpeed().getLength());
+                writerPositionSpeed.updateFile(time,car.getID(), String.valueOf(car.getPosition().getX()), String.valueOf(car.getPosition().getY()), String.valueOf(car.getSpeed().getLength()));
             }
         }
     }
@@ -103,7 +103,7 @@ public class DataManagementSystem {
                     cars) {
                 if (car.getDriver().getRoute().isOnRampOnRoute(currentOnRamp)) {
                     distance = car.getDriver().getRoute().calculateDistanceToOnRamp(currentOnRamp);
-                    currentDataWriter.updateFile(time, distance, car.getSpeed().getLength());
+                    currentDataWriter.updateFile(time,car.getID(), String.valueOf(distance), String.valueOf(car.getSpeed().getLength()));
                 }
             }
         }
