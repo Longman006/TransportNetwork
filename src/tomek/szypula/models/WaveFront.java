@@ -1,16 +1,22 @@
 package tomek.szypula.models;
 
 import javafx.scene.text.Text;
+import tomek.szypula.controller.Highlightable;
+import tomek.szypula.controller.Highlighted;
+import tomek.szypula.controller.UniqueId;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
 
-public class WaveFront {
+import java.util.UUID;
+
+public class WaveFront implements UniqueId, Highlightable {
     Car car;
     Road currentRoad;
     Vector2D position;
     Vector2D previousPosition;
     Vector2D speed;
     int vicinity = 8;
+    UUID uuid;
 
     public WaveFront(Car car, Road road) {
         this.car = car;
@@ -18,6 +24,7 @@ public class WaveFront {
         previousPosition = car.getPosition();
         speed = new Vector2D();
         currentRoad = road;
+        uuid = UUID.randomUUID();
     }
 
     public void setCar(Car car,Road road) {
@@ -49,5 +56,15 @@ public class WaveFront {
 
     public Road getCurrentRoad() {
         return currentRoad;
+    }
+
+    @Override
+    public String getId() {
+        return uuid.toString();
+    }
+
+    @Override
+    public void highlight() {
+        Highlighted.setHighlightedWaveFront(this);
     }
 }

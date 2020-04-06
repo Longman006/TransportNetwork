@@ -42,7 +42,7 @@ public class CarUI implements CreateUI{
                     @Override
                     public Color call() throws Exception {
                         Color color;
-                        if (car.isHighlighted()) {
+                        if (car.equals(Highlighted.getHighlightedCar())) {
                             color = Color.hsb(Math.min((maxColor+40 -360 ) *car.getSpeed().getLength()  / car.getParameters().getDesiredSpeed()+360, 360), 0.94, 0.94, 0.94);
                             dropShadow.setColor(Color.ROYALBLUE);
                         }
@@ -51,7 +51,7 @@ public class CarUI implements CreateUI{
                         dropShadow.setColor(Color.BLACK);
                         return color;
                     }
-                },car.getSpeed().xProperty(),car.getSpeed().yProperty(),car.getParameters().desiredSpeedProperty(),car.highlightedProperty()
+                },car.getSpeed().xProperty(),car.getSpeed().yProperty(),car.getParameters().desiredSpeedProperty(),Highlighted.isChangeCarProperty()
         );
         carShape.fillProperty().bind(colorObjectBinding1);
 
@@ -59,7 +59,7 @@ public class CarUI implements CreateUI{
 
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Highlighted.switchHighlightCar(car);
+                car.highlight();
             }
         };
 

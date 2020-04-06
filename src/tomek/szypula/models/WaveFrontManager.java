@@ -40,8 +40,6 @@ public class WaveFrontManager {
                     waveFrontsToRemove.add(wavefront);
                 }
             }
-
-
         }
         //delete old wavefronts
         waveFronts.removeAll(waveFrontsToRemove);

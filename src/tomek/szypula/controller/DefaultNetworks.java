@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultNetworks {
-    private int x = 30;
+    private int x = 50;
     List<Road> roads = new ArrayList<>();
 
     public DefaultNetworks() {

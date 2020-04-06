@@ -8,7 +8,7 @@ import java.util.List;
 public class Route {
 
     //The maximum number of roads stored (both past and future)
-    public static final int MAX_SIZE = 2 ;
+    public static final int MAX_SIZE = 3 ;
     private final Car car;
     //index 0 corresponds to the current road.
     private List<Road> roadList = new ArrayList<>();
@@ -138,7 +138,7 @@ public class Route {
                 break;
             result += road.getLength();
         }
-        return result;
+        return -result;
     }
 
     //Private method to help organize calculateDistanceToOnRamp
@@ -154,7 +154,7 @@ public class Route {
             if (road.equals(onRampRoad))
                 break;
         }
-        return -result;
+        return result;
     }
     // No comments
     public Car getNextCarOnRoute() {

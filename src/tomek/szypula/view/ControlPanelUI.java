@@ -3,8 +3,6 @@ package tomek.szypula.view;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -15,9 +13,6 @@ import tomek.szypula.controller.Highlighted;
 import tomek.szypula.models.CarParameters;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.TrafficManagementSystem;
-
-import java.util.UUID;
-import java.util.zip.GZIPOutputStream;
 
 public class ControlPanelUI implements CreateUI{
 
@@ -44,12 +39,12 @@ public class ControlPanelUI implements CreateUI{
         idBox.getChildren().addAll(labelId, textFieldId);
         idBox.setSpacing(10);
 
-        Highlighted.isChangeProperty().addListener((observableValue, oldValue, newValue) -> {
+        Highlighted.isChangeCarProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue){
-                String id = Highlighted.getHighlightedCar().getID();
+                String id = Highlighted.getHighlightedCar().getId();
                 textFieldId.setText(id);
             }
-            Highlighted.setIsChange(false);
+            Highlighted.setIsChangeCar(false);
         });
 
         vBox.getChildren().addAll(desiredSpeed,acceleration,timegap,minimumGap,deceleration,accelerationExponent,size,numberOfCars,idBox);

@@ -6,11 +6,7 @@ import tomek.szypula.models.Car;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 
-import javax.xml.crypto.Data;
-import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DataManagementSystem {
@@ -66,7 +62,7 @@ public class DataManagementSystem {
                 model.getRoadList()) {
             for (Car car :
                     road.getCarList()) {
-                writerPositionSpeed.updateFile(time,car.getID(), String.valueOf(car.getPosition().getX()), String.valueOf(car.getPosition().getY()), String.valueOf(car.getSpeed().getLength()));
+                writerPositionSpeed.updateFile(time,car.getId(), String.valueOf(car.getPosition().getX()), String.valueOf(car.getPosition().getY()), String.valueOf(car.getSpeed().getLength()));
             }
         }
     }
@@ -103,7 +99,7 @@ public class DataManagementSystem {
                     cars) {
                 if (car.getDriver().getRoute().isOnRampOnRoute(currentOnRamp)) {
                     distance = car.getDriver().getRoute().calculateDistanceToOnRamp(currentOnRamp);
-                    currentDataWriter.updateFile(time,car.getID(), String.valueOf(distance), String.valueOf(car.getSpeed().getLength()));
+                    currentDataWriter.updateFile(time,car.getId(), String.valueOf(distance), String.valueOf(car.getSpeed().getLength()));
                 }
             }
         }

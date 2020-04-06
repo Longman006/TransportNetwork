@@ -3,19 +3,21 @@ package tomek.szypula.models;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import tomek.szypula.controller.Highlightable;
+import tomek.szypula.controller.Highlighted;
+import tomek.szypula.controller.UniqueId;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
 import tomek.szypula.depricated.ColorValues;
 
 import java.util.UUID;
 
-public class Car {
+public class Car implements UniqueId, Highlightable {
     Vector2D position;
     Vector2D speed;
     CarParameters parameters;
     Driver driver;
     Vector2D direction;
-    BooleanProperty highlighted = new SimpleBooleanProperty(false);
     UUID uuid;
 
 
@@ -25,20 +27,6 @@ public class Car {
         this.direction = direction;
         this.speed = new Vector2D(0,0);
         this.uuid = UUID.randomUUID();
-    }
-
-
-    public UUID getUuid() {  return uuid;  }
-    public boolean isHighlighted() {
-        return highlighted.get();
-    }
-
-    public BooleanProperty highlightedProperty() {
-        return highlighted;
-    }
-
-    public void setHighlighted(boolean highlighted) {
-        this.highlighted.set(highlighted);
     }
 
     public void setDriver(Driver driver) {
@@ -111,18 +99,18 @@ public class Car {
         return distance;
     }
 
-
-    public void switchHighlighted() {
-        setHighlighted(!isHighlighted());
-    }
-
     public boolean hasSmallSpeed() {
         if (speed.getLength() < parameters.getDesiredSpeed()/4)
             return true;
         return false;
     }
 
-    public String getID() {
+    public String getId() {
         return uuid.toString();
+    }
+
+    @Override
+    public void highlight() {
+        Highlighted.setHighlightedCar(this);
     }
 }

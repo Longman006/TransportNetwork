@@ -2,9 +2,12 @@ package tomek.szypula.view;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import tomek.szypula.controller.Highlighted;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
 import tomek.szypula.models.WaveFront;
@@ -61,13 +64,23 @@ public class WaveFrontUI implements CreateUI{
         ObjectBinding<String> speedValueBinding = Bindings.createObjectBinding(new Callable<String>() {
             @Override
             public String call() throws Exception {
-                return String.format("%.2f",wavefront.getSpeed().getLength());
+                return String.format("%.1f",wavefront.getSpeed().getLength());
             }
         },wavefront.getSpeed().xProperty(),wavefront.getSpeed().yProperty());
 
         text.textProperty().bind(speedValueBinding);
         text.xProperty().bind(startxBinding);
         text.yProperty().bind(startyBinding);
+
+        EventHandler<MouseEvent> mouseEventEventHandler = new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                wavefront.highlight();
+            }
+        };
+
+        text.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
     }
     @Override
     public void createUI(Group parent) {
