@@ -113,4 +113,14 @@ public class Car implements UniqueId, Highlightable {
     public void highlight() {
         Highlighted.setHighlightedCar(this);
     }
+
+    @Override
+    public SimpleBooleanProperty isChangeProperty() {
+        return Highlighted.isChangeCarProperty();
+    }
+
+    @Override
+    public Object getHighlighted() {
+        return Highlighted.getHighlightedCar();
+    }
 }

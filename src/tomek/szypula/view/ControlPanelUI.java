@@ -9,7 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import tomek.szypula.controller.Highlightable;
 import tomek.szypula.controller.Highlighted;
+import tomek.szypula.controller.UniqueId;
+import tomek.szypula.models.Car;
 import tomek.szypula.models.CarParameters;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.TrafficManagementSystem;
@@ -31,23 +34,25 @@ public class ControlPanelUI implements CreateUI{
         VBox accelerationExponent = getSliderText("Acceleration Exponent",1,10,4.0,carParameters.accelerationExponentProperty());
         VBox size = getSliderText("Size",1,10,3,carParameters.sizeProperty());
         VBox numberOfCars = getSliderText("Number Of Cars",0,600,model.getTrafficManagementSystem().getNumberOfCars(),model.getTrafficManagementSystem().numberOfCarsProperty());
+        HBox carID = getDisplayLabel("Car",Highlighted.getHighlightedCar());
+        HBox waveFrontID = getDisplayLabel("WaveFront",Highlighted.getHighlightedWaveFront());
 
-        Label labelId = new Label("Car ID : ");
-        TextField textFieldId = new TextField();
-        textFieldId.setPrefWidth(250);
-        HBox idBox = new HBox();
-        idBox.getChildren().addAll(labelId, textFieldId);
-        idBox.setSpacing(10);
+//        Label labelId = new Label("Car ID : ");
+//        TextField textFieldId = new TextField();
+//        textFieldId.setPrefWidth(250);
+//        HBox idBox = new HBox();
+//        idBox.getChildren().addAll(labelId, textFieldId);
+//        idBox.setSpacing(10);
+//
+//        Highlighted.isChangeCarProperty().addListener((observableValue, oldValue, newValue) -> {
+//            if (newValue){
+//                String id = Highlighted.getHighlightedCar().getId();
+//                textFieldId.setText(id);
+//            }
+//            Highlighted.setIsChangeCar(false);
+//        });
 
-        Highlighted.isChangeCarProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (newValue){
-                String id = Highlighted.getHighlightedCar().getId();
-                textFieldId.setText(id);
-            }
-            Highlighted.setIsChangeCar(false);
-        });
-
-        vBox.getChildren().addAll(desiredSpeed,acceleration,timegap,minimumGap,deceleration,accelerationExponent,size,numberOfCars,idBox);
+        vBox.getChildren().addAll(desiredSpeed,acceleration,timegap,minimumGap,deceleration,accelerationExponent,size,numberOfCars,carID,waveFrontID);
     }
 
     public VBox getControlPane() {
@@ -80,6 +85,25 @@ public class ControlPanelUI implements CreateUI{
         sliderText.getChildren().addAll(text,slider);
 
         return sliderText;
+    }
+
+    private HBox getDisplayLabel(String name, Highlightable highlightable){
+        Label labelId = new Label(name + " : ");
+        TextField textFieldId = new TextField();
+        textFieldId.setPrefWidth(250);
+        HBox idBox = new HBox();
+        idBox.getChildren().addAll(labelId, textFieldId);
+        idBox.setSpacing(10);
+
+        highlightable.isChangeProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue){
+                String id = ((UniqueId)highlightable.getHighlighted()).getId();
+                textFieldId.setText(id);
+            }
+            highlightable.isChangeProperty().setValue(false);
+        });
+
+        return idBox;
     }
 
     @Override

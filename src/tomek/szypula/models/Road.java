@@ -159,6 +159,7 @@ public class Road {
     public double getLength() {
         return Vector2DMath.distance(lineSegment.getStart(), lineSegment.getEnd());
     }
+    public Vector2D getDirection() { return lineSegment.getDirection();}
 
     public TrafficLights getTrafficLightsEnd() {
         return trafficLightsEnd;

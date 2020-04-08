@@ -49,10 +49,6 @@ public final class Highlighted {
         Highlighted.isChangeCar.set(isChangeCar);
     }
 
-    public static boolean getIsChangeCar() {
-        return isChangeCar.get();
-    }
-
     public static SimpleBooleanProperty isChangeCarProperty() {
         return isChangeCar;
     }

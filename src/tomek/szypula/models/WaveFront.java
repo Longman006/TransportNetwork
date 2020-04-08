@@ -1,5 +1,6 @@
 package tomek.szypula.models;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.text.Text;
 import tomek.szypula.controller.Highlightable;
 import tomek.szypula.controller.Highlighted;
@@ -15,6 +16,7 @@ public class WaveFront implements UniqueId, Highlightable {
     Vector2D position;
     Vector2D previousPosition;
     Vector2D speed;
+    Vector2D direction;
     int vicinity = 8;
     UUID uuid;
 
@@ -23,7 +25,9 @@ public class WaveFront implements UniqueId, Highlightable {
         position = car.getPosition();
         previousPosition = car.getPosition();
         speed = new Vector2D();
+        direction = new Vector2D();
         currentRoad = road;
+        direction.setVector(road.getDirection());
         uuid = UUID.randomUUID();
     }
 
@@ -33,6 +37,7 @@ public class WaveFront implements UniqueId, Highlightable {
         speed.setVector(Vector2DMath.vector2DSubtract(position,previousPosition));
         this.car = car;
         currentRoad = road;
+        direction.setVector(currentRoad.getDirection());
     }
 
     public boolean inVicinity(Car car) {
@@ -48,6 +53,10 @@ public class WaveFront implements UniqueId, Highlightable {
 
     public Vector2D getSpeed() {
         return speed;
+    }
+
+    public Vector2D getDirection() {
+        return direction;
     }
 
     public Car getCar() {
@@ -66,5 +75,15 @@ public class WaveFront implements UniqueId, Highlightable {
     @Override
     public void highlight() {
         Highlighted.setHighlightedWaveFront(this);
+    }
+
+    @Override
+    public SimpleBooleanProperty isChangeProperty() {
+        return Highlighted.isChangeWaveFrontProperty();
+    }
+
+    @Override
+    public Object getHighlighted() {
+        return Highlighted.getHighlightedWaveFront();
     }
 }

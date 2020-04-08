@@ -3,6 +3,8 @@ package tomek.szypula.controller;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,6 +36,8 @@ public class StageManager {
     Model model;
     View view;
     DataManagementSystem dataManagementSystem;
+    SimpleBooleanProperty simpleBooleanPropertyPlay = new SimpleBooleanProperty(true);
+    SimpleDoubleProperty simpleDoublePropertyFrameRate = new SimpleDoubleProperty(100);
 
     //Model properties
     List<Road> roads = new ArrayList<>();
@@ -118,19 +122,25 @@ public class StageManager {
         editorMenu.getItems().add(undoItem);
 
         //Simulation
-        Menu SimulationMenu = new Menu("Simulation");
-        MenuItem setOnRamp = new MenuItem("Select On Ramp Road");
-        setOnRamp.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
-        setOnRamp.setOnAction(actionEvent -> {
+        Menu simulationMenu = new Menu("Simulation");
+        CheckMenuItem pausePlayMenuItem = new CheckMenuItem("Play/Pause");
+        pausePlayMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN));
+        simpleBooleanPropertyPlay.bindBidirectional(pausePlayMenuItem.selectedProperty());
+        simpleBooleanPropertyPlay.addListener((observableValue, newValue, oldValue) -> {
+            if (newValue)
+                timeline.play();
+            else
+                timeline.pause();
+        } );
 
-        });
+        simulationMenu.getItems().addAll(pausePlayMenuItem);
 
         //MenuItems actionEvents
         simulationItem.setOnAction(actionEvent -> loadSimulation());
         editorItem.setOnAction(actionEvent -> loadEditor());
         menuItem.setOnAction(actionEvent -> loadMainMenu());
 
-        menuBar.getMenus().addAll(helpMenu,fileMenu,openMenu,editorMenu);
+        menuBar.getMenus().addAll(helpMenu,fileMenu,openMenu,editorMenu,simulationMenu);
 
         return menuBar;
     }
@@ -176,23 +186,19 @@ public class StageManager {
 
 
     public void loadSimulation() {
-            setupModelScene();
+        setupModelScene();
         model = new Model(roads);
         view = new View(model,modelControlsSplitPane);
         dataManagementSystem.setModel(model);
 
         window.setScene(mainScene);
-        if(timeline==null) {
             timeline = new Timeline(new KeyFrame(
                     Duration.millis(100),
                     ae -> {
                         step();
                     }));
             timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.play();
-        }
-        else
-            timeline.play();
+            simpleBooleanPropertyPlay.setValue(true);
     }
 
     public void loadMainMenu(){
