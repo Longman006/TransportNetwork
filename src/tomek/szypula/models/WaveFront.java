@@ -55,8 +55,8 @@ public class WaveFront implements UniqueId, Highlightable {
         return speed;
     }
 
-    public Vector2D getDirection() {
-        return direction;
+    public Vector2D getDirectionCopy() {
+        return new Vector2D(direction);
     }
 
     public Car getCar() {

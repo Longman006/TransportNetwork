@@ -111,6 +111,7 @@ public class DataManagementSystem {
             updateFilePositionSpeed();
         if (isDistanceSpeedFile())
             updateFileOnRampDistanceSpeed();
+        if (isWaveFrontDistanceSpeedFile())
     }
 
     public void setModel(Model model) {

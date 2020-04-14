@@ -1,5 +1,11 @@
 package tomek.szypula.math;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  * Created by longman on 11.06.17.
  */
@@ -37,5 +43,22 @@ public final class Vector2DMath {
         return v2.getLength()-v1.getLength();
     }
 
+    // @return a list of anchors to modify points in the format [x1, y1, x2, y2...]
+    public static ObservableList<Vector2D> createControlVectorsForPoints(final ObservableList<Double> points) {
+        ObservableList<Vector2D> anchors = FXCollections.observableArrayList();
+
+        for (int i = 0; i < points.size(); i+=2) {
+            final int idx = i;
+            Vector2D anchor = new Vector2D(points.get(i),points.get(i + 1));
+
+            anchor.xProperty().addListener((ov, oldX, x) -> points.set(idx, (double) x));
+
+            anchor.yProperty().addListener((ov, oldY, y) -> points.set(idx + 1, (double) y));
+
+            anchors.add(anchor);
+        }
+
+        return anchors;
+    }
 
 }
