@@ -1,11 +1,10 @@
-package tomek.szypula.controller;
+package tomek.szypula.file;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 public class DataWriter {
     PrintWriter printWriter;

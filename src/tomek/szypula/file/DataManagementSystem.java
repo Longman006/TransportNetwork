@@ -1,7 +1,8 @@
-package tomek.szypula.controller;
+package tomek.szypula.file;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import tomek.szypula.controller.Updatable;
 import tomek.szypula.models.Car;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
@@ -9,49 +10,20 @@ import tomek.szypula.models.Road;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataManagementSystem {
+public class DataManagementSystem implements Updatable {
     Model model;
     List<Road> onRamps = new ArrayList<>();
 
-    //Properties
-    BooleanProperty positionSpeedFile = new SimpleBooleanProperty(false);
-    BooleanProperty distanceSpeedFile = new SimpleBooleanProperty(false);
 
-    public BooleanProperty distanceSpeedFileProperty() {
-        return distanceSpeedFile;
-    }
-
-    public BooleanProperty positionSpeedFileProperty() {
-        return positionSpeedFile;
-    }
-
-    public boolean isPositionSpeedFile() {
-        return positionSpeedFile.get();
-    }
-
-    public boolean isDistanceSpeedFile() {
-        return distanceSpeedFile.get();
-    }
-
-    //DataWriters
-    List<DataWriter> datawritersOnRamp = new ArrayList<>();
-    DataWriter writerPositionSpeed;
-
-    //headers
-    String positionSpeedHeader = "t\tid\tx\ty\tv\n";
-    String distanceToOnRampSpeedHeader = "t\tid\td\tv\t\n";
-
-    //filenames
-    String filenamePositionSpeed = "xyv.txt";
-    String filenameDistanceSpeed = "dv.txt";
+    PositionSpeedFile positionSpeedFile;
+    List<DistanceSpeedToOnRampFile> distanceSpeedToOnRampFileList
 
     public DataManagementSystem(Model model) {
-        this.model = model;
-        writerPositionSpeed = new DataWriter(positionSpeedHeader, filenamePositionSpeed);
-        distanceSpeedFileProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (newValue)
-                setupDistanceSpeedOnRampFiles();
-        });
+        positionSpeedFile = new PositionSpeedFile(model);
+        distanceSpeedToOnRampFileList = new ArrayList<>();
+        for (Road:
+             road) {
+        }
 
     }
 
@@ -111,7 +83,6 @@ public class DataManagementSystem {
             updateFilePositionSpeed();
         if (isDistanceSpeedFile())
             updateFileOnRampDistanceSpeed();
-        if (isWaveFrontDistanceSpeedFile())
     }
 
     public void setModel(Model model) {

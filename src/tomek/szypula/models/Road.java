@@ -1,5 +1,6 @@
 package tomek.szypula.models;
 
+import tomek.szypula.controller.UniqueId;
 import tomek.szypula.math.Line;
 import tomek.szypula.math.LineSegment;
 import tomek.szypula.math.Vector2D;
@@ -7,8 +8,9 @@ import tomek.szypula.math.Vector2DMath;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class Road {
+public class Road implements UniqueId {
     /**
      * The physical representation of the road
      */
@@ -30,6 +32,7 @@ public class Road {
     TrafficLights trafficLightsEnd = new TrafficLights();
     OutOfService outOfService = new OutOfService();
     OnRamp onRamp = new OnRamp();
+    private UUID uuid = UUID.randomUUID();
 
     public OnRamp getOnRamp() { return onRamp; }
 
@@ -163,5 +166,10 @@ public class Road {
 
     public TrafficLights getTrafficLightsEnd() {
         return trafficLightsEnd;
+    }
+
+    @Override
+    public String getId() {
+        return uuid.toString();
     }
 }

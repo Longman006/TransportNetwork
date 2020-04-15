@@ -22,11 +22,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import tomek.szypula.file.DataManagementSystem;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 import tomek.szypula.view.View;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
