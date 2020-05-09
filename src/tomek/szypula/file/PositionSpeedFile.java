@@ -7,7 +7,7 @@ import tomek.szypula.models.Road;
 public class PositionSpeedFile extends FileManager {
 
     PositionSpeedFile(Model model){
-        super("time\tCar ID\tx\ty\tSpeed\n","CarsPositionSpeed.txt",model);
+        super("time\tCarID\tx\ty\tSpeed\n","CarsPositionSpeed.txt",model);
     }
 
     @Override

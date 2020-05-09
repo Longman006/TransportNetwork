@@ -11,7 +11,7 @@ import java.util.List;
 public class DistanceSpeedToOnRampFile extends FileManager {
 
     public DistanceSpeedToOnRampFile(Model model) {
-        super("Time\tCar ID\tDistance\tSpeed\tOnRamp ID\n", "CarDistanceToOnRamp.txt",model);
+        super("Time\tCarID\tDistance\tSpeed\tOnRampID\n", "CarDistanceToOnRamp.txt",model);
     }
 
 

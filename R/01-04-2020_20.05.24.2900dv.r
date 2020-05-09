@@ -1,7 +1,7 @@
 library(ggplot2)
 
 f <- file.choose()
-df <- read.table(f)
+df <- read.table(f,header = TRUE)
 df$id<-as.factor(df$id)
 allDataPlot<-ggplot(df,aes(x=t,y=d,color=v))+geom_point()
 

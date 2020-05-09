@@ -9,7 +9,7 @@ import java.util.List;
 
 public class WaveFrontDistanceSpeedToOnRamp extends FileManager{
     public WaveFrontDistanceSpeedToOnRamp(Model model) {
-        super("Time\tWaveFront ID\tDistance\tSpeed\tOnRamp ID\n", "WaveFrontDistanceToOnRamp.txt", model);
+        super("Time\tWaveFrontID\tDistance\tSpeed\tOnRampID\n", "WaveFrontDistanceToOnRamp.txt", model);
 
     }
 
