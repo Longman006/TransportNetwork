@@ -8,7 +8,7 @@ import java.util.List;
 public class Route {
 
     //The maximum number of roads stored (both past and future)
-    public static final int MAX_SIZE = 3 ;
+    public static final int MAX_SIZE = 2 ;
     private final Car car;
     //index 0 corresponds to the current road.
     private List<Road> roadList = new ArrayList<>();
@@ -171,6 +171,24 @@ public class Route {
             }
         }
         return car;
+    }
+    public Car getPreviousCarOnRoute(){
+        if(getCurrentRoad().hasPreviousCar(car))
+            return getCurrentRoad().getPreviousCar(car);
+        for (int i = 0; i < pastRoadList.size(); i++){
+            Road road = pastRoadList.get(i);
+            if (road.hasPreviousCar(car))
+                return road.getPreviousCar(car);
+        }
+        return new Car(new Vector2D(),new Vector2D(),TrafficManagementSystem.getCarParameters());
+    }
+    public boolean isCarInVicinityOnRoute(Car carOnRoute){
+        //Temporary simple solution, but should be sufficient
+        if (carOnRoute.equals(getNextCarOnRoute()) || carOnRoute.equals(getPreviousCarOnRoute())) {
+            return true;
+        }
+        else
+            return false;
     }
 
     public List<Road> getRoadList() {

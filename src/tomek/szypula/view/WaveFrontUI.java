@@ -34,46 +34,6 @@ public class WaveFrontUI implements CreateUI{
 
     public WaveFrontUI(WaveFront wavefront){
         this.wavefront = wavefront;
-        ObjectBinding<Double> startxBinding = Bindings.createObjectBinding(new Callable<Double>() {
-            @Override
-            public Double call() throws Exception {
-                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed()).normalize();
-                double x = wavefront.getPosition().getX() + normal.getX()*-height;
-                return x;
-            }
-        },wavefront.getPosition().xProperty());
-        ObjectBinding<Double> startyBinding = Bindings.createObjectBinding(new Callable<Double>() {
-            @Override
-            public Double call() throws Exception {
-                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed()).normalize();
-                double y = wavefront.getPosition().getY() + normal.getY()*-height;
-                return y;
-            }
-        },wavefront.getPosition().yProperty());
-        ObjectBinding<Double> endyBinding = Bindings.createObjectBinding(new Callable<Double>() {
-            @Override
-            public Double call() throws Exception {
-                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed()).normalize();
-                double y = wavefront.getPosition().getY() + normal.getY()*height;
-                return y;
-            }
-        },wavefront.getPosition().yProperty());
-        ObjectBinding<Double> endxBinding = Bindings.createObjectBinding(new Callable<Double>() {
-            @Override
-            public Double call() throws Exception {
-                Vector2D normal = Vector2DMath.getNormalVector2D(wavefront.getSpeed()).normalize();
-                double x = wavefront.getPosition().getX() + normal.getX()*height;
-                return x;
-            }
-        },wavefront.getPosition().xProperty());
-
-        lineShape.startXProperty().bind(startxBinding);
-        lineShape.startYProperty().bind(startyBinding);
-        lineShape.endXProperty().bind(endxBinding);
-        lineShape.endYProperty().bind(endyBinding);
-        lineShape.setStrokeWidth(3);
-
-
 
         triangle = new Polygon();
         triangle.getPoints().addAll(
@@ -94,11 +54,11 @@ public class WaveFrontUI implements CreateUI{
                     public Color call() throws Exception {
                         Color color;
                         if (wavefront.equals(Highlighted.getHighlightedWaveFront())) {
-                            color = Color.hsb(0, 0.94, 0.94, 0.94);
+                            color = Color.hsb(360, 0.94, 0.94, 0.94);
                             dropShadow.setColor(Color.ROYALBLUE);
                         }
                         else
-                            color = Color.hsb(Math.min(-maxColor *wavefront.getSpeed().getLength()  / wavefront.getCar().getParameters().getDesiredSpeed()+maxColor, 360),0.94,0.54,0.84);
+                            color = Color.hsb(Math.min(-maxColor *wavefront.getSpeed().getLength()  / wavefront.getCar().getParameters().getDesiredSpeed()+maxColor, 360),0.94,0.74,0.64);
                         dropShadow.setColor(Color.BLACK);
                         return color;
                     }

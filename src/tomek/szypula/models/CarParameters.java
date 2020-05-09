@@ -33,8 +33,12 @@ public class CarParameters {
      */
     private DoubleProperty size = new SimpleDoubleProperty(0);
 
+    //public CarParameters() {
+//        this(12.0, 2.0, 2.0, 3.0,1.5 ,4.0, 3);
+//    }
+
     public CarParameters() {
-        this(12.0, 2.0, 2.0, 3.0,1.5 ,4.0, 3);
+        this(30, 2.0, 3.0, 0.25,20.0 ,1.0, 6);
     }
 
     /**

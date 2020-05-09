@@ -30,12 +30,14 @@ public class WaveFrontManager {
         //Find coresponding existing wavefronts and update
         for (WaveFront wavefront :
                 waveFronts) {
+            Route routeOfCurrentCar = wavefront.getCar().getDriver().getRoute();
             for (int i = 0 ; i < newWaveFronts.size() ; i++){
-                if (wavefront.inVicinity(newWaveFronts.get(i).getCar())){
+                if (wavefront.getCar().equals(newWaveFronts.get(i).getCar()) || routeOfCurrentCar.isCarInVicinityOnRoute(newWaveFronts.get(i).getCar())){
                     WaveFront removed = newWaveFronts.remove(i);
                     wavefront.setCar(removed.getCar(),removed.getCurrentRoad());
                     break;
                 }
+                //If we looped through all the newwavefronts then this wavefront should be removed.
                 if (i == newWaveFronts.size()-1){
                     waveFrontsToRemove.add(wavefront);
                 }
@@ -82,7 +84,7 @@ public class WaveFrontManager {
         return waveFronts;
     }
     private boolean checkIfWaveFront(Car car, Car previousCar){
-        if(car.hasSmallSpeed() && Vector2DMath.valueDifference(previousCar.getSpeedCopy(),car.getSpeedCopy()) < 0)
+        if(car.hasSmallSpeed() && Vector2DMath.valueDifference(previousCar.getSpeedCopy(),car.getSpeedCopy()) > 0 )
             return true;
         return false;
     }

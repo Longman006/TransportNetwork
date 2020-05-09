@@ -113,4 +113,15 @@ public class TrafficManagementSystem {
         return carListRemoved;
     }
 
+    public List<Road> getOnRamps() {
+        List<Road> onRamps = new ArrayList<>();
+
+        for (Road road :
+                getRoadList()) {
+            if (road.getOnRamp().isOnRamp())
+                onRamps.add(road);
+        }
+
+        return onRamps;
+    }
 }

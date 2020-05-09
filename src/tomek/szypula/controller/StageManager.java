@@ -23,6 +23,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import tomek.szypula.file.DataManagementSystem;
+import tomek.szypula.file.FileManager;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 import tomek.szypula.view.View;
@@ -86,12 +87,15 @@ public class StageManager {
 
         //File
         Menu fileMenu = new Menu("File");
-        CheckMenuItem xyvItem = new CheckMenuItem("t x y v");
-        CheckMenuItem dvItem = new CheckMenuItem("t d v");
-        dataManagementSystem.positionSpeedFileProperty().bind(xyvItem.selectedProperty());
-        dataManagementSystem.distanceSpeedFileProperty().bind(dvItem.selectedProperty());
+        List<CheckMenuItem> checkMenuItems = new ArrayList<>();
+        for (FileManager fileManager:
+        dataManagementSystem.getFileManagers()){
+            CheckMenuItem checkMenuItem = new CheckMenuItem(fileManager.getFileNameSuffix());
+            fileManager.saveToFileProperty().bind(checkMenuItem.selectedProperty());
+            checkMenuItems.add(checkMenuItem);
+        }
 
-        fileMenu.getItems().addAll(xyvItem,dvItem);
+        fileMenu.getItems().addAll(checkMenuItems);
 
         //Open
         Menu openMenu = new Menu("Open");
@@ -127,10 +131,12 @@ public class StageManager {
         pausePlayMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN));
         simpleBooleanPropertyPlay.bindBidirectional(pausePlayMenuItem.selectedProperty());
         simpleBooleanPropertyPlay.addListener((observableValue, newValue, oldValue) -> {
-            if (newValue)
-                timeline.play();
-            else
-                timeline.pause();
+            if (timeline != null) {
+                if (newValue)
+                    timeline.play();
+                else
+                    timeline.pause();
+            }
         } );
 
         simulationMenu.getItems().addAll(pausePlayMenuItem);
@@ -197,8 +203,9 @@ public class StageManager {
                     ae -> {
                         step();
                     }));
+
             timeline.setCycleCount(Animation.INDEFINITE);
-            simpleBooleanPropertyPlay.setValue(true);
+            timeline.play();
     }
 
     public void loadMainMenu(){

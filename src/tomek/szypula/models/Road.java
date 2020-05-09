@@ -1,5 +1,8 @@
 package tomek.szypula.models;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import tomek.szypula.controller.Highlightable;
+import tomek.szypula.controller.Highlighted;
 import tomek.szypula.controller.UniqueId;
 import tomek.szypula.math.Line;
 import tomek.szypula.math.LineSegment;
@@ -10,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Road implements UniqueId {
+public class Road implements UniqueId, Highlightable {
     /**
      * The physical representation of the road
      */
@@ -120,10 +123,6 @@ public class Road implements UniqueId {
                 getEnd() + "\n" ;
     }
 
-    //Identifier for filenaming
-    public int identifier(){
-        return (int)(getEnd().getX() + getStart().getX() + getEnd().getY() + getStart().getY());
-    }
     public int indexOf(Car car){
         return carList.indexOf(car);
     }
@@ -171,5 +170,20 @@ public class Road implements UniqueId {
     @Override
     public String getId() {
         return uuid.toString();
+    }
+
+    @Override
+    public void highlight() {
+        Highlighted.setHighlightedRoad(this);
+    }
+
+    @Override
+    public SimpleBooleanProperty isChangeProperty() {
+        return Highlighted.isChangeRoadProperty();
+    }
+
+    @Override
+    public Object getHighlighted() {
+        return Highlighted.getHighlightedRoad();
     }
 }

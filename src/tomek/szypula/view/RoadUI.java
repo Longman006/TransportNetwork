@@ -1,5 +1,7 @@
 package tomek.szypula.view;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
@@ -7,9 +9,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineJoin;
+import tomek.szypula.controller.Highlighted;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
 import tomek.szypula.models.Road;
+
+import java.util.concurrent.Callable;
 
 public class RoadUI implements CreateUI{
 
@@ -70,6 +75,22 @@ public class RoadUI implements CreateUI{
         triangle.setSmooth(true);
         triangle.setFill(Color.RED);
 
+        ObjectBinding<Color> colorHighlightBinding = Bindings.createObjectBinding(
+                new Callable<Color>() {
+                    @Override
+                    public Color call() throws Exception {
+                        Color color;
+                        if (road.equals(Highlighted.getHighlightedRoad()))
+                            color = Color.hsb(360, 0.64, 0.84, 0.84);
+                        else
+                            color = Color.LIGHTGRAY;
+                        return color;
+                    }
+                },Highlighted.isChangeRoadProperty()
+        );
+        lineShape.strokeProperty().bind(colorHighlightBinding);
+
+
         onRampUI = new OnRampUI(road,this);
         outOfServiceUI = new OutOfServiceUI(road,this);
 
@@ -79,6 +100,9 @@ public class RoadUI implements CreateUI{
             }
             else if (e.isAltDown()) {
                 road.getOutOfService().switchValue();
+            }
+            else {
+                road.highlight();
             }
             e.consume();
         };

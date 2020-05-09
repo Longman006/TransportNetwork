@@ -31,15 +31,14 @@ public class OnRampUI implements CreateUI {
         Vector2D start1,start2,end1,end2;
         Vector2D direction = road.getLineSegment().getDirection();
         Vector2D normal = Vector2DMath.getNormalVector2D(road.getLineSegment().getDirection()).multiply(width/2);
-        Vector2D start = road.getStart();
-        Vector2D end = road.getEnd();
+        Vector2D start = road.getStart().addVector2D(Vector2DMath.multiplyVector2D(direction,length).subtractVector2D(Vector2DMath.multiplyVector2D(direction,width*2)));
 
         List<Vector2D> startingPoints = new ArrayList<>();
         List<Vector2D> endPoints = new ArrayList<>();
 
         start1 = Vector2DMath.vector2DSum(start,normal).addVector2D(direction);
         end1 = Vector2DMath.vector2DSubtract(normal,start).addVector2D(direction);
-        //direction.multiply(length);
+        direction.multiply(width/2);
         start2 = Vector2DMath.vector2DSum(start1,direction).addVector2D(direction).addVector2D(direction);
         end2 = Vector2DMath.vector2DSum(end1,direction).addVector2D(direction).addVector2D(direction);
 
@@ -55,23 +54,12 @@ public class OnRampUI implements CreateUI {
                 lineShape.setSmooth(true);
                 lineShape.setStrokeWidth( width/6);
                 lineShape.setStrokeLineJoin(StrokeLineJoin.MITER);
-                lineShape.setStroke(Color.YELLOW);
+                lineShape.setStroke(Color.YELLOWGREEN);
                 lineShape.setOpacity(0.0);
                 lines.add(lineShape);
             }
         }
-
-        Vector2D endLine = Vector2DMath.vector2DSum(start,Vector2DMath.multiplyVector2D(direction,width));
-        Vector2D startLine = start;
-        lineShape = new Line(startLine.getX(),startLine.getY(),endLine.getX(),endLine.getY());
-        lineShape.setSmooth(true);
-        lineShape.setStrokeWidth( width);
-        lineShape.setStrokeLineJoin(StrokeLineJoin.MITER);
-        lineShape.setStroke(Color.YELLOWGREEN);
-        //lineShape.setOpacity(0.0);
-
         //Converting the BooleanProperty to Double to use as a binding with the opacity
-        DoubleProperty opacityProperty = lineShape.opacityProperty();
         DoubleBinding opacityDoubleBinding = new DoubleBinding() {
             {
                 super.bind(road.getOnRamp().onRampProperty());
@@ -81,12 +69,15 @@ public class OnRampUI implements CreateUI {
                 return road.getOnRamp().isOnRamp() ? 0.8 : 0.0;
             }
         };
-        opacityProperty.bind(opacityDoubleBinding);
+        for (Line line : lines){
+            DoubleProperty opacity = line.opacityProperty();
+            opacity.bind(opacityDoubleBinding);
+        }
 
     }
     @Override
     public void createUI(Group parent) {
-        parent.getChildren().addAll(lineShape);
+        parent.getChildren().addAll(lines);
     }
 
     @Override

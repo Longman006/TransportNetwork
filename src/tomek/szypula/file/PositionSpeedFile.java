@@ -6,17 +6,8 @@ import tomek.szypula.models.Road;
 
 public class PositionSpeedFile extends FileManager {
 
-    Model model;
-    DataWriter dataWriter;
-
     PositionSpeedFile(Model model){
-        super("xyv.txt", "t\tid\tx\ty\tv\n");
-        this.model = model;
-    }
-
-    @Override
-    void setupFile() {
-        dataWriter = new DataWriter(getFileHeader(), getFileNameSuffix());
+        super("time\tCar ID\tx\ty\tSpeed\n","CarsPositionSpeed.txt",model);
     }
 
     @Override

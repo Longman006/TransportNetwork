@@ -26,16 +26,18 @@ public class ControlPanelUI implements CreateUI{
     public ControlPanelUI(Model model) {
         this.model = model;
         CarParameters carParameters = TrafficManagementSystem.getCarParameters();
-        VBox desiredSpeed = getSliderText("Desired Speed",1,30,11.5,carParameters.desiredSpeedProperty());
-        VBox acceleration = getSliderText("Acceleration",0,20,1.5,carParameters.accelerationProperty());
-        VBox timegap = getSliderText("Time Gap", 0,10,1,carParameters.timeGapProperty());
-        VBox minimumGap = getSliderText("Minimum Gap",0,10,2,carParameters.minimumGapProperty());
-        VBox deceleration = getSliderText("Deceleration",1,20,1.3,carParameters.decelerationProperty());
-        VBox accelerationExponent = getSliderText("Acceleration Exponent",1,10,4.0,carParameters.accelerationExponentProperty());
-        VBox size = getSliderText("Size",1,10,3,carParameters.sizeProperty());
+        VBox desiredSpeed = getSliderText("Desired Speed",1,30,carParameters.getDesiredSpeed(),carParameters.desiredSpeedProperty());
+        VBox acceleration = getSliderText("Acceleration",0,20,carParameters.getAcceleration(),carParameters.accelerationProperty());
+        VBox timegap = getSliderText("Time Gap", 0,10,carParameters.getTimeGap(),carParameters.timeGapProperty());
+        VBox minimumGap = getSliderText("Minimum Gap",0,10,carParameters.getMinimumGap(),carParameters.minimumGapProperty());
+        VBox deceleration = getSliderText("Deceleration",1,20,carParameters.getDeceleration(),carParameters.decelerationProperty());
+        VBox accelerationExponent = getSliderText("Acceleration Exponent",1,10,carParameters.getAccelerationExponent(),carParameters.accelerationExponentProperty());
+        VBox size = getSliderText("Size",1,10,carParameters.getSize(),carParameters.sizeProperty());
         VBox numberOfCars = getSliderText("Number Of Cars",0,600,model.getTrafficManagementSystem().getNumberOfCars(),model.getTrafficManagementSystem().numberOfCarsProperty());
         HBox carID = getDisplayLabel("Car",Highlighted.getHighlightedCar());
         HBox waveFrontID = getDisplayLabel("WaveFront",Highlighted.getHighlightedWaveFront());
+        HBox roadID = getDisplayLabel("Road",Highlighted.getHighlightedRoad());
+        HBox timeDisplay = getTimeDisplay();
 
 //        Label labelId = new Label("Car ID : ");
 //        TextField textFieldId = new TextField();
@@ -52,7 +54,18 @@ public class ControlPanelUI implements CreateUI{
 //            Highlighted.setIsChangeCar(false);
 //        });
 
-        vBox.getChildren().addAll(desiredSpeed,acceleration,timegap,minimumGap,deceleration,accelerationExponent,size,numberOfCars,carID,waveFrontID);
+        vBox.getChildren().addAll(desiredSpeed,acceleration,timegap,minimumGap,deceleration,accelerationExponent,size,numberOfCars,carID,waveFrontID,roadID,timeDisplay);
+    }
+
+    private HBox getTimeDisplay() {
+        Label labelId = new Label("Time" + " : ");
+        TextField textField = new TextField();
+        textField.setPrefWidth(250);
+        HBox idBox = new HBox();
+        idBox.getChildren().addAll(labelId, textField);
+        idBox.setSpacing(10);
+        textField.textProperty().bind(model.timeProperty().asString());
+        return idBox;
     }
 
     public VBox getControlPane() {

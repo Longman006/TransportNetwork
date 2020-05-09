@@ -1,5 +1,7 @@
 package tomek.szypula.models;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import tomek.szypula.math.Vector2D;
 
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ public class Model {
     private List<Road> roadList ;
     private TrafficManagementSystem tms;
     private WaveFrontManager wfm;
-    private int time = 0;
+    private IntegerProperty time = new SimpleIntegerProperty();
 
     public Model(List<Road> roadList) {
         this.roadList = roadList;
@@ -20,10 +22,6 @@ public class Model {
 
     public List<Road> getRoadList() {
         return roadList;
-    }
-
-    public int getTime() {
-        return time;
     }
 
     private double calculateNewSpeed(Car car){
@@ -61,7 +59,7 @@ public class Model {
         }
         tms.update();
         wfm.updateWaveFronts();
-        time++;
+        time.setValue(time.getValue()+1);
     }
 
     private void updatePosition(Car car, Road road){
@@ -83,6 +81,13 @@ public class Model {
                 car.setSpeed(new Vector2D());
             }
         }
+    }
+
+    public IntegerProperty timeProperty() {
+        return time;
+    }
+    public int getTime() {
+        return time.getValue();
     }
 
     public TrafficManagementSystem getTrafficManagementSystem() {

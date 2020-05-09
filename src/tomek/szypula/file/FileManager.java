@@ -3,19 +3,22 @@ package tomek.szypula.file;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import tomek.szypula.controller.Updatable;
+import tomek.szypula.models.Model;
 
 public abstract class FileManager implements Updatable {
     BooleanProperty saveToFile = new SimpleBooleanProperty();
 
     String fileNameSuffix;
     String fileHeader;
+    DataWriter dataWriter;
+    Model model;
 
-    abstract void setupFile();
     abstract void updateFile();
 
-    FileManager(String fileHeader, String fileNameSuffix){
+    FileManager(String fileHeader, String fileNameSuffix,Model model){
         this.fileHeader = fileHeader;
         this.fileNameSuffix = fileNameSuffix;
+        this.model = model;
 
         saveToFileProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue)
@@ -32,16 +35,20 @@ public abstract class FileManager implements Updatable {
         return saveToFile;
     }
 
-    public void setSaveToFile(boolean saveToFile) {
-        this.saveToFile.set(saveToFile);
-    }
-
     public String getFileNameSuffix() {
         return fileNameSuffix;
     }
 
     public String getFileHeader() {
         return fileHeader;
+    }
+
+    void setupFile() {
+        dataWriter = new DataWriter(getFileHeader(), getFileNameSuffix());
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 
     @Override
