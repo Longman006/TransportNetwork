@@ -1,1 +1,0 @@
-Time	WaveFront ID	Distance	Speed	OnRamp ID

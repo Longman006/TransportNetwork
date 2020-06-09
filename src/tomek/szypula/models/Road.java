@@ -157,6 +157,9 @@ public class Road implements UniqueId, Highlightable {
     public boolean containsCar(Car car){
         return carList.contains(car);
     }
+    public Car getLastCar(){
+        return carList.get(carList.size()-1);
+    }
 
     public double getLength() {
         return Vector2DMath.distance(lineSegment.getStart(), lineSegment.getEnd());
@@ -186,4 +189,5 @@ public class Road implements UniqueId, Highlightable {
     public Object getHighlighted() {
         return Highlighted.getHighlightedRoad();
     }
+
 }

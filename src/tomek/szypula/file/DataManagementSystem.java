@@ -1,13 +1,8 @@
 package tomek.szypula.file;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import tomek.szypula.controller.Updatable;
-import tomek.szypula.models.Car;
 import tomek.szypula.models.Model;
-import tomek.szypula.models.Road;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +16,8 @@ public class DataManagementSystem implements Updatable {
         fileManagers.add(new DistanceSpeedToOnRampFile(model));
         fileManagers.add(new PositionSpeedFile(model));
         fileManagers.add(new WaveFrontDistanceSpeedToOnRamp(model));
+        fileManagers.add(new DistanceToStartOfRoadFile(model));
+        fileManagers.add(new DensityFileToStartOfRoad(model));
     }
 
     //End User methods

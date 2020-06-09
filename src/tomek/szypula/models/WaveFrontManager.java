@@ -2,11 +2,9 @@ package tomek.szypula.models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import tomek.szypula.math.Vector2DMath;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class WaveFrontManager {
 
@@ -37,7 +35,7 @@ public class WaveFrontManager {
                     wavefront.setCar(removed.getCar(),removed.getCurrentRoad());
                     break;
                 }
-                //If we looped through all the newwavefronts then this wavefront should be removed.
+                //If we looped through all the new wavefronts then this wavefront should be removed.
                 if (i == newWaveFronts.size()-1){
                     waveFrontsToRemove.add(wavefront);
                 }
@@ -84,7 +82,10 @@ public class WaveFrontManager {
         return waveFronts;
     }
     private boolean checkIfWaveFront(Car car, Car previousCar){
-        if(car.hasSmallSpeed() && Vector2DMath.valueDifference(previousCar.getSpeedCopy(),car.getSpeedCopy()) > 0 )
+//        if(car.hasSmallSpeed() && Vector2DMath.valueDifference(previousCar.getSpeedCopy(),car.getSpeedCopy()) > 0 )
+//            return true;
+//        return false;
+        if (car.getSpeedDensityIndex() > 0.02)
             return true;
         return false;
     }

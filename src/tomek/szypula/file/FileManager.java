@@ -3,6 +3,7 @@ package tomek.szypula.file;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import tomek.szypula.controller.Updatable;
+import tomek.szypula.depricated.DataWriter;
 import tomek.szypula.models.Model;
 
 public abstract class FileManager implements Updatable {

@@ -15,6 +15,7 @@ import tomek.szypula.controller.Highlighted;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.models.Car;
 import java.util.concurrent.Callable;
+import java.util.jar.JarOutputStream;
 
 public class CarUI implements CreateUI{
     private Car car;
@@ -60,6 +61,7 @@ public class CarUI implements CreateUI{
             @Override
             public void handle(MouseEvent mouseEvent) {
                 car.highlight();
+                System.out.println("SD Index : "+car.getSpeedDensityIndex());
             }
         };
 

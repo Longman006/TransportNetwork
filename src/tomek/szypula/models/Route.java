@@ -161,32 +161,37 @@ public class Route {
         for (int i = 0; i < roadList.size(); i++) {
             Road road = roadList.get(i);
             if (road == null)
-                return new Car(new Vector2D(), new Vector2D(), TrafficManagementSystem.getCarParameters());
-            if (road.hasNextCar(car)) {
+                return null;
+            else if (road.hasNextCar(car)) {
                 return road.getNextCar(car);
             } else if (i == roadList.size() - 1 && isLoop() && road.hasPreviousCar(car)) {
                 return road.getPreviousCar(car);
             } else if (road.getTrafficLightsEnd().isStop()) {
-                return new Car(new Vector2D(), new Vector2D(), TrafficManagementSystem.getCarParameters());
+                return null;
             }
         }
-        return car;
+        return null;
     }
     public Car getPreviousCarOnRoute(){
         if(getCurrentRoad().hasPreviousCar(car))
             return getCurrentRoad().getPreviousCar(car);
         for (int i = 0; i < pastRoadList.size(); i++){
             Road road = pastRoadList.get(i);
-            if (road.hasPreviousCar(car))
-                return road.getPreviousCar(car);
+            if (!road.isEmpty())
+                return road.getLastCar();
         }
-        return new Car(new Vector2D(),new Vector2D(),TrafficManagementSystem.getCarParameters());
+        return null;
     }
     public boolean isCarInVicinityOnRoute(Car carOnRoute){
         //Temporary simple solution, but should be sufficient
-        if (carOnRoute.equals(getNextCarOnRoute()) || carOnRoute.equals(getPreviousCarOnRoute())) {
+//        if (carOnRoute.equals(getNextCarOnRoute()) || carOnRoute.equals(getPreviousCarOnRoute())) {
+//            return true;
+//        }
+//        else
+//            return false;
+//
+        if(car.getDistanceToCar(carOnRoute) < (car.getSize()*8+car.getParameters().getMinimumGap()))
             return true;
-        }
         else
             return false;
     }

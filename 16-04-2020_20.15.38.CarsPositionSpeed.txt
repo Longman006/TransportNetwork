@@ -1,1 +1,0 @@
-time	Car ID	x	y	Speed

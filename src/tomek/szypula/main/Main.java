@@ -29,45 +29,6 @@ public class Main extends Application {
         Controller controller = new Controller(primaryStage);
         primaryStage.setTitle("Transport Network");
 
-//        ArrayList<String> input = new ArrayList<String>();
-//
-//        theScene.setOnKeyPressed(
-//                new EventHandler<KeyEvent>()
-//                {
-//                    public void handle(KeyEvent e)
-//                    {
-//                        String code = e.getCode().toString();
-//                        System.out.println("input key code : "+code);
-//
-//                        // only add once... prevent duplicates
-//                        if ( !input.contains(code) )
-//                            input.add( code );
-//                    }
-//                });
-//
-//        theScene.setOnKeyReleased(
-//                new EventHandler<KeyEvent>()
-//                {
-//                    public void handle(KeyEvent e)
-//                    {
-//                        String code = e.getCode().toString();
-//                        input.remove( code );
-//                    }
-//                });
-
-
-//        Timeline timeline = new Timeline(new KeyFrame(
-//                Duration.millis(80),
-//                ae -> {
-//                    controller.step();
-//                    if (input.contains("LEFT")) {
-//                        //controller.addCars();
-//                    }
-//                    else if (input.contains("RIGHT")) {
-//                        System.out.println("Right");
-//                    }}));
-//        timeline.setCycleCount(Animation.INDEFINITE);
-//        timeline.play();
     }
 
 

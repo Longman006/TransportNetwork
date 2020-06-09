@@ -3,12 +3,12 @@ package tomek.szypula.models;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import tomek.szypula.controller.Highlightable;
 import tomek.szypula.controller.Highlighted;
 import tomek.szypula.controller.UniqueId;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
-import tomek.szypula.depricated.ColorValues;
 
 import java.util.UUID;
 
@@ -19,6 +19,8 @@ public class Car implements UniqueId, Highlightable {
     Driver driver;
     Vector2D direction;
     UUID uuid;
+    DoubleProperty speedDensityIndex = new SimpleDoubleProperty(0);
+    BooleanProperty isCongestionWave = new SimpleBooleanProperty(false);
 
 
     public Car(Vector2D position, Vector2D direction, CarParameters parameters) {
@@ -88,7 +90,7 @@ public class Car implements UniqueId, Highlightable {
     @Override
     public String toString() {
         return "Car{" +
-                "position=" + position +
+                "uuid=" + getId() +
                 '}';
     }
     public double getDistanceToCar(Car car){
@@ -107,6 +109,30 @@ public class Car implements UniqueId, Highlightable {
 
     public String getId() {
         return uuid.toString();
+    }
+
+    public double getSpeedDensityIndex() {
+        return speedDensityIndex.get();
+    }
+
+    public DoubleProperty speedDensityIndexProperty() {
+        return speedDensityIndex;
+    }
+
+    public void setSpeedDensityIndex(double speedDensityIndex) {
+        this.speedDensityIndex.set(speedDensityIndex);
+    }
+
+    public boolean isIsCongestionWave() {
+        return isCongestionWave.get();
+    }
+
+    public BooleanProperty isCongestionWaveProperty() {
+        return isCongestionWave;
+    }
+
+    public void setIsCongestionWave(boolean isCongestionWave) {
+        this.isCongestionWave.set(isCongestionWave);
     }
 
     @Override

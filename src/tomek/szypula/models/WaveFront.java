@@ -1,7 +1,8 @@
 package tomek.szypula.models;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.text.Text;
+import javafx.beans.property.SimpleIntegerProperty;
 import tomek.szypula.controller.Highlightable;
 import tomek.szypula.controller.Highlighted;
 import tomek.szypula.controller.UniqueId;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public class WaveFront implements UniqueId, Highlightable {
     Car car;
     Road currentRoad;
+    IntegerProperty waveSize = new SimpleIntegerProperty();
     Vector2D position;
     Vector2D previousPosition;
     Vector2D speed;
@@ -67,6 +69,21 @@ public class WaveFront implements UniqueId, Highlightable {
         return currentRoad;
     }
 
+    public int getWaveSize() {
+        return waveSize.get();
+    }
+
+    public IntegerProperty waveSizeProperty() {
+        return waveSize;
+    }
+
+    public void setWaveSize(int waveSize) {
+        this.waveSize.set(waveSize);
+    }
+
+    public void incrementWaveSize() {
+        this.waveSize.setValue(this.waveSize.get()+1);
+    }
     @Override
     public String getId() {
         return uuid.toString();
@@ -86,4 +103,6 @@ public class WaveFront implements UniqueId, Highlightable {
     public Object getHighlighted() {
         return Highlighted.getHighlightedWaveFront();
     }
+
+
 }

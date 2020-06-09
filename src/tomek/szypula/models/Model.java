@@ -12,12 +12,14 @@ public class Model {
     private List<Road> roadList ;
     private TrafficManagementSystem tms;
     private WaveFrontManager wfm;
+    private DensityManager dm;
     private IntegerProperty time = new SimpleIntegerProperty();
 
     public Model(List<Road> roadList) {
         this.roadList = roadList;
         tms = new TrafficManagementSystem(roadList);
         wfm = new WaveFrontManager(roadList);
+        dm = new DensityManager(roadList);
     }
 
     public List<Road> getRoadList() {
@@ -28,7 +30,7 @@ public class Model {
         CarParameters carParameters = car.getParameters();
         Route route = car.getDriver().getRoute();
         Car carNext = route.getNextCarOnRoute();
-        Vector2D carNextSpeed = carNext.getSpeedCopy();
+        Vector2D carNextSpeed = (carNext != null) ? carNext.getSpeedCopy() : new Vector2D();
 
         Vector2D carSpeed = car.getSpeedCopy();
         double carSpeedValue = carSpeed.getLength();
@@ -59,6 +61,7 @@ public class Model {
         }
         tms.update();
         wfm.updateWaveFronts();
+        dm.update();
         time.setValue(time.getValue()+1);
     }
 
