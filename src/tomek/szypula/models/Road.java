@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import tomek.szypula.controller.Highlightable;
 import tomek.szypula.controller.Highlighted;
 import tomek.szypula.controller.UniqueId;
-import tomek.szypula.math.Line;
 import tomek.szypula.math.LineSegment;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
@@ -157,6 +156,8 @@ public class Road implements UniqueId, Highlightable {
     public boolean containsCar(Car car){
         return carList.contains(car);
     }
+
+
     public Car getLastCar(){
         return carList.get(carList.size()-1);
     }

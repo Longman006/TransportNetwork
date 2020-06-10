@@ -87,7 +87,7 @@ public class WaveFrontUI implements CreateUI{
     }
 
     private void updateTriangle() {
-        double size = wavefront.getCar().getSize();
+        double size = Math.max(wavefront.getCar().getSize(),wavefront.getWaveSize());
         Vector2D position = wavefront.getPosition();
         Vector2D direction = wavefront.getDirectionCopy().normalize().multiply(size*1.5);
         Vector2D normal = Vector2DMath.getNormalVector2D(direction).normalize();

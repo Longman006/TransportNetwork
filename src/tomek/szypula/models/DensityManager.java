@@ -19,7 +19,7 @@ public class DensityManager implements Updatable {
     }
 
     private void updateCarSpeedDensityIndex(){
-        double width = 4*carSize+minimumGap;
+        double width = 5*carSize+minimumGap;
         for (Road road :
              roadList) {
             for (int i = 0; i < road.getCarList().size() ; i++  ) {
@@ -59,9 +59,9 @@ public class DensityManager implements Updatable {
         double distance = (previousCar != null) ? Vector2DMath.distance(car.getPosition(),previousCar.getPosition()) : width;
         double result = 0;
         if (distance < width) {
-            result = 1 / (1 +(car.getSpeed().getLength()));
+            //result = 1 / (1 +(car.getSpeed().getLength()));
             //result = Math.abs(car.getSpeed().getLength() - previousCar.getSpeed().getLength())/desiredSpeed;
-            //result = 1;
+            result = 1;
         }
         else
             result = -1;

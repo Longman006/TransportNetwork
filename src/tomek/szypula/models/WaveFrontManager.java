@@ -8,31 +8,37 @@ import java.util.List;
 
 public class WaveFrontManager {
 
+    private final Model model;
     List<Road> roadList;
     private ObservableList<WaveFront> waveFronts = FXCollections.observableList(new ArrayList<>()) ;
+    WaveFrontFinder waveFrontFinder;
 
 
-    public WaveFrontManager(List<Road> roadList) {
-        this.roadList = roadList;
+    public WaveFrontManager(Model model) {
+        waveFrontFinder = new WaveFrontFinder();
+        this.model = model;
+        this.roadList = model.getRoadList();
     }
 
     public void updateWaveFronts() {
         List<WaveFront> newWaveFronts = new ArrayList<>();
         List<WaveFront> waveFrontsToRemove = new ArrayList<>();
-        //Get all current wavefronts
-        for (Road road :
-                roadList) {
-            newWaveFronts.addAll(findWaveFronts(road));
-        }
 
-        //Find coresponding existing wavefronts and update
+        //Get all current wavefronts
+        newWaveFronts.addAll(waveFrontFinder.findWaveFronts(model));
+
+        //Find coresponding existing wavefront and update
         for (WaveFront wavefront :
                 waveFronts) {
+
             Route routeOfCurrentCar = wavefront.getCar().getDriver().getRoute();
+            WaveFront matchedNewWaveFront = null;
+
             for (int i = 0 ; i < newWaveFronts.size() ; i++){
                 if (wavefront.getCar().equals(newWaveFronts.get(i).getCar()) || routeOfCurrentCar.isCarInVicinityOnRoute(newWaveFronts.get(i).getCar())){
-                    WaveFront removed = newWaveFronts.remove(i);
-                    wavefront.setCar(removed.getCar(),removed.getCurrentRoad());
+                    matchedNewWaveFront = newWaveFronts.remove(i);
+                    wavefront.setCar(matchedNewWaveFront.getCar(),matchedNewWaveFront.getCurrentRoad());
+                    wavefront.setWaveSize(matchedNewWaveFront.getWaveSize());
                     break;
                 }
                 //If we looped through all the new wavefronts then this wavefront should be removed.
@@ -40,55 +46,22 @@ public class WaveFrontManager {
                     waveFrontsToRemove.add(wavefront);
                 }
             }
+            newWaveFronts.remove(matchedNewWaveFront);
+
         }
+
         //delete old wavefronts
         waveFronts.removeAll(waveFrontsToRemove);
+
         //Add new wavefronts
+        waveFronts.addAll(newWaveFronts);
         for (WaveFront waveFront :
-                newWaveFronts) {
-            waveFronts.add(waveFront);
+                waveFronts) {
+            System.out.println("WaveFront with CarID "+waveFront.getCar().getId() + " Size "+waveFront.getWaveSize());
         }
+        System.out.println(" ");
     }
 
-    private List<WaveFront> findWaveFronts(Road road) {
-        List<Car> cars = road.getCarList();
-        List<WaveFront> waveFronts = new ArrayList<>();
-        //Check if there are any cars on the road
-        if(cars.size() == 0){
-            return waveFronts;
-        }
-        //check every pair of cars if they form a wavefront
-        for (int i  = 1; i < cars.size();i++) {
-            Car car = cars.get(i);
-            if(checkIfWaveFront(car,cars.get(i-1)) ){
-                waveFronts.add(new WaveFront(car,road));
-
-            }
-        }
-        //Check the first car on road with every possible previous car
-        Car initialCar = cars.get(0);
-        for (Road previousRoad :
-                road.getPreviousRoadList()) {
-            if (previousRoad.getCarList().size() > 0 &&
-                    checkIfWaveFront(initialCar,previousRoad.getCarList().get(previousRoad.getCarList().size()-1))){
-                waveFronts.add(new WaveFront(initialCar,road));
-                return waveFronts;
-            }
-        }
-        //If no previous car was found but initial car has a small speed then treat as wavefront
-        if (initialCar.hasSmallSpeed()){
-            waveFronts.add(new WaveFront(initialCar,road));
-        }
-        return waveFronts;
-    }
-    private boolean checkIfWaveFront(Car car, Car previousCar){
-//        if(car.hasSmallSpeed() && Vector2DMath.valueDifference(previousCar.getSpeedCopy(),car.getSpeedCopy()) > 0 )
-//            return true;
-//        return false;
-        if (car.getSpeedDensityIndex() > 0.02)
-            return true;
-        return false;
-    }
     public ObservableList<WaveFront> getWaveFronts() {
         return waveFronts;
     }

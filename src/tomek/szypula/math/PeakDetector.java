@@ -43,12 +43,16 @@ public class PeakDetector {
                 // this is a signal (i.e. peak), determine if it is a positive or negative signal
                 if (data.get(i) > avgFilter.get(i - 1)) {
                     signals.set(i, 1);
+                    // filter this signal out using influence
+                    filteredData.set(i, (influence * data.get(i)) + ((1 - influence) * filteredData.get(i - 1)));
+                    //System.out.println("Signal Detected!");
                 } else {
-                    signals.set(i, -1);
+                    //we want to ignore negetive peaks and treat them as normal points
+                    signals.set(i, 0);
+                    filteredData.set(i, data.get(i));
                 }
 
-                // filter this signal out using influence
-                filteredData.set(i, (influence * data.get(i)) + ((1 - influence) * filteredData.get(i - 1)));
+
             } else {
                 // ensure this signal remains a zero
                 signals.set(i, 0);

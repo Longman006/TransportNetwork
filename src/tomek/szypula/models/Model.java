@@ -18,7 +18,7 @@ public class Model {
     public Model(List<Road> roadList) {
         this.roadList = roadList;
         tms = new TrafficManagementSystem(roadList);
-        wfm = new WaveFrontManager(roadList);
+        wfm = new WaveFrontManager(this);
         dm = new DensityManager(roadList);
     }
 

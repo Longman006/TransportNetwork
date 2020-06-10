@@ -2,20 +2,16 @@ package tomek.szypula.view;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.ObjectProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.effect.Bloom;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import tomek.szypula.controller.Highlighted;
-import tomek.szypula.math.Vector2D;
 import tomek.szypula.models.Car;
+
 import java.util.concurrent.Callable;
-import java.util.jar.JarOutputStream;
 
 public class CarUI implements CreateUI{
     private Car car;
@@ -62,6 +58,7 @@ public class CarUI implements CreateUI{
             public void handle(MouseEvent mouseEvent) {
                 car.highlight();
                 System.out.println("SD Index : "+car.getSpeedDensityIndex());
+                System.out.println("Signal : "+car.isIsCongestionWave());
             }
         };
 
