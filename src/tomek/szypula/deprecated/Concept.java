@@ -1,4 +1,4 @@
-package tomek.szypula.depricated;/**
+package tomek.szypula.deprecated;/**
  * Created by longman on 03.11.18.
  */
 
@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;

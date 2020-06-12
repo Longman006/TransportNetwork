@@ -14,7 +14,7 @@ public class DistanceToStartOfRoadFile extends FileManager {
 
     @Override
     void updateFile() {
-        List<Car> cars = model.getTrafficManagementSystem().getCarList();
+        List<Car> cars = model.getTrafficManagementSystem().getCars();
         int time = model.getTime();
         double distance = 0;
         for (Road road :

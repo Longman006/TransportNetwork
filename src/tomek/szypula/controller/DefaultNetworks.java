@@ -23,7 +23,7 @@ public class DefaultNetworks {
     }
 
     private void createRoads(){
-        Vector2D a,b,c,d,e,f,g,h,i;
+        Vector2D a,b,c,d,e,f,g,h,i,j;
 
         a = new Vector2D(x,x);
         b = new Vector2D(x,7*x);
@@ -34,6 +34,7 @@ public class DefaultNetworks {
         g = new Vector2D(25*x,13*x);
         h = new Vector2D(25*x,7*x);
         i = new Vector2D(25*x,x);
+        j = new Vector2D( 25*x, 15*x);
 
         roads.add(new Road(new LineSegment(b,a)));
         roads.add(new Road(new LineSegment(b, c)));
@@ -47,6 +48,7 @@ public class DefaultNetworks {
         roads.add(new Road(new LineSegment(h,i)));
         roads.add(new Road(new LineSegment(e,h)));
         roads.add(new Road(new LineSegment(i,d)));
+        roads.add(new Road(new LineSegment(g,j)));
     }
     private void createRoadNetwork(){
         for (Road road : roads ) {

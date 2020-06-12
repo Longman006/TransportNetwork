@@ -2,10 +2,8 @@ package tomek.szypula.file;
 
 import tomek.szypula.models.Car;
 import tomek.szypula.models.Model;
-import tomek.szypula.models.OnRamp;
 import tomek.szypula.models.Road;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DistanceSpeedToOnRampFile extends FileManager {
@@ -17,7 +15,7 @@ public class DistanceSpeedToOnRampFile extends FileManager {
 
     @Override
     void updateFile() {
-            List<Car> cars = model.getTrafficManagementSystem().getCarList();
+            List<Car> cars = model.getTrafficManagementSystem().getCars();
             int time = model.getTime();
             double distance = 0;
             for (Road onRamp :

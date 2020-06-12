@@ -49,17 +49,28 @@ public class WaveFrontManager {
             newWaveFronts.remove(matchedNewWaveFront);
 
         }
-
         //delete old wavefronts
         waveFronts.removeAll(waveFrontsToRemove);
 
         //Add new wavefronts
         waveFronts.addAll(newWaveFronts);
-        for (WaveFront waveFront :
-                waveFronts) {
-            System.out.println("WaveFront with CarID "+waveFront.getCar().getId() + " Size "+waveFront.getWaveSize());
+
+    }
+
+    public boolean removeWaveFront(WaveFront waveFront){
+        return waveFronts.remove(waveFront);
+    }
+    public boolean removeWaveFronts(List<WaveFront> waveFrontsToRemove){
+        return waveFronts.removeAll(waveFrontsToRemove);
+    }
+    public void removeWaveFrontsFromCars(List<Car> carList){
+        List<WaveFront> waveFrontsToRemove = new ArrayList<>();
+        for (WaveFront waveFront:
+             waveFronts) {
+            if(carList.contains(waveFront.getCar()))
+                waveFrontsToRemove.add(waveFront);
         }
-        System.out.println(" ");
+        waveFronts.removeAll(waveFrontsToRemove);
     }
 
     public ObservableList<WaveFront> getWaveFronts() {

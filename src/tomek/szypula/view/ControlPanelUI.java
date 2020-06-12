@@ -12,7 +12,6 @@ import javafx.scene.text.Text;
 import tomek.szypula.controller.Highlightable;
 import tomek.szypula.controller.Highlighted;
 import tomek.szypula.controller.UniqueId;
-import tomek.szypula.models.Car;
 import tomek.szypula.models.CarParameters;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.TrafficManagementSystem;
@@ -33,7 +32,7 @@ public class ControlPanelUI implements CreateUI{
         VBox deceleration = getSliderText("Deceleration",1,20,carParameters.getDeceleration(),carParameters.decelerationProperty());
         VBox accelerationExponent = getSliderText("Acceleration Exponent",1,10,carParameters.getAccelerationExponent(),carParameters.accelerationExponentProperty());
         VBox size = getSliderText("Size",1,10,carParameters.getSize(),carParameters.sizeProperty());
-        VBox numberOfCars = getSliderText("Number Of Cars",0,600,model.getTrafficManagementSystem().getNumberOfCars(),model.getTrafficManagementSystem().numberOfCarsProperty());
+        VBox numberOfCars = getSliderText("Number Of Cars",0,600,model.getTrafficManagementSystem().getDesiredNumberOfCars(),model.getTrafficManagementSystem().desiredNumberOfCarsProperty());
         HBox carID = getDisplayLabel("Car",Highlighted.getHighlightedCar());
         HBox waveFrontID = getDisplayLabel("WaveFront",Highlighted.getHighlightedWaveFront());
         HBox roadID = getDisplayLabel("Road",Highlighted.getHighlightedRoad());

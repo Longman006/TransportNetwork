@@ -20,7 +20,7 @@ public class WaveFrontFinder {
     }
 
     List<WaveFront> findWaveFronts(Model model){
-        List<Car> cars = model.getTrafficManagementSystem().getCarList();
+        List<Car> cars = model.getTrafficManagementSystem().getCars();
         List<WaveFront> allCurrentWaveFronts = new ArrayList<>();
 
         //Apply peak detection algorithm and find all the traffic congestions

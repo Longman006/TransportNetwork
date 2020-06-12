@@ -26,31 +26,47 @@ public class ModelUI implements CreateUI {
 
     public ModelUI(Model model) {
         this.model = model;
-        createCarUIs(model.getTrafficManagementSystem().getCarList());
+        createCarUIs(model.getTrafficManagementSystem().getCars());
         //createJamUIs();
         createRoadUIs();
         modelPane.getChildren().add(root);
         root.getChildren().addAll(roadParent,jamParent,carParent,waveParent);
-        model.getTrafficManagementSystem().numberOfCarsProperty().addListener((observableValue, oldNumber, newNumber) -> {
+
+        //Tracking the number of Cars to add or remove UIs if necessary
+        model.getTrafficManagementSystem().desiredNumberOfCarsProperty().addListener((observableValue, oldNumber, newNumber) -> {
             int difference = newNumber.intValue() - oldNumber.intValue();
             if (difference > 0 ){
                 List<Car> carList = model.getTrafficManagementSystem().addNewCars(difference);
-                createCarUIs(carList);
             }
             else if(difference < 0 ){
                 List<Car> carList = model.getTrafficManagementSystem().removeCars(-difference);
-                removeCarUIs(carList);
             }
-            if (newNumber.intValue() != model.getTrafficManagementSystem().getNumberOfCars()){
+            if (newNumber.intValue() != model.getTrafficManagementSystem().getDesiredNumberOfCars()){
                 System.out.println("Not up to date");
                 System.out.println("new : "+newNumber.intValue());
-                System.out.println("Real : "+model.getTrafficManagementSystem().getNumberOfCars());
+                System.out.println("Real : "+model.getTrafficManagementSystem().getDesiredNumberOfCars());
             }
         });
+
+        //Tracking the number of cars
+        model.getTrafficManagementSystem().getCars().addListener(new ListChangeListener<Car>() {
+            @Override
+            public void onChanged(Change<? extends Car> change) {
+                while(change.next()){
+                    if (change.wasAdded()){
+                        createCarUIs((List<Car>) change.getAddedSubList());
+                    }
+                    else if(change.wasRemoved()){
+                        model.getWaveFrontManager().removeWaveFrontsFromCars((List<Car>) change.getRemoved());
+                        removeCarUIs((List<Car>) change.getRemoved());
+                    }
+                }
+            }
+        });
+        //Tracking the number of WaveFronts
         model.getWaveFrontManager().getWaveFronts().addListener(new ListChangeListener<WaveFront>() {
             @Override
             public void onChanged(Change<? extends WaveFront> change) {
-                //System.out.println("Detected a change in WaveFronts! ");
                 while(change.next()){
                     if (change.wasAdded()){
                         createWaveFrontUIs((List<WaveFront>) change.getAddedSubList());
@@ -87,15 +103,15 @@ public class ModelUI implements CreateUI {
         UIelements.addAll(carUIs);
     }
 
-    private void createJamUIs() {
-        for (Jam jam : model.getTrafficManagementSystem().getJamList()){
-            JamUI jamUI = new JamUI(jam);
-            jamUIs.add(jamUI);
-            jamUI.createUI(jamParent);
-        }
-        UIelements.addAll(jamUIs);
-
-    }
+//    private void createJamUIs() {
+//        for (Jam jam : model.getTrafficManagementSystem().getJamList()){
+//            JamUI jamUI = new JamUI(jam);
+//            jamUIs.add(jamUI);
+//            jamUI.createUI(jamParent);
+//        }
+//        UIelements.addAll(jamUIs);
+//
+//    }
     private void createRoadUIs(){
         for(Road road : model.getTrafficManagementSystem().getRoadList()){
             RoadUI roadUI = new RoadUI(road);

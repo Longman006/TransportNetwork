@@ -1,15 +1,13 @@
-package tomek.szypula.view;
+package tomek.szypula.deprecated;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.ObjectProperty;
 import javafx.scene.Group;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
-import tomek.szypula.models.Jam;
+import tomek.szypula.view.CreateUI;
 
 import java.util.concurrent.Callable;
 

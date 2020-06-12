@@ -4,27 +4,26 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import tomek.szypula.controller.Updatable;
 import tomek.szypula.math.Vector2D;
-import tomek.szypula.math.Vector2DMath;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrafficManagementSystem {
+public class TrafficManagementSystem implements Updatable {
 
     private List<Road> roadList;
-    private List<Jam> jamList = new ArrayList<>();
     private static CarParameters defaultCarParameters = new CarParameters();
-    private IntegerProperty numberOfCars = new SimpleIntegerProperty();
+    private IntegerProperty desiredNumberOfCars = new SimpleIntegerProperty();
+    private ObservableList<Car> cars = FXCollections.observableList(new ArrayList<>()) ;
     private List<Road> startingRoads = new ArrayList<>();
     private ArrayList<Road> endRoads = new ArrayList<>();
 
     public TrafficManagementSystem(List<Road> roadList) {
         this.roadList = roadList;
-        numberOfCars.set(getCarList().size());
-        createJams();
-
-
+        findStartingRoads();
+        findEndRoads();
+        desiredNumberOfCars.set(getCars().size());
     }
 
     private void findStartingRoads() {
@@ -46,71 +45,52 @@ public class TrafficManagementSystem {
         return defaultCarParameters;
     }
 
-    private void createJams() {
-        for (Road road : roadList) {
-            jamList.add(new Jam(road));
-        }
-    }
-
-
-    public void update() {
-        for (Jam jam : jamList){
-            jam.updateJam();
-        }
-
-    }
-
-
-
     public List<Road> getRoadList() {
         return roadList;
     }
 
-    public List<Car> getCarList(){
-        List<Car> carList = new ArrayList<>();
-        for (Road road : roadList)
-            carList.addAll(road.getCarList());
-        return carList;
+    public int getDesiredNumberOfCars() {
+        return desiredNumberOfCars.get();
     }
 
-    public List<Jam> getJamList() {
-        return jamList;
-    }
-
-    public int getNumberOfCars() {
-        return numberOfCars.get();
-    }
-
-    public IntegerProperty numberOfCarsProperty() {
-        return numberOfCars;
+    public IntegerProperty desiredNumberOfCarsProperty() {
+        return desiredNumberOfCars;
     }
 
     public List<Car> addNewCars(int n){
-        findStartingRoads();
+        //findStartingRoads();
+        System.out.println("n " + n);
         int i =0;
         int size = startingRoads.size();
         List<Car> carList = new ArrayList<>(n);
         while (i<n){
-            Road road = startingRoads.get(i%size);
+            Road road = startingRoads.get((int) (Math.random()*size));
             Car car = new Car(road.getStart(),road.getLineSegment().getDirection(),TrafficManagementSystem.getCarParameters());
             car.setDriver(new RandomDriver(new Vector2D(),road,car));
+            carList.add(car);
             road.addCar(car);
             i++;
-            carList.add(car);
         }
+        cars.addAll(carList);
         return carList;
     }
+
     public List<Car> removeCars(int n){
-        List<Car> cars = getCarList();
-        List<Car> carListRemoved = new ArrayList<>(n);
+        List<Car> cars = getCars();
+        List<Car> carListToRemove = new ArrayList<>(n);
 
         for(int i = 0 ; i<n ; i++){
-            carListRemoved.add(cars.get(i));
+            carListToRemove.add(cars.get(i));
         }
+        return removeCars(carListToRemove);
+    }
+
+    private List<Car> removeCars(List<Car> carListToRemove){
         for (Road road: roadList){
-            road.getCarList().removeAll(carListRemoved);
+            road.getCarList().removeAll(carListToRemove);
         }
-        return carListRemoved;
+        cars.removeAll(carListToRemove);
+        return carListToRemove;
     }
 
     public List<Road> getOnRamps() {
@@ -123,5 +103,32 @@ public class TrafficManagementSystem {
         }
 
         return onRamps;
+    }
+
+    @Override
+    public void update() {
+        removeCarsOnDeadEnds();
+    }
+
+    private void removeCarsOnDeadEnds() {
+        List<Car> carListToRemove = new ArrayList<>();
+        for (Road road :
+                endRoads) {
+            if (!road.isEmpty()) {
+                Car lastCar = road.getLastCar();
+                if ( lastCar.getSpeed().getLength() < defaultCarParameters.getDesiredSpeed()*0.01)
+                    carListToRemove.add(lastCar);
+            }
+        }
+        if (carListToRemove.isEmpty())
+            return;
+
+        removeCars(carListToRemove);
+        addNewCars(carListToRemove.size());
+
+    }
+
+    public ObservableList<Car> getCars() {
+        return cars;
     }
 }

@@ -1,4 +1,4 @@
-package tomek.szypula.depricated;
+package tomek.szypula.deprecated;
 
 import java.io.FileWriter;
 import java.io.IOException;

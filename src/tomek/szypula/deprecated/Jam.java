@@ -1,10 +1,10 @@
-package tomek.szypula.models;
+package tomek.szypula.deprecated;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import tomek.szypula.math.Vector2D;
+import tomek.szypula.models.Car;
+import tomek.szypula.models.Road;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,9 @@ public class Jam {
     }
 
     public void updateJam(){
-        List<Car> carList = new ArrayList<>();
+        List<tomek.szypula.models.Car> carList = new ArrayList<>();
         double tmpMass = 0;
-        for (Car car : road.getCarList()){
+        for (tomek.szypula.models.Car car : road.getCarList()){
             if (car.getSpeed().getLength() < car.getParameters().getDesiredSpeed()/10)
                 carList.add(car);
         }

@@ -148,7 +148,7 @@ public class Road implements UniqueId, Highlightable {
         return false;
     }
     public void addCar(Car car){
-        carList.add(car);
+        carList.add(0,car);
     }
     public void removeCar(Car car){
         carList.remove(car);

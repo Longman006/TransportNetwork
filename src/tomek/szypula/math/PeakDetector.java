@@ -39,7 +39,6 @@ public class PeakDetector {
 
             // if the distance between the current value and average is enough standard deviations (threshold) away
             if (Math.abs((data.get(i) - avgFilter.get(i - 1))) > threshold * stdFilter.get(i - 1)) {
-
                 // this is a signal (i.e. peak), determine if it is a positive or negative signal
                 if (data.get(i) > avgFilter.get(i - 1)) {
                     signals.set(i, 1);
@@ -51,15 +50,12 @@ public class PeakDetector {
                     signals.set(i, 0);
                     filteredData.set(i, data.get(i));
                 }
-
-
             } else {
                 // ensure this signal remains a zero
                 signals.set(i, 0);
                 // ensure this value is not filtered
                 filteredData.set(i, data.get(i));
             }
-
             // update rolling average and deviation
             for (int j = i - lag; j < i; j++) {
                 stats.addValue(filteredData.get(j));

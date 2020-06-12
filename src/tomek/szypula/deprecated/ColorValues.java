@@ -1,4 +1,4 @@
-package tomek.szypula.depricated;
+package tomek.szypula.deprecated;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

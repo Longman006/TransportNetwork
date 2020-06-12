@@ -1,7 +1,6 @@
-package tomek.szypula.depricated;
+package tomek.szypula.deprecated;
 
 import javafx.animation.TranslateTransition;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
