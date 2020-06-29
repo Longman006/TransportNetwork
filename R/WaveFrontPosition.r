@@ -3,18 +3,35 @@ library(ggplot2)
 library(plotly)
 f <- file.choose()
 df <- read.table(f,header = TRUE)
-df$Time<-as.factor(df$Time)
 
-##Road 220d0efa-1a03-4e35-9403-4d0dc4ba1346
 
-df1<-subset(df, RoadID == '220d0efa-1a03-4e35-9403-4d0dc4ba1346', select = c("Time","Density","Distance","Speed") )
+##WaveFront 62aa0281-26ab-46bc-9266-756d3e55f69b
 
-## Road 3b1cdb07-abf8-41a2-96f7-cdf477ca48fa
+df1<-subset(df, WaveFrontID == '62aa0281-26ab-46bc-9266-756d3e55f69b', select = c("Time","Distance","Speed") )
 
-df2<-subset(df, RoadID == '3b1cdb07-abf8-41a2-96f7-cdf477ca48fa', select = c("Time","Density","Distance","Speed") )
-df2$Test<-df2$Density/(1+df2$Speed)^2
-p <- ggplot(subset(df2,Time == 1490), aes(Distance, Test, color = Speed)) +
-  geom_point() 
+max<-max(df1$Distance)
+df2<-subset(df1, Time > 2800)
+df2<-subset(df2, Time < 2965)
+xy.lm <- lm(df2$Distance ~ df2$Time)
+summary(xy.lm)
+xy.lm$coefficients
+b <- xy.lm$coefficients[1]
+a <- xy.lm$coefficients[2]
+xy.lm$Time<-df2$Time
+
+getDistance <- function(x){
+  return(a*x+b)}
+
+df2$Distance<-lapply(xy.lm$Time,getDistance)
+
+# Equation of the line : 
+eq = paste0("y = ", round(xy.lm$coefficients[2],1), "*x + ", round(xy.lm$coefficients[1],1))
+
+p <- ggplot( df1,aes(Time, Distance, color = Speed)) +
+  geom_point() + geom_abline(intercept = xy.lm$coefficients[1], slope = xy.lm$coefficients[2],color="red", 
+                             linetype="dashed", size=1.5) + ggtitle(eq)
+  
+  geom_line(df2,aes(df2$Time,df2$Distance, color="red"))
 p
 
 fig <- ggplotly(p)
