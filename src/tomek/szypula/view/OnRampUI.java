@@ -1,19 +1,13 @@
 package tomek.szypula.view;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineJoin;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
-import tomek.szypula.models.OnRamp;
-import tomek.szypula.models.RandomDriver;
 import tomek.szypula.models.Road;
 
 import java.util.ArrayList;
@@ -31,7 +25,7 @@ public class OnRampUI implements CreateUI {
         Vector2D start1,start2,end1,end2;
         Vector2D direction = road.getLineSegment().getDirection();
         Vector2D normal = Vector2DMath.getNormalVector2D(road.getLineSegment().getDirection()).multiply(width/2);
-        Vector2D start = road.getStart().addVector2D(Vector2DMath.multiplyVector2D(direction,length).subtractVector2D(Vector2DMath.multiplyVector2D(direction,width*2)));
+        Vector2D start = road.getStartCopy().addVector2D(Vector2DMath.multiplyVector2D(direction,length).subtractVector2D(Vector2DMath.multiplyVector2D(direction,width*2)));
 
         List<Vector2D> startingPoints = new ArrayList<>();
         List<Vector2D> endPoints = new ArrayList<>();

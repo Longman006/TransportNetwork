@@ -13,10 +13,10 @@ public class LineSegment {
         this.line = new Line(beginPoint,endPoint);
     }
 
-    public Vector2D getStart() {
+    public Vector2D getStartCopy() {
         return new Vector2D(beginPoint);
     }
-    public Vector2D getEnd() {
+    public Vector2D getEndCopy() {
         return new Vector2D(endPoint);
     }
     public Vector2D getClosestPointOnLine(Vector2D vector2D){
@@ -29,5 +29,13 @@ public class LineSegment {
 
     public Vector2D getDirection() {
         return new Vector2D(direction);
+    }
+
+    public Vector2D getStart() {
+        return beginPoint;
+    }
+
+    public Vector2D getEnd() {
+        return endPoint;
     }
 }

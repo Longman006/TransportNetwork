@@ -2,7 +2,6 @@ package tomek.szypula.controller;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -16,7 +15,6 @@ import tomek.szypula.math.Vector2DMath;
 import tomek.szypula.models.Road;
 import tomek.szypula.view.RoadUI;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +60,8 @@ public class Editor {
 
     private void updateView() {
         for (Road road : roads) {
-            createCircle(road.getStart().getX(),road.getStart().getY());
-            createCircle(road.getEnd().getX(),road.getEnd().getY());
+            createCircle(road.getStartCopy().getX(),road.getStartCopy().getY());
+            createCircle(road.getEndCopy().getX(),road.getEndCopy().getY());
             createRoadUI(road);
         }
     }
@@ -101,16 +99,16 @@ public class Editor {
 
     private void updateRoadNetwork(Road road) {
         for (Road roadNext : roads){
-            if (road.getEnd().equalValue(roadNext.getStart()))
+            if (road.getEndCopy().equalValue(roadNext.getStartCopy()))
                 road.addRoad(roadNext);
-            else if ( road.getStart().equalValue(roadNext.getEnd()))
+            else if ( road.getStartCopy().equalValue(roadNext.getEndCopy()))
                 road.addPreviousRoad(roadNext);
         }
         for (Road roadOld :
                 roads) {
-            if (roadOld.getEnd().equalValue(road.getStart()))
+            if (roadOld.getEndCopy().equalValue(road.getStartCopy()))
                 roadOld.addRoad(road);
-            else if ( roadOld.getStart().equalValue(road.getEnd()))
+            else if ( roadOld.getStartCopy().equalValue(road.getEndCopy()))
                 roadOld.addPreviousRoad(road);
         }
     }

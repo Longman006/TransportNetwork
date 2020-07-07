@@ -85,8 +85,8 @@ public class Road implements UniqueId, Highlightable {
 
     public double getDistanceToStart(int indexOfCar){
         //TODO test
-        double distanceX = Math.pow(carList.get(indexOfCar).getX()-lineSegment.getStart().getX(),2);
-        double distanceY = Math.pow(carList.get(indexOfCar).getY()-lineSegment.getStart().getY(),2);
+        double distanceX = Math.pow(carList.get(indexOfCar).getX()-lineSegment.getStartCopy().getX(),2);
+        double distanceY = Math.pow(carList.get(indexOfCar).getY()-lineSegment.getStartCopy().getY(),2);
         double distance = Math.sqrt(distanceX+distanceY)-carList.get(indexOfCar).getSize();
         if (distance < 0 )
             return 0;
@@ -95,20 +95,22 @@ public class Road implements UniqueId, Highlightable {
 
     public double getDistanceToStart(Car car){ return getDistanceToStart(carList.indexOf(car));}
     public double getDistanceToEnd(int indexOfCar){
-        double distanceX = Math.pow(carList.get(indexOfCar).getX()-lineSegment.getEnd().getX(),2);
-        double distanceY = Math.pow(carList.get(indexOfCar).getY()-lineSegment.getEnd().getY(),2);
+        double distanceX = Math.pow(carList.get(indexOfCar).getX()-lineSegment.getEndCopy().getX(),2);
+        double distanceY = Math.pow(carList.get(indexOfCar).getY()-lineSegment.getEndCopy().getY(),2);
         double distance = Math.sqrt(distanceX+distanceY)-carList.get(indexOfCar).getSize();
         if (distance < 0 )
             return 0;
         return distance;
     }
     public double getDistanceToEnd(Car car){ return getDistanceToEnd(carList.indexOf(car)); }
-    public Vector2D getStart() {
-        return lineSegment.getStart();
+    public Vector2D getStartCopy() {
+        return lineSegment.getStartCopy();
     }
-    public Vector2D getEnd(){
-        return lineSegment.getEnd();
+    public Vector2D getEndCopy(){
+        return lineSegment.getEndCopy();
     }
+    public Vector2D getStart() { return lineSegment.getStart();}
+    public Vector2D getEnd() { return lineSegment.getEnd(); }
 
     public LineSegment getLineSegment() {
         return lineSegment;
@@ -118,8 +120,8 @@ public class Road implements UniqueId, Highlightable {
     public String toString() {
         return "Road{" +
                 "\n"+
-                getStart() + "\n"+
-                getEnd() + "\n" ;
+                getStartCopy() + "\n"+
+                getEndCopy() + "\n" ;
     }
 
     public int indexOf(Car car){
@@ -130,7 +132,7 @@ public class Road implements UniqueId, Highlightable {
     private void setupInsertCarAtStart(Car car){
         car.setDirection(lineSegment.getDirection());
         //car.setSpeed(new Vector2D());
-        car.setPosition(getStart());
+        car.setPosition(getStartCopy());
         carList.add(0, car);
     }
     public boolean insertCar(Car car){
@@ -163,7 +165,7 @@ public class Road implements UniqueId, Highlightable {
     }
 
     public double getLength() {
-        return Vector2DMath.distance(lineSegment.getStart(), lineSegment.getEnd());
+        return Vector2DMath.distance(lineSegment.getStartCopy(), lineSegment.getEndCopy());
     }
     public Vector2D getDirection() { return lineSegment.getDirection();}
 

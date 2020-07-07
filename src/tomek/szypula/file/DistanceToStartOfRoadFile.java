@@ -22,7 +22,7 @@ public class DistanceToStartOfRoadFile extends FileManager {
             for (Car car :
                     road.getCarList()) {
                     distance = road.getDistanceToStart(car);
-                    dataWriter.updateFile(time, road.getId(),car.getId(), String.valueOf(distance), String.valueOf(car.getSpeed().getLength()));
+                    dataWriter.updateFile(String.valueOf(time), road.getId(),car.getId(), String.valueOf(distance), String.valueOf(car.getSpeed().getLength()));
             }
         }
     }

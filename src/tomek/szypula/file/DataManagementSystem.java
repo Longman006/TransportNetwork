@@ -18,6 +18,7 @@ public class DataManagementSystem implements Updatable {
         fileManagers.add(new WaveFrontDistanceSpeedToOnRamp(model));
         fileManagers.add(new DistanceToStartOfRoadFile(model));
         fileManagers.add(new DensityFileToStartOfRoad(model));
+        fileManagers.add(new NetworkFile(model));
     }
 
     //End User methods

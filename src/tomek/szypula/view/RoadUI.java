@@ -52,14 +52,14 @@ public class RoadUI implements CreateUI{
     public RoadUI(Road road) {
         this.road = road;
         trafficLightsUI = new TrafficLightsUI(road);
-        lineShape = new Line(road.getStart().getX(),road.getStart().getY(),road.getEnd().getX(),road.getEnd().getY());
+        lineShape = new Line(road.getStartCopy().getX(),road.getStartCopy().getY(),road.getEndCopy().getX(),road.getEndCopy().getY());
         lineShape.setSmooth(true);
         lineShape.setStrokeWidth( width);
         lineShape.setStrokeLineJoin(StrokeLineJoin.MITER);
         lineShape.setStroke(Color.LIGHTGRAY);
 
         Vector2D direction = road.getLineSegment().getDirection();
-        Vector2D start = road.getStart().addVector2D(direction.multiply(road.getLength()/2));
+        Vector2D start = road.getStartCopy().addVector2D(direction.multiply(road.getLength()/2));
         Vector2D startPoint = Vector2DMath.vector2DSum(start,direction.normalize().multiply(width/2));
         Vector2D leftPoint = Vector2DMath.vector2DSum(Vector2DMath.getNormalVector2D(direction).normalize().multiply(width/2),start);
         Vector2D rightPoint = Vector2DMath.vector2DSum(Vector2DMath.getNormalVector2D(direction).normalize().multiply(-width/2),start);

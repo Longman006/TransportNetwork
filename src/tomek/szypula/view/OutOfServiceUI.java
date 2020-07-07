@@ -2,9 +2,7 @@ package tomek.szypula.view;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineJoin;
@@ -25,8 +23,8 @@ public class OutOfServiceUI implements CreateUI{
         Vector2D start1,start2,end1,end2;
         Vector2D direction = road.getLineSegment().getDirection().multiply(width/2);
         Vector2D normal = Vector2DMath.getNormalVector2D(road.getLineSegment().getDirection()).multiply(width/2);
-        Vector2D start = road.getStart();
-        Vector2D end = road.getEnd();
+        Vector2D start = road.getStartCopy();
+        Vector2D end = road.getEndCopy();
 
         List<Vector2D> startingPoints = new ArrayList<>();
         List<Vector2D> endPoints = new ArrayList<>();

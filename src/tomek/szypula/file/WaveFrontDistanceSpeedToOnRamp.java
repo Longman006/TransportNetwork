@@ -25,7 +25,7 @@ public class WaveFrontDistanceSpeedToOnRamp extends FileManager{
                 Car car = waveFront.getCar();
                 if (car.getDriver().getRoute().isOnRampOnRoute(onRamp)) {
                     distance = car.getDriver().getRoute().calculateDistanceToOnRamp(onRamp);
-                    dataWriter.updateFile(time, waveFront.getId(), String.valueOf(distance), String.valueOf(car.getSpeed().getLength()), onRamp.getId());
+                    dataWriter.updateFile(String.valueOf(time), waveFront.getId(), String.valueOf(distance), String.valueOf(car.getSpeed().getLength()), onRamp.getId());
                 }
             }
         }

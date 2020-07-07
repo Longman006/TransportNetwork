@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import tomek.szypula.file.DataManagementSystem;
 import tomek.szypula.file.FileManager;
+import tomek.szypula.file.ReadNetworkFromFile;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 import tomek.szypula.view.View;
@@ -46,6 +47,7 @@ public class StageManager {
     //Main Menu Scene
     Label mainMenuLabel = new Label("Transport Network Simulation");
     Button loadDefaultNetworkButton = new Button("Load Default");
+    Button loadNetworkFromFileButton = new Button("Load Network File");
     Button openNetworkEditorButton = new Button("Open Editor");
     Button runSimulationButton = new Button("Run Simulation");
     BorderPane mainMenuLayout = new BorderPane();
@@ -153,7 +155,7 @@ public class StageManager {
 
     private void setupMainMenu() {
         //Main Menu setup
-        mainMenuVBox.getChildren().addAll(loadDefaultNetworkButton,openNetworkEditorButton,runSimulationButton);
+        mainMenuVBox.getChildren().addAll(loadDefaultNetworkButton,openNetworkEditorButton,runSimulationButton,loadNetworkFromFileButton);
         mainMenuVBox.setAlignment(Pos.CENTER);
         mainMenuLayout.setCenter(mainMenuVBox);
         mainMenuLayout.setTop(mainMenuLabel);
@@ -169,6 +171,7 @@ public class StageManager {
         loadDefaultNetworkButton.setOnAction(actionEvent -> loadDefaultNetwork());
         runSimulationButton.setOnAction(actionEvent -> loadSimulation());
         openNetworkEditorButton.setOnAction(actionEvent -> loadEditor());
+        loadNetworkFromFileButton.setOnAction(actionEvent -> loadNetworkFromFile());
 
     }
     private void setupEditor(){
@@ -179,6 +182,10 @@ public class StageManager {
 
     private void loadDefaultNetwork() {
         new DefaultNetworks().loadDefaultNetwork(roads);
+    }
+
+    private void loadNetworkFromFile() {
+        new ReadNetworkFromFile(mainMenuScene).loadNetwork(roads);
     }
 
     private void setupModelScene() {

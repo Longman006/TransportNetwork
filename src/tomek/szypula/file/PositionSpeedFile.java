@@ -17,7 +17,7 @@ public class PositionSpeedFile extends FileManager {
                 model.getRoadList()) {
             for (Car car :
                     road.getCarList()) {
-                dataWriter.updateFile(time,car.getId(), String.valueOf(car.getPosition().getX()), String.valueOf(car.getPosition().getY()), String.valueOf(car.getSpeed().getLength()));
+                dataWriter.updateFile(String.valueOf(time),car.getId(), String.valueOf(car.getPosition().getX()), String.valueOf(car.getPosition().getY()), String.valueOf(car.getSpeed().getLength()));
             }
         }
     }

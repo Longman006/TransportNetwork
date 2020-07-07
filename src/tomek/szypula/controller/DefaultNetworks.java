@@ -53,9 +53,9 @@ public class DefaultNetworks {
     private void createRoadNetwork(){
         for (Road road : roads ) {
             for (Road roadNext : roads){
-                if (road.getEnd().equalValue(roadNext.getStart()))
+                if (road.getEndCopy().equalValue(roadNext.getStartCopy()))
                     road.addRoad(roadNext);
-                else if ( road.getStart().equalValue(roadNext.getEnd()))
+                else if ( road.getStartCopy().equalValue(roadNext.getEndCopy()))
                     road.addPreviousRoad(roadNext);
             }
         }

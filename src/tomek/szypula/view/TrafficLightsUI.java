@@ -2,15 +2,12 @@ package tomek.szypula.view;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.ObjectProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import tomek.szypula.math.Vector2D;
 import tomek.szypula.math.Vector2DMath;
 import tomek.szypula.models.Road;
@@ -35,7 +32,7 @@ public class TrafficLightsUI implements CreateUI {
         trafficLightsShape.setEffect(dropShadow);
         trafficLightsShape.setFill(Color.GREEN);
 
-        Vector2D end = road.getEnd();
+        Vector2D end = road.getEndCopy();
         Vector2D direction = road.getLineSegment().getDirection().multiply(-1).multiply(shiftParallel);
         Vector2D offset = Vector2DMath.getNormalVector2D(direction).normalize().multiply(-1*shiftNormal);
         Vector2D lightsPosition = Vector2DMath.vector2DSum(end,direction).addVector2D(offset);

@@ -65,7 +65,7 @@ public class TrafficManagementSystem implements Updatable {
         List<Car> carList = new ArrayList<>(n);
         while (i<n){
             Road road = startingRoads.get((int) (Math.random()*size));
-            Car car = new Car(road.getStart(),road.getLineSegment().getDirection(),TrafficManagementSystem.getCarParameters());
+            Car car = new Car(road.getStartCopy(),road.getLineSegment().getDirection(),TrafficManagementSystem.getCarParameters());
             car.setDriver(new RandomDriver(new Vector2D(),road,car));
             carList.add(car);
             road.addCar(car);
