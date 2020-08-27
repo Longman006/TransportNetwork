@@ -10,7 +10,7 @@ public class WaveFrontManager {
 
     private final Model model;
     List<Road> roadList;
-    private ObservableList<WaveFront> waveFronts = FXCollections.observableList(new ArrayList<>()) ;
+    private ObservableList<Wave> waves = FXCollections.observableList(new ArrayList<>()) ;
     WaveFrontFinder waveFrontFinder;
 
 
@@ -21,59 +21,56 @@ public class WaveFrontManager {
     }
 
     public void updateWaveFronts() {
-        List<WaveFront> newWaveFronts = new ArrayList<>();
-        List<WaveFront> waveFrontsToRemove = new ArrayList<>();
+        List<Wave> newWaves = new ArrayList<>();
+        List<Wave> waveFrontsToRemove = new ArrayList<>(waves);
 
+        System.out.println(" ");
         //Get all current wavefronts
-        newWaveFronts.addAll(waveFrontFinder.findWaveFronts(model));
+        newWaves.addAll(waveFrontFinder.findWaveFronts(model));
 
         //Find coresponding existing wavefront and update
-        for (WaveFront wavefront :
-                waveFronts) {
+        for (Wave wave :
+                waves) {
 
-            Route routeOfCurrentCar = wavefront.getCar().getDriver().getRoute();
-            WaveFront matchedNewWaveFront = null;
+            Route routeOfCurrentCar = wave.getWaveFront().getCar().getDriver().getRoute();
+            Wave matchedNewWave = null;
 
-            for (int i = 0 ; i < newWaveFronts.size() ; i++){
-                if (wavefront.getCar().equals(newWaveFronts.get(i).getCar()) || routeOfCurrentCar.isCarInVicinityOnRoute(newWaveFronts.get(i).getCar())){
-                    matchedNewWaveFront = newWaveFronts.remove(i);
-                    wavefront.setCar(matchedNewWaveFront.getCar(),matchedNewWaveFront.getCurrentRoad());
-                    wavefront.setWaveSize(matchedNewWaveFront.getWaveSize());
+            for (int i = 0; i < newWaves.size() ; i++){
+                if (wave.getWaveFront().getCar().equals(newWaves.get(i).getWaveFront().getCar()) || routeOfCurrentCar.isCarInVicinityOnRoute(newWaves.get(i).getWaveFront().getCar())){
+                    matchedNewWave = newWaves.remove(i);
+                    wave.setWaveFronts(matchedNewWave);
+                    waveFrontsToRemove.remove(wave);
                     break;
                 }
-                //If we looped through all the new wavefronts then this wavefront should be removed.
-                if (i == newWaveFronts.size()-1){
-                    waveFrontsToRemove.add(wavefront);
-                }
             }
-            newWaveFronts.remove(matchedNewWaveFront);
-
         }
+
         //delete old wavefronts
-        waveFronts.removeAll(waveFrontsToRemove);
+        removeWaves(waveFrontsToRemove);
 
         //Add new wavefronts
-        waveFronts.addAll(newWaveFronts);
+        waves.addAll(newWaves);
 
     }
 
-    public boolean removeWaveFront(WaveFront waveFront){
-        return waveFronts.remove(waveFront);
+    public boolean removeWave(Wave wave){
+        return waves.remove(wave);
     }
-    public boolean removeWaveFronts(List<WaveFront> waveFrontsToRemove){
-        return waveFronts.removeAll(waveFrontsToRemove);
+    public boolean removeWaves(List<Wave> wavesToRemove){
+        return waves.removeAll(wavesToRemove);
     }
     public void removeWaveFrontsFromCars(List<Car> carList){
-        List<WaveFront> waveFrontsToRemove = new ArrayList<>();
-        for (WaveFront waveFront:
-             waveFronts) {
-            if(carList.contains(waveFront.getCar()))
-                waveFrontsToRemove.add(waveFront);
+        List<Wave> waveFrontsToRemove = new ArrayList<>();
+        for (Wave wave :
+                waves) {
+            if(carList.contains(wave.getWaveFront().getCar()) || carList.contains(wave.getWaveEnd().getCar()))
+                waveFrontsToRemove.add(wave);
         }
-        waveFronts.removeAll(waveFrontsToRemove);
+        removeWaves(waveFrontsToRemove);
+
     }
 
-    public ObservableList<WaveFront> getWaveFronts() {
-        return waveFronts;
+    public ObservableList<Wave> getWaves() {
+        return waves;
     }
 }

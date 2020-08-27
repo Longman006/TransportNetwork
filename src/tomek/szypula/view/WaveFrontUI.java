@@ -2,6 +2,7 @@ package tomek.szypula.view;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,12 +30,13 @@ public class WaveFrontUI implements CreateUI{
 
     private double maxColor = 240 ;///LightGreen
     DropShadow dropShadow = new DropShadow();
+    IntegerProperty waveSize;
 
     ObservableList<Vector2D> anchorsForTriangleCoordinates;
 
-    public WaveFrontUI(WaveFront wavefront){
+    public WaveFrontUI(WaveFront wavefront, IntegerProperty size){
         this.wavefront = wavefront;
-
+        this.waveSize = size;
         triangle = new Polygon();
         triangle.getPoints().addAll(
                 new Double[]{
@@ -87,7 +89,7 @@ public class WaveFrontUI implements CreateUI{
     }
 
     private void updateTriangle() {
-        double size = Math.max(wavefront.getCar().getSize(),wavefront.getWaveSize());
+        double size = Math.max(wavefront.getCar().getSize(),waveSize.getValue());
         Vector2D position = wavefront.getPosition();
         Vector2D direction = wavefront.getDirectionCopy().normalize().multiply(size*1.5);
         Vector2D normal = Vector2DMath.getNormalVector2D(direction).normalize();
@@ -114,9 +116,10 @@ public class WaveFrontUI implements CreateUI{
     }
     @Override
     public void remove(Group parent) {
-        parent.getChildren().remove(text);
-        //parent.getChildren().remove(lineShape);
-        parent.getChildren().remove(triangle);
+       parent.getChildren().remove(text);
+       //parent.getChildren().remove(lineShape);
+       parent.getChildren().remove(triangle);
+
     }
 
     public WaveFront getWavefront() {

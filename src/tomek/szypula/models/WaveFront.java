@@ -1,8 +1,6 @@
 package tomek.szypula.models;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import tomek.szypula.controller.Highlightable;
 import tomek.szypula.controller.Highlighted;
 import tomek.szypula.controller.UniqueId;
@@ -14,12 +12,10 @@ import java.util.UUID;
 public class WaveFront implements UniqueId, Highlightable {
     Car car;
     Road currentRoad;
-    IntegerProperty waveSize = new SimpleIntegerProperty();
     Vector2D position;
     Vector2D previousPosition;
     Vector2D speed;
     Vector2D direction;
-    int vicinity = 8;
     UUID uuid;
 
     public WaveFront(Car car, Road road) {
@@ -33,20 +29,13 @@ public class WaveFront implements UniqueId, Highlightable {
         uuid = UUID.randomUUID();
     }
 
-    public void setCar(Car car,Road road) {
+    public void setCar(Car car, Road road) {
         previousPosition.setVector(position);
         position.setVector(car.getPosition());
         speed.setVector(Vector2DMath.vector2DSubtract(position,previousPosition));
         this.car = car;
         currentRoad = road;
         direction.setVector(currentRoad.getDirection());
-    }
-
-    public boolean inVicinity(Car car) {
-        if (Vector2DMath.vector2DSubtract(car.getPosition(),position).getLength() < car.getParameters().getSize()*vicinity) {
-            return true;
-        }
-        return false;
     }
 
     public Vector2D getPosition() {
@@ -69,21 +58,6 @@ public class WaveFront implements UniqueId, Highlightable {
         return currentRoad;
     }
 
-    public int getWaveSize() {
-        return waveSize.get();
-    }
-
-    public IntegerProperty waveSizeProperty() {
-        return waveSize;
-    }
-
-    public void setWaveSize(int waveSize) {
-        this.waveSize.set(waveSize);
-    }
-
-    public void incrementWaveSize() {
-        this.waveSize.setValue(this.waveSize.get()+1);
-    }
     @Override
     public String getId() {
         return uuid.toString();

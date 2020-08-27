@@ -14,7 +14,7 @@ public class ModelUI implements CreateUI {
     List<CarUI> carUIs = new ArrayList<>();
     List<CreateUI> roadUIs = new ArrayList<>();
     List<CreateUI> jamUIs = new ArrayList<>();
-    List<WaveFrontUI> waveFrontUIs = new ArrayList<>();
+    List<WaveUI> waveUIs = new ArrayList<>();
     Group root =  new Group();
     Group carParent = new Group();
     Group roadParent = new Group();
@@ -42,8 +42,8 @@ public class ModelUI implements CreateUI {
                 List<Car> carList = model.getTrafficManagementSystem().removeCars(-difference);
             }
             if (newNumber.intValue() != model.getTrafficManagementSystem().getDesiredNumberOfCars()){
-                System.out.println("Not up to date");
-                System.out.println("new : "+newNumber.intValue());
+                System.out.println("Not up to date. Oops.");
+                System.out.println("New : "+newNumber.intValue());
                 System.out.println("Real : "+model.getTrafficManagementSystem().getDesiredNumberOfCars());
             }
         });
@@ -64,15 +64,15 @@ public class ModelUI implements CreateUI {
             }
         });
         //Tracking the number of WaveFronts
-        model.getWaveFrontManager().getWaveFronts().addListener(new ListChangeListener<WaveFront>() {
+        model.getWaveFrontManager().getWaves().addListener(new ListChangeListener<Wave>() {
             @Override
-            public void onChanged(Change<? extends WaveFront> change) {
+            public void onChanged(Change<? extends Wave> change) {
                 while(change.next()){
                     if (change.wasAdded()){
-                        createWaveFrontUIs((List<WaveFront>) change.getAddedSubList());
+                        createWaveUIs((List<Wave>) change.getAddedSubList());
                     }
                     else if(change.wasRemoved()){
-                        removeWaveUIs((List<WaveFront>) change.getRemoved());
+                        removeWaveUIs((List<Wave>) change.getRemoved());
                     }
                 }
             }
@@ -120,25 +120,25 @@ public class ModelUI implements CreateUI {
         }
         UIelements.addAll(roadUIs);
     }
-    private void createWaveFrontUIs(List<WaveFront> waveFronts){
-        for (WaveFront wavefront :
-                waveFronts) {
-            WaveFrontUI waveFrontUI = new WaveFrontUI(wavefront);
-            waveFrontUIs.add(waveFrontUI);
-            waveFrontUI.createUI(waveParent);
+    private void createWaveUIs(List<Wave> waves){
+        for (Wave wave :
+                waves) {
+            WaveUI waveUI = new WaveUI(wave);
+            waveUIs.add(waveUI);
+            waveUI.createUI(waveParent);
         }
-        UIelements.addAll(waveFrontUIs);
+        UIelements.addAll(waveUIs);
     }
-    private void removeWaveUIs(List<WaveFront> waveFronts) {
-        List<WaveFrontUI> waveUIsRemove = new ArrayList<>();
-        for (WaveFrontUI waveFrontUI: waveFrontUIs){
-            if (waveFronts.contains(waveFrontUI.getWavefront())){
-                waveUIsRemove.add(waveFrontUI);
+    private void removeWaveUIs(List<Wave> waves) {
+        List<WaveUI> waveUIsRemove = new ArrayList<>();
+        for (WaveUI waveUI: waveUIs){
+            if (waves.contains(waveUI.getWave())){
+                waveUIsRemove.add(waveUI);
             }
         }
-        for (WaveFrontUI waveFrontUI: waveUIsRemove){
-            waveFrontUI.remove(waveParent);
-            waveFrontUIs.remove(waveFrontUI);
+        for (WaveUI waveUI: waveUIsRemove){
+            waveUI.remove(waveParent);
+            waveUIs.remove(waveUI);
         }
     }
 

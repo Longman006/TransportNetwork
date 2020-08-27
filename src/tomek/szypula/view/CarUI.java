@@ -43,12 +43,16 @@ public class CarUI implements CreateUI{
                             color = Color.hsb(Math.min((maxColor+40 -360 ) *car.getSpeed().getLength()  / car.getParameters().getDesiredSpeed()+360, 360), 0.94, 0.94, 0.94);
                             dropShadow.setColor(Color.ROYALBLUE);
                         }
+                        else if (car.isIsCongestionWave()){
+                            color = Color.BLACK;
+                        }
                         else
-                            color = Color.hsb(Math.min(-maxColor *car.getSpeed().getLength()  / car.getParameters().getDesiredSpeed()+maxColor, 360),0.94,0.94,0.94);
+                            color = Color.WHITE;
+                            //color = Color.hsb(Math.min(-maxColor *car.getSpeed().getLength()  / car.getParameters().getDesiredSpeed()+maxColor, 360),0.94,0.94,0.94);
                         dropShadow.setColor(Color.BLACK);
                         return color;
                     }
-                },car.getSpeed().xProperty(),car.getSpeed().yProperty(),car.getParameters().desiredSpeedProperty(),Highlighted.isChangeCarProperty()
+                },car.getSpeed().xProperty(),car.getSpeed().yProperty(),car.getParameters().desiredSpeedProperty(),Highlighted.isChangeCarProperty(),car.isCongestionWaveProperty()
         );
         carShape.fillProperty().bind(colorObjectBinding1);
 

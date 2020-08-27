@@ -19,17 +19,17 @@ public class WaveFrontFinder {
             dummyData.add(1d);
     }
 
-    List<WaveFront> findWaveFronts(Model model){
+    List<Wave> findWaveFronts(Model model){
         List<Car> cars = model.getTrafficManagementSystem().getCars();
-        List<WaveFront> allCurrentWaveFronts = new ArrayList<>();
+        List<Wave> allCurrentWaves = new ArrayList<>();
 
         //Apply peak detection algorithm and find all the traffic congestions
         detectCongestions(cars);
 
         //Based on traffic jams detected, measure the start and length of congestion waves
-        allCurrentWaveFronts = findWaveFrontsOnRoads(model.getRoadList());
+        allCurrentWaves = findWaveFrontsOnRoads(model.getRoadList());
 
-        return new ArrayList<>(allCurrentWaveFronts);
+        return new ArrayList<>(allCurrentWaves);
     }
     private void detectCongestions(List<Car> cars){
         //if there are no cars lets just ignore
@@ -65,15 +65,15 @@ public class WaveFrontFinder {
 
     }
 
-    private List<WaveFront> findWaveFrontsOnRoads(List<Road> roads) {
+    private List<Wave> findWaveFrontsOnRoads(List<Road> roads) {
 
-        Set<WaveFront> waveFronts = new HashSet<>();
-        WaveFront currentWaveFront = null;
+        Set<Wave> waves = new HashSet<>();
+        Wave currentWave = null;
 
         for (Road road:
              roads) {
             //temporary list to store wavefronts
-            List<WaveFront> waveFrontsOnRoad = new ArrayList<>();
+            List<Wave> wavesOnRoad = new ArrayList<>();
             List<Car> cars = road.getCarList();
 
             //Check if there are any cars on the road
@@ -83,17 +83,17 @@ public class WaveFrontFinder {
             //If the first car is part of a traffic jam, check with every previous road
             //whether this is in fact the wavefront or just a continuation of a previous one
             if (cars.get(0).isIsCongestionWave()){
-                currentWaveFront = new WaveFront(cars.get(0),road);
-                waveFrontsOnRoad.add(currentWaveFront);
+                currentWave = new Wave(cars.get(0),road);
+                wavesOnRoad.add(currentWave);
                 for (Road previousRoad:
                 road.getPreviousRoadList()) {
                     Car lastCar = null;
                     if (!previousRoad.isEmpty())
                         lastCar = previousRoad.getLastCar();
 
-                    //If there already exists a congestion don't include the currentWaveFront. This jam has already been accounted for
+                    //If there already exists a congestion don't include the currentWave. This jam has already been accounted for
                     if (lastCar != null && lastCar.isIsCongestionWave()){
-                        waveFrontsOnRoad = new ArrayList<>();
+                        wavesOnRoad = new ArrayList<>();
                         break;
                     }
                 }
@@ -101,8 +101,9 @@ public class WaveFrontFinder {
 
             //setting up variables for tracking
             boolean previousValue = cars.get(0).isIsCongestionWave();
+            Car previousCar = cars.get(0);
             boolean currentValue = previousValue;
-            Car currentCar;
+            Car currentCar = previousCar;
 
             for(int index = 1 ; index < cars.size() ; index++){
                 currentCar = cars.get(index);
@@ -111,45 +112,71 @@ public class WaveFrontFinder {
                 if (currentValue == true ){
                     if (previousValue == false){
                         //we have a new wavefront
-                        currentWaveFront = new WaveFront(currentCar,road);
-                        waveFrontsOnRoad.add(currentWaveFront);
+                        currentWave = new Wave(currentCar,road);
+                        wavesOnRoad.add(currentWave);
                     }
-                    currentWaveFront.incrementWaveSize();
+                    //We want to also track the size of the wave
+                    currentWave.incrementWaveSize();
                 }
-                previousValue=currentValue;
+                //Here we find the end of the wave
+                else if(previousValue == true){
+                    currentWave.getWaveEnd().setCar(previousCar,road);
+                }
+                previousCar = currentCar;
+                previousValue = currentValue;
             }
 
             //if we ended on a wavefront we have to measure the rest of it, recurrence function
             if (currentValue == true){
-              // measureWaveFrontUntilEnd(currentWaveFront,road);
+                measureWaveFrontUntilEnd(currentWave,road, currentCar);
             }
 
-            waveFronts.addAll(waveFrontsOnRoad);
+            waves.addAll(wavesOnRoad);
 
         }
 
-        return new ArrayList<>(waveFronts);
+        return new ArrayList<>(waves);
     }
 
-    void measureWaveFrontUntilEnd(WaveFront currentWaveFront, Road currentRoad){
+    void measureWaveFrontUntilEnd(Wave currentWave, Road currentRoad, Car lastCar){
         for (Road nextRoad :
                 currentRoad.getRoadList() ) {
             List<Car> cars = nextRoad.getCarList();
-            Car currentCar;
+            //setting up variables for tracking
             boolean currentValue = false;
+            Car currentCar = lastCar;
+            Car previousCar = lastCar;
+            Road road = currentRoad;
+
+            //if there are no cars on the road, the last car on the previous road was in fact the end
+            if(cars.size() == 0) {
+                currentWave.getWaveEnd().setCar(previousCar, road);
+                break;
+            }
+
             //copy pasted from above for now with modifications, maybe could be recurrence in the future
             for(int index = 0 ; index < cars.size() ; index++){
                 currentCar = cars.get(index);
                 currentValue = currentCar.isIsCongestionWave();
 
-                if (currentValue == false)
+                //we found the end of the wave
+                if (currentValue == false){
+                    currentWave.getWaveEnd().setCar(previousCar,road);
                     break;
-                else
-                    currentWaveFront.incrementWaveSize();
+                }
+                if (currentValue == true){
+                    //We want to also track the size of the wave
+                    currentWave.incrementWaveSize();
+                }
+                
+                previousCar = currentCar;
+                road = nextRoad;
             }
+
             //if we ended on a wavefront we have to measure the rest of it, recurrence function
-            if (currentValue == true)
-                measureWaveFrontUntilEnd(currentWaveFront,nextRoad);
+            if (currentValue == true){
+                measureWaveFrontUntilEnd(currentWave,road,currentCar);
+            }
         }
     }
 }

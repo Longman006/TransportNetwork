@@ -3,10 +3,7 @@ package tomek.szypula.controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import tomek.szypula.math.LineSegment;
 import tomek.szypula.math.Vector2D;
-import tomek.szypula.models.Car;
-import tomek.szypula.models.CarParameters;
-import tomek.szypula.models.Road;
-import tomek.szypula.models.WaveFront;
+import tomek.szypula.models.*;
 
 import java.util.ArrayList;
 
