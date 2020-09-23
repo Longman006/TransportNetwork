@@ -173,6 +173,38 @@ public class Road implements UniqueId, Highlightable {
         return trafficLightsEnd;
     }
 
+    public int getMaxNumberOfCars(){
+        CarParameters carParameters = TrafficManagementSystem.getCarParameters();
+        double singleCar = carParameters.getMinimumGap() + carParameters.getSize();
+        return (int) (getLength()/singleCar);
+    }
+
+    public int getTotalCongestionSizeOnRoad(){
+        int size = 0;
+        for (Car car :
+                carList) {
+            if (car.isCongestionWave.get())
+                size++;
+        }
+        return size;
+    }
+    public double getTotalCongestionSizeOnRoadNormalized(){
+        return (double) getTotalCongestionSizeOnRoad()/getMaxNumberOfCars();
+    }
+
+    public double getAverageSpeedOnRoad(){
+        double averageSpeed = 0;
+
+        if (carList.size() == 0)
+            return averageSpeed;
+        for (Car car :
+                getCarList()) {
+            averageSpeed+=car.getSpeed().getLength();
+        }
+        averageSpeed=averageSpeed/carList.size();
+        return averageSpeed;
+    }
+
     @Override
     public String getId() {
         return uuid.toString();

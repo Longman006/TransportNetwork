@@ -53,9 +53,6 @@ public class WaveFrontManager {
 
     }
 
-    public boolean removeWave(Wave wave){
-        return waves.remove(wave);
-    }
     public boolean removeWaves(List<Wave> wavesToRemove){
         return waves.removeAll(wavesToRemove);
     }
@@ -69,6 +66,8 @@ public class WaveFrontManager {
         removeWaves(waveFrontsToRemove);
 
     }
+
+
 
     public ObservableList<Wave> getWaves() {
         return waves;

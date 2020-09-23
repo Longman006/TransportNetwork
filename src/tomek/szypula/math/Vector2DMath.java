@@ -1,10 +1,9 @@
 package tomek.szypula.math;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.util.List;
 
 /**
  * Created by longman on 11.06.17.
@@ -61,4 +60,15 @@ public final class Vector2DMath {
         return anchors;
     }
 
+    public static Vector2D meanVector(List<Vector2D> lastSpeeds) {
+        double meanX = 0;
+        double meanY = 0;
+        double count = lastSpeeds.size();
+        for (Vector2D vector2D :
+               lastSpeeds ) {
+            meanX+=vector2D.getX();
+            meanY+=vector2D.getY();
+        }
+        return new Vector2D(meanX/count,meanY/count);
+    }
 }

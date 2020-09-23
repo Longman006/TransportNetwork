@@ -13,12 +13,17 @@ public class DataManagementSystem implements Updatable {
 
     public DataManagementSystem(Model model) {
         this.model = model;
+
+        //Add all filemanagers here. Everything else will be done automatically
         fileManagers.add(new DistanceSpeedToOnRampFile(model));
         fileManagers.add(new PositionSpeedFile(model));
         fileManagers.add(new WaveFrontDistanceSpeedToOnRamp(model));
         fileManagers.add(new DistanceToStartOfRoadFile(model));
         fileManagers.add(new DensityFileToStartOfRoad(model));
         fileManagers.add(new NetworkFile(model));
+        fileManagers.add(new SizeOfWavesFile(model));
+        fileManagers.add(new CongestionSizeFile(model));
+        fileManagers.add(new RoadStatisticsFile(model));
     }
 
     //End User methods
