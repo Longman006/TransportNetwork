@@ -13,6 +13,7 @@ public class Model {
     private TrafficManagementSystem tms;
     private WaveFrontManager wfm;
     private DensityManager dm;
+    private CascadeFailuresManager cfm;
     private IntegerProperty time = new SimpleIntegerProperty();
 
     public Model(List<Road> roadList) {
@@ -20,6 +21,12 @@ public class Model {
         tms = new TrafficManagementSystem(roadList);
         wfm = new WaveFrontManager(this);
         dm = new DensityManager(roadList);
+        cfm = new CascadeFailuresManager(this);
+
+        /**
+         * Test of dijkstra
+         */
+        cfm.getShortestPaths();
     }
 
     public List<Road> getRoadList() {

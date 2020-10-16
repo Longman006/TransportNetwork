@@ -39,6 +39,7 @@ public class RoadStatisticsFile extends FileManager {
 
             localAverageSpeed = road.getAverageSpeedOnRoad();
             localAverageTime = roadLength/localAverageSpeed;
+            System.out.println("local average time : "+localAverageTime);
             localAverageSpeedNormalized = localAverageSpeed/maxSpeed;
             localAverageTimeNormalized = localAverageTime/minTime;
 
@@ -60,8 +61,6 @@ public class RoadStatisticsFile extends FileManager {
         totalAverageSpeed=totalAverageSpeed/totalNumberOfCars;
         totalAverageTime=totalAverageTime/totalNumberOfCars;
         totalAverageSpeedNormalized=totalAverageSpeed/maxSpeed;
-
-        System.out.println("Average Speed " +totalAverageSpeed);
 
         dataWriter.updateFile(
                 String.valueOf(time),
