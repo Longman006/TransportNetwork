@@ -21,7 +21,7 @@ import java.util.List;
 public class Editor {
 
     Group lines = new Group();
-    List<Road> roads = new ArrayList<>();
+    List<Road> roads;
     List<RoadUI> roadUIS = new ArrayList<>();
     Pane pane ;
     Text text = new Text();
@@ -166,6 +166,7 @@ public class Editor {
             roadUI.remove(lines);
         }
         circles.getChildren().removeAll(circles.getChildren());
+        roads.clear();
     }
 
     public void undo() {

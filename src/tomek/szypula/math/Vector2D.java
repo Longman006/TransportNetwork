@@ -4,6 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public class Vector2D implements Iterable<DoubleProperty>{
 
@@ -124,5 +125,21 @@ public class Vector2D implements Iterable<DoubleProperty>{
 
     public Vector2D subtractVector2D(Vector2D vector2D) {
         return this.addVector2D(new Vector2D(vector2D).multiply(-1));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Vector2D))
+            return false;
+        Vector2D other = (Vector2D) o;
+        boolean equalValue = ((Vector2D) o).equalValue(other)
+        return equalValue;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

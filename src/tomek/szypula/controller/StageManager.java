@@ -206,7 +206,7 @@ public class StageManager {
 
         window.setScene(mainScene);
             timeline = new Timeline(new KeyFrame(
-                    Duration.millis(100),
+                    Duration.millis(50),
                     ae -> {
                         step();
                     }));

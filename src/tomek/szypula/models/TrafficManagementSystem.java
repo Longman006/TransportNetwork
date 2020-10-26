@@ -17,6 +17,12 @@ public class TrafficManagementSystem implements Updatable {
     private IntegerProperty desiredNumberOfCars = new SimpleIntegerProperty();
     private ObservableList<Car> cars = FXCollections.observableList(new ArrayList<>()) ;
     private List<Road> startingRoads = new ArrayList<>();
+
+    public List<Road> getStartingRoads() {
+        findStartingRoads();
+        return startingRoads;
+    }
+
     private ArrayList<Road> endRoads = new ArrayList<>();
 
     public TrafficManagementSystem(List<Road> roadList) {

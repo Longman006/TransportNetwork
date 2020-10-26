@@ -3,9 +3,7 @@ package tomek.szypula.math;
 import tomek.szypula.models.Model;
 import tomek.szypula.models.Road;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Dijkstra {
 
@@ -39,8 +37,13 @@ public class Dijkstra {
             Road currentRoad = getLowestDistanceRoad(unsettledRoads,shortestPathsFromSource);
             unsettledRoads.remove(currentRoad);
 
+            List<Road> roadListToEvaluate = currentRoad.getRoadList();
+            if (roadListToEvaluate.size() == 0){
+                roadListToEvaluate = model.getTrafficManagementSystem().getStartingRoads();
+            }
+
             for (Road roadToEvaluate :
-                    currentRoad.getRoadList()) {
+                    roadListToEvaluate) {
                 if (!settledRoads.contains(roadToEvaluate)){
                     calculateShortestDistanceBetweenRoads(currentRoad, roadToEvaluate,shortestPathsFromSource);
                     unsettledRoads.add(roadToEvaluate);

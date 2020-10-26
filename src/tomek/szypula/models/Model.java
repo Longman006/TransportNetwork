@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Model {
+    private final GraphManager gfm;
     private List<Road> roadList ;
     private TrafficManagementSystem tms;
     private WaveFrontManager wfm;
@@ -22,6 +23,7 @@ public class Model {
         wfm = new WaveFrontManager(this);
         dm = new DensityManager(roadList);
         cfm = new CascadeFailuresManager(this);
+        gfm = new GraphManager().createGraphFromRoadList(roadList);
 
         /**
          * Test of dijkstra

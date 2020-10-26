@@ -103,6 +103,8 @@ public class RoadUI implements CreateUI{
             }
             else {
                 road.highlight();
+                System.out.println("Road "+road.getId());
+                System.out.println("Betweennes "+road.getBetweenness());
             }
             e.consume();
         };

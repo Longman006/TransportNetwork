@@ -34,7 +34,21 @@ public class Road implements UniqueId, Highlightable {
     TrafficLights trafficLightsEnd = new TrafficLights();
     OutOfService outOfService = new OutOfService();
     OnRamp onRamp = new OnRamp();
+    double betweenness = 0;
+
+    public double getBetweenness() {
+        return betweenness;
+    }
+
+    public void setBetweenness(double betweenness) {
+        this.betweenness = betweenness;
+    }
+    public void incrementBetweenness(){
+        betweenness++;
+    }
+
     private UUID uuid = UUID.randomUUID();
+
 
     public OnRamp getOnRamp() { return onRamp; }
 
